@@ -95,3 +95,7 @@ modules/*
 !modules/.gitkeep
 .laravelstatsrc
 .DS_Store
+db.env
+run.env
+tags
+*.swp

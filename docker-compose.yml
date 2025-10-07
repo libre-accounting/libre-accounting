@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+  libre-accounting:
+    container_name: libre-accounting
+    image: ghcr.io/libre-accounting/libre-accounting:latest
+    build:
+      context: .
+    ports:
+      - 8080:80
+    restart: unless-stopped
+    env_file:
+      - docker/env/run.env
+    environment:
+      - AKAUNTING_SETUP
+    depends_on:
+      - libre-accounting-db
+
+  libre-accounting-db:
+    container_name: libre-accounting-db
+    image: mariadb
+    volumes:
+      - libre-accounting-db:/var/lib/mysql
+    restart: unless-stopped
+    env_file:
+      - docker/env/db.env
+
+volumes:
+  libre-accounting-db:
