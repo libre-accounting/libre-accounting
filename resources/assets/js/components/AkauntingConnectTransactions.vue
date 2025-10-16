@@ -380,6 +380,12 @@ export default {
         },
 
         onAddItem(document) {
+            // Calculate the unpaid amount
+            let unpaid_amount = (document.amount - document.paid).toFixed(this.currency.precision);
+
+            // Format the amount with the correct decimal separator for the currency
+            let formatted_amount = unpaid_amount.replace('.', this.currency.decimal_mark);
+
             this.form.items.push(
                 Object.assign({}, {
                     id: document.id,
@@ -387,8 +393,8 @@ export default {
                     number: document.document_number,
                     contact: document.contact_name,
                     notes: document.notes,
-                    amount: (document.amount - document.paid).toFixed(this.currency.precision),
-                    max_amount: (document.amount - document.paid).toFixed(this.currency.precision),
+                    amount: formatted_amount,
+                    max_amount: formatted_amount,
                 })
             );
         },
@@ -424,9 +430,18 @@ export default {
                 money = money.toString();
             }
 
-            // 198.4
-            let regex = new RegExp(this.currency.thousands_separator, 'gi');
+            // Check if currency is properly defined
+            if (!this.currency || this.currency.symbol === undefined || this.currency.decimal_mark === undefined) {
+                console.error('Currency not properly initialized:', this.currency);
+                return 0;
+            }
 
+            // Escape special regex characters in thousands_separator
+            let thousands_sep = this.currency.thousands_separator;
+            let escaped_thousands = thousands_sep.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            let regex = new RegExp(escaped_thousands, 'g');
+
+            // Remove currency symbol and thousands separator, then replace decimal mark with period
             money = money.replace(this.currency.symbol, '').replace(regex, '').replace(this.currency.decimal_mark, '.');
 
             // "198.40"
@@ -440,11 +455,15 @@ export default {
             let max_amount = this.convertMoneyToFloat(this.form.items[index].max_amount);
             let changed_amount = this.convertMoneyToFloat(amount);
 
-            this.form.items[index].amount = changed_amount.toFixed(this.currency.precision);
+            // Format with correct decimal separator
+            let formatted_changed = changed_amount.toFixed(this.currency.precision).replace('.', this.currency.decimal_mark);
+
+            this.$set(this.form.items[index], 'amount', formatted_changed);
 
             setTimeout(function () {
                 if (changed_amount > max_amount || changed_amount == 0) {
-                    this.form.items[index].amount = max_amount.toFixed(this.currency.precision);
+                    let formatted_max = max_amount.toFixed(this.currency.precision).replace('.', this.currency.decimal_mark);
+                    this.$set(this.form.items[index], 'amount', formatted_max);
                 }
             }.bind(this), 50);
         }
@@ -469,6 +488,14 @@ export default {
                 suffix: (!currency.symbol_first) ? currency.symbol : '',
                 precision: parseInt(currency.precision),
             };
+        },
+
+        'form.items': {
+            handler: function(newItems) {
+                // Force recalculation of computed properties
+                this.$forceUpdate();
+            },
+            deep: true
         }
     },
 }
