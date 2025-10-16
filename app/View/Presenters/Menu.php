@@ -272,7 +272,7 @@ class Menu extends Presenter
         $path = base_path($base_path . $slug . '.svg');
 
         if (! file_exists($path)) {
-            $path = 'public/img/akaunting-logo-purple.svg';
+            $path = 'public/img/app-logo.svg';
         }
 
         return $path;
