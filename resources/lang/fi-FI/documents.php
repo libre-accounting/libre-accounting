@@ -49,6 +49,7 @@ return [
         'marked_paid'       => ':type merkitty maksetuksi!',
         'marked_viewed'     => ':type merkitty katsotuksi!',
         'marked_cancelled'  => ':type merkitty peruutetuksi!',
+        'marked_restored'   => ':type merkitty palautetuksi!',
         'marked_received'   => ':type merkitty vastaanotetuksi!',
     ],
 ];

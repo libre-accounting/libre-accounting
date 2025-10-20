@@ -49,6 +49,7 @@ return [
         'marked_paid'       => ':type ödendi olarak işaretlendi!',
         'marked_viewed'     => ':type görüldü olarak işaretlendi!',
         'marked_cancelled'  => ':type iptal edildi olarak işaretlendi!',
+        'marked_restored'   => ':type geri yüklenmiş olarak işaretlendi!',
         'marked_received'   => ':type alındı olarak işaretlendi!',
     ],
 ];

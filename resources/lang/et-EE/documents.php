@@ -49,6 +49,7 @@ return [
         'marked_paid'       => ':type märgitud makstuks!',
         'marked_viewed'     => ':type märgitud vaadatud!',
         'marked_cancelled'  => ':type märgitud tühistatuks!',
+        'marked_restored'   => ':type märgitud taastatuks!',
         'marked_received'   => ':type märgitud et kätte saanud!',
     ],
 ];

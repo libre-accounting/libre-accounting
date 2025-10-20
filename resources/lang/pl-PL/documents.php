@@ -49,6 +49,7 @@ return [
         'marked_paid'       => ':type oznaczono jako zapłacone!',
         'marked_viewed'     => ':type oznaczono jako obejrzane!',
         'marked_cancelled'  => ':type oznaczono jako anulowane!',
+        'marked_restored'   => ':type oznaczono jako przywrócone!',
         'marked_received'   => ':type oznaczono jako otrzymane!',
     ],
 ];

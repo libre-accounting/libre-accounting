@@ -49,6 +49,7 @@ return [
         'marked_paid'       => ':type markeret som betalt!',
         'marked_viewed'     => ':type markeret som set!',
         'marked_cancelled'  => ':type markeret som annulleret!',
+        'marked_restored'   => ':type markeret som genoprettet!',
         'marked_received'   => ':type markeret som modtaget!',
     ],
 ];

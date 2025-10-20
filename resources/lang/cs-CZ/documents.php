@@ -77,6 +77,7 @@ return [
         'marked_paid'           => ':type byl označen jako zaplacený!',
         'marked_viewed'         => ':type byl označen jako zobrazený!',
         'marked_cancelled'      => ':type označeno jako zrušený!',
+        'marked_restored'       => ':type označeno jako obnoveno!',
         'marked_received'       => ':type byl označen jako přijatý!',
     ],
 

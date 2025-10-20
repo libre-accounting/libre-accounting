@@ -241,6 +241,24 @@ class Bills extends Controller
     }
 
     /**
+     * Mark the bill as restored.
+     *
+     * @param  Document $bill
+     *
+     * @return Response
+     */
+    public function markRestored(Document $bill)
+    {
+        event(new \App\Events\Document\DocumentRestored($bill));
+
+        $message = trans('documents.messages.marked_restored', ['type' => trans_choice('general.bills', 1)]);
+
+        flash($message)->success();
+
+        return redirect()->back();
+    }
+
+    /**
      * Print the bill.
      *
      * @param  Document $bill

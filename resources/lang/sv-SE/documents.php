@@ -71,6 +71,7 @@ return [
         'marked_paid'           => ':type markerad som betalad!',
         'marked_viewed'         => ':type markerad som visad!',
         'marked_cancelled'      => ':type markerad som avbruten!',
+        'marked_restored'       => ':type markerad som återställd!',
         'marked_received'       => ':type markerad som mottagen!',
     ],
 

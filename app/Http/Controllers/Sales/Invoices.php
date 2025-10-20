@@ -248,6 +248,24 @@ class Invoices extends Controller
     }
 
     /**
+     * Mark the invoice as restored.
+     *
+     * @param  Document $invoice
+     *
+     * @return Response
+     */
+    public function markRestored(Document $invoice)
+    {
+        event(new \App\Events\Document\DocumentRestored($invoice));
+
+        $message = trans('documents.messages.marked_restored', ['type' => trans_choice('general.invoices', 1)]);
+
+        flash($message)->success();
+
+        return redirect()->back();
+    }
+
+    /**
      * Download the PDF file of invoice.
      *
      * @param  Document $invoice

@@ -49,6 +49,7 @@ return [
         'marked_paid'       => ':type contrassegnato come pagato!',
         'marked_viewed'     => ':type contrassegnato come visualizzato!',
         'marked_cancelled'  => ':type contrassegnato come annullato!',
+        'marked_restored'   => ':type contrassegnato come ripristinato!',
         'marked_received'   => ':type contrassegnato come ricevuto!',
     ],
 ];

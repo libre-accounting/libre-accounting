@@ -71,6 +71,7 @@ return [
         'marked_paid'           => ':type označen je kao plaćen!',
         'marked_viewed'         => ':type označen je kao pregledan!',
         'marked_cancelled'      => ':type označen je kao otkazan!',
+        'marked_restored'       => ':type označen je kao vraćen!',
         'marked_received'       => ':type označen je kao primljen!',
     ],
 

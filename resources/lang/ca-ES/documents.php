@@ -77,6 +77,7 @@ return [
         'marked_paid'           => 'S\'ha marcat :type com enviat!',
         'marked_viewed'         => 'S\'ha marcat :type com enviat!',
         'marked_cancelled'      => 'S\'ha marcat :type com cancel·lat!',
+        'marked_restored'       => 'S\'ha marcat :type com restablert!',
         'marked_received'       => 'S\'ha marcat :type com rebut!',
     ],
 

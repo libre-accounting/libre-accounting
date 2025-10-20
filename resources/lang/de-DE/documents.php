@@ -71,6 +71,7 @@ return [
         'marked_paid'           => ':type als bezahlt markiert!',
         'marked_viewed'         => ':type als gelesen markiert!',
         'marked_cancelled'      => ':type als storniert markiert!',
+        'marked_restored'       => ':type als wiederhergestellt markiert!',
         'marked_received'       => ':type als empfangen markiert!',
     ],
 

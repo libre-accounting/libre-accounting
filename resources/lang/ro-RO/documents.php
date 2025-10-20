@@ -51,6 +51,7 @@ Parţială',
         'marked_paid'       => ':type marcată ca plătită!',
         'marked_viewed'     => ':type marcată ca vizualizată!',
         'marked_cancelled'  => ':type marcată ca anulată!',
+        'marked_restored'   => ':type marcată ca restaurată!',
         'marked_received'   => ':type marcată ca primită!',
     ],
 ];

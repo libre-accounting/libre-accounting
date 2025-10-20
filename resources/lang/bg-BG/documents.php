@@ -72,6 +72,7 @@ return [
         'marked_paid'           => ':type е маркиран като платен!',
         'marked_viewed'         => ':type е маркиран като прегледан!',
         'marked_cancelled'      => ':type е маркиран като отменен!',
+        'marked_restored'       => ':type е маркиран като възстановен!',
         'marked_received'       => ':type е маркиран като получен!',
     ],
 

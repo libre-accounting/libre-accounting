@@ -19,8 +19,13 @@ class CancelDocument extends Job
     public function handle(): Document
     {
         \DB::transaction(function () {
+            // Disconnect transactions instead of deleting them
+            // Set document_id to null so they become standalone transactions
+            $this->model->transactions()->update(['document_id' => null]);
+
+            // Delete recurring relationship
             $this->deleteRelationships($this->model, [
-                'transactions', 'recurring'
+                'recurring'
             ]);
 
             $this->model->status = 'cancelled';

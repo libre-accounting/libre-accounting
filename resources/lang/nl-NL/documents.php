@@ -77,6 +77,7 @@ return [
         'marked_paid'           => ':type gemarkeerd als betaald!',
         'marked_viewed'         => ':type gemarkeerd als gelezen!',
         'marked_cancelled'      => ':type gemarkeerd als geannuleerd!',
+        'marked_restored'       => ':type gemarkeerd als hersteld!',
         'marked_received'       => ':type gemarkeerd als ontvangen!',
     ],
 

@@ -7,6 +7,7 @@ return [
         'marked_paid'       => '¡Factura marcada como pagada!',
         'marked_viewed'     => '¡Factura marcada como vista!',
         'marked_cancelled'  => '¡Factura marcada como cancelada!',
+        'marked_restored'   => '¡Factura marcada como restaurada!',
         'marked_received'   => '¡Factura marcada como recibida!',
     ],
 ];

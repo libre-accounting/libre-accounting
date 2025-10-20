@@ -77,6 +77,7 @@ return [
         'marked_paid'           => ':type ditandai telah terbayar!',
         'marked_viewed'         => ':type ditandai telah terbaca!',
         'marked_cancelled'      => ':type ditandai telah dibatalkan!',
+        'marked_restored'       => ':type ditandai telah dipulihkan!',
         'marked_received'       => ':type ditandai telah diterima!',
     ],
 

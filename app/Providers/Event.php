@@ -51,6 +51,9 @@ class Event extends Provider
         'App\Events\Document\DocumentCancelled' => [
             'App\Listeners\Document\MarkDocumentCancelled',
         ],
+        'App\Events\Document\DocumentRestored' => [
+            'App\Listeners\Document\MarkDocumentRestored',
+        ],
         'App\Events\Document\DocumentRecurring' => [
             'App\Listeners\Document\SendDocumentRecurringNotification',
         ],

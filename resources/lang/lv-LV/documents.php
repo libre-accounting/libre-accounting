@@ -77,6 +77,7 @@ return [
         'marked_paid'           => ':type atzīmēts kā samaksāts!',
         'marked_viewed'         => ':type atzīmēts kā skatīts!',
         'marked_cancelled'      => ':type atzīmēts kā atcelts!',
+        'marked_restored'       => ':type atzīmēts kā atjaunots!',
         'marked_received'       => ':type atzīmēts kā saņemts!',
     ],
 

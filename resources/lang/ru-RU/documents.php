@@ -49,6 +49,7 @@ return [
         'marked_paid'       => ':type помечено как оплачено!',
         'marked_viewed'     => ':type помечено как просмотрено!',
         'marked_cancelled'  => ':type помечено как отменено!',
+        'marked_restored'   => ':type помечено как восстановленный!',
         'marked_received'   => ':type помечено как получено!',
     ],
 ];
