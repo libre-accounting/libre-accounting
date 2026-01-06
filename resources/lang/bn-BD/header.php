@@ -10,7 +10,7 @@ return [
         'upcoming_bills'    => '{1} :count টি আসন্ন বিল|[2,*] :count টি আসন্ন বিল',
         'view_all'          => 'সবগুলো দেখুন'
     ],
-    'docs_link'             => 'https://akaunting.com/docs',
-    'support_link'          => 'https://akaunting.com/support',
+    'docs_link'             => 'https://libreaccounting.org/docs',
+    'support_link'          => 'https://libreaccounting.org/support',
 
 ];

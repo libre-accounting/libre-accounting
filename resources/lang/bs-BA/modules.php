@@ -39,7 +39,7 @@ return [
     'no_apps'               => 'Provjerite najprofesionalnije aplikacije za vaše poslovanje i nabavite ih po najboljoj cijeni.',
     'become_developer'      => 'Jeste li programer? <a href=":url" target="_blank"> Ovdje </a> možete naučiti kako stvoriti aplikaciju i započeti s prodajom već danas!',
     'recommended_apps'      => 'Preporučene aplikacije',
-    'can_not_install'       => 'Mjesečna pretplata je dostupna samo na Cloud servisima. <a href="https://akaunting.com/upgrade-to-yearly" target="_blank">Pročitaj više.</a>',
+    'can_not_install'       => 'Mjesečna pretplata je dostupna samo na Cloud servisima. <a href="https://libreaccounting.org/upgrade-to-yearly" target="_blank">Pročitaj više.</a>',
     'apps_managing'         => 'Provjerite najpopularnije aplikacije i počnite profesionalno upravljati svojim financijama već danas.',
     'ready'                 => 'Spremni',
     'popular_this_week'     => 'Popularno ove sedmice',

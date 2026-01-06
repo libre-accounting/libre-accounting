@@ -41,7 +41,7 @@ return [
     'no_apps'               => 'Det finns inga appar i den här kategorin ännu.',
     'become_developer'      => 'Är du utvecklare? <a href=":url" target="_blank">Här</a> kan du lära dig att skapa en app och börja sälja idag!',
     'recommended_apps'      => 'Rekommenderade appar',
-    'can_not_install'       => 'Månatliga prenumerationer är endast tillgängliga på molntjänsten. <a href="https://akaunting.com/upgrade-to-yearly" target="_blank">Läs mer.</a>',
+    'can_not_install'       => 'Månatliga prenumerationer är endast tillgängliga på molntjänsten. <a href="https://libreaccounting.org/upgrade-to-yearly" target="_blank">Läs mer.</a>',
     'apps_managing'         => 'Kolla in de högst trendande apparna och börja hantera din ekonomi som ett proffs idag.',
     'ready'                 => 'Redo',
     'popular_this_week'     => 'Populärt denna vecka',

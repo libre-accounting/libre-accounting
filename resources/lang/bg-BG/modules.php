@@ -39,7 +39,7 @@ return [
     'no_apps'               => 'Вижте най-професионалните приложения за вашия бизнес и ги вземете на най-добра цена.',
     'become_developer'      => 'Вие сте разработчик? <a href=":url" target="_blank">Тук</a> може да научите как да създадете приложение и да стартирате продажби днес!',
     'recommended_apps'      => 'Препоръчани Добавки',
-    'can_not_install'       => 'Месечните абонаменти са налични само за Cloud service. <a href="https://akaunting.com/upgrade-to-yearly" target="_blank">Научете повече.</a>',
+    'can_not_install'       => 'Месечните абонаменти са налични само за Cloud service. <a href="https://libreaccounting.org/upgrade-to-yearly" target="_blank">Научете повече.</a>',
     'apps_managing'         => 'Вижте най-актуалните приложения и започнете да управлявате финансите си професионално днес.',
     'ready'                 => 'Готово',
     'popular_this_week'     => 'Популярно тази седмица',

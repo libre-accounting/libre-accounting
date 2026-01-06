@@ -54,7 +54,7 @@ return [
     ],
 
     'invitation' => [
-        'message_1'         => 'Primili ste ovaj email jer ste pozvani da se pridružite Akauntingu.',
+        'message_1'         => 'Primili ste ovaj email jer ste pozvani da se pridružite Libre Accountingu.',
         'message_2'         => 'Ako ne želite da se pridružite, nisu potrebne dodatne radnje.',
         'button'            => 'Započni',
     ],
@@ -63,17 +63,17 @@ return [
         'invoice'           => 'Lako kreirajte fakture',
         'reports'           => 'Dobijte detaljne izvještaje',
         'expense'           => 'Pratite sve troškove',
-        'customize'         => 'Prilagodite svoj Akaunting',
+        'customize'         => 'Prilagodite svoj Libre Accounting',
     ],
 
     'roles' => [
         'admin' => [
             'name'          => 'Admin',
-            'description'   => 'Oni dobijaju potpuni pristup vašem Akaunting-u uključujući klijente, fakture, izvještaje, postavke i aplikacije.',
+            'description'   => 'Oni dobijaju potpuni pristup vašem Libre Accounting-u uključujući klijente, fakture, izvještaje, postavke i aplikacije.',
         ],
         'manager' => [
             'name'          => 'Upravljaj',
-            'description'   => 'Oni imaju potpuni pristup vašem Akauntingu, ali ne mogu upravljati korisnicima i aplikacijama.',
+            'description'   => 'Oni imaju potpuni pristup vašem Libre Accountingu, ali ne mogu upravljati korisnicima i aplikacijama.',
         ],
         'customer' => [
             'name'          => 'Kupci',

@@ -13,7 +13,7 @@ return [
     'buy_now'               => 'Cumpara acum',
     'get_api_key'           => '<a href=":url" target="_blank">Click aici</a> pentru a obține cheia API.',
     'no_apps'               => 'Inca nu exista aplicatii in aceasta categorie.',
-    'become_developer'      => 'Esti un dezvoltator de aplicatii? <a href="https://akaunting.com/blog/akaunting-app-store" target="_blank">Aici</a> poti afla cum sa creezi o aplicatie si sa incepi sa vinzi astazi!',
+    'become_developer'      => 'Esti un dezvoltator de aplicatii? <a href="https://libreaccounting.org/blog/akaunting-app-store" target="_blank">Aici</a> poti afla cum sa creezi o aplicatie si sa incepi sa vinzi astazi!',
     'recommended_apps'      => 'Aplicaţii recomandate',
 
     'about'                 => 'Despre',

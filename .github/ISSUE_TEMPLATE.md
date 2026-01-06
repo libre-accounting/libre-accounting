@@ -1,4 +1,4 @@
-Please, submit only real issues. Use the forum for support, feature requests, proposals, new versions, help etc. https://akaunting.com/forum
+Please, submit only real issues. Use the forum for support, feature requests, proposals, new versions, help etc. https://libreaccounting.org/forum
 
 ### Steps to reproduce the issue
 
@@ -12,7 +12,7 @@ Please, submit only real issues. Use the forum for support, feature requests, pr
 
 
 
-### System information (Akaunting, PHP versions)
+### System information (Libre Accounting, PHP versions)
 
 
 

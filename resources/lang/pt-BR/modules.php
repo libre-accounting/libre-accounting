@@ -41,7 +41,7 @@ return [
     'no_apps'               => 'Não há nenhum apps nesta categoria, ainda.',
     'become_developer'      => 'Você é um desenvolvedor? <a href=":url" target="_blank">Aqui</a> você pode aprender como criar um app e começar a vender hoje!',
     'recommended_apps'      => 'Apps Recomendados',
-    'can_not_install'       => 'Assinaturas mensais estão disponíveis apenas no serviço na nuvem. <a href="https://akaunting.com/upgrade-to-yearly" target="_blank">Saiba mais.</a>',
+    'can_not_install'       => 'Assinaturas mensais estão disponíveis apenas no serviço na nuvem. <a href="https://libreaccounting.org/upgrade-to-yearly" target="_blank">Saiba mais.</a>',
     'apps_managing'         => 'Verifique os apps mais populares e comece a gerenciar suas finanças profissionalmente hoje.',
     'ready'                 => 'Disponível',
     'popular_this_week'     => 'Popular dessa semana',

@@ -10,7 +10,7 @@ return [
         'upcoming_bills'    => '{1} :count надолазећи рачун|[2,*] :count надолазећих рачуна',
         'view_all'          => 'Види све'
     ],
-    'docs_link'             => 'https://akaunting.com/docs',
-    'support_link'          => 'https://akaunting.com/support',
+    'docs_link'             => 'https://libreaccounting.org/docs',
+    'support_link'          => 'https://libreaccounting.org/support',
 
 ];

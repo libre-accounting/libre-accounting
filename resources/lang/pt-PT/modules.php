@@ -13,7 +13,7 @@ return [
     'buy_now'               => 'Comprar Agora',
     'get_api_key'           => '<a href=":url" target="_blank">Clique aqui</a> para obter a sua chave da API.',
     'no_apps'               => 'Ainda não existem aplicações nesta categoria.',
-    'become_developer'      => 'É um programador? <a href="https://akaunting.com/blog/akaunting-app-store" target="_blank">Aqui</a> poderá aprender como criar uma aplicação e começar a vende-la hoje mesmo!',
+    'become_developer'      => 'É um programador? <a href="https://libreaccounting.org/blog/akaunting-app-store" target="_blank">Aqui</a> poderá aprender como criar uma aplicação e começar a vende-la hoje mesmo!',
     'recommended_apps'      => 'Aplicações Recomendadas',
 
     'about'                 => 'Sobre',

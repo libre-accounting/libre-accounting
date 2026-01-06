@@ -10,7 +10,7 @@ return [
         'upcoming_bills'    => '{1} :count recibo por vencer | [2,*] :count recibos por vencer',
         'view_all'          => 'Ver Todo'
     ],
-    'docs_link'             => 'https://akaunting.com/docs',
-    'support_link'          => 'https://akaunting.com/support',
+    'docs_link'             => 'https://libreaccounting.org/docs',
+    'support_link'          => 'https://libreaccounting.org/support',
 
 ];

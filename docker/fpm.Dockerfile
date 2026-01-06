@@ -1,7 +1,7 @@
 FROM php:8.1-fpm
 
 # Arguments defined in docker-compose.yml
-ARG AKAUNTING_DOCKERFILE_VERSION=0.1
+ARG LIBRE_ACCOUNTING_DOCKERFILE_VERSION=0.1
 ARG SUPPORTED_LOCALES="en_US.UTF-8"
 
 RUN apt-get update \
@@ -46,18 +46,18 @@ RUN docker-php-ext-configure gd \
    pdo_mysql \
    zip
 
-# Download Akaunting application
-RUN mkdir -p /var/www/akaunting \
-   && curl -Lo /tmp/akaunting.zip 'https://akaunting.com/download.php?version=latest&utm_source=docker&utm_campaign=developers' \
-   && unzip /tmp/akaunting.zip -d /var/www/html \
-   && rm -f /tmp/akaunting.zip
+# Download Libre Accounting application
+RUN mkdir -p /var/www/libre-accounting \
+   && curl -Lo /tmp/libre-accounting.zip 'https://libreaccounting.org/download.php?version=latest&utm_source=docker&utm_campaign=developers' \
+   && unzip /tmp/libre-accounting.zip -d /var/www/html \
+   && rm -f /tmp/libre-accounting.zip
 
-COPY files/akaunting-php-fpm.sh /usr/local/bin/akaunting-php-fpm.sh
+COPY files/libre-accounting-php-fpm.sh /usr/local/bin/libre-accounting-php-fpm.sh
 COPY files/html /var/www/html
 
 # Set working directory
 WORKDIR /var/www/html
 
 EXPOSE 9000
-ENTRYPOINT ["/usr/local/bin/akaunting-php-fpm.sh"]
+ENTRYPOINT ["/usr/local/bin/libre-accounting-php-fpm.sh"]
 CMD ["--start"]

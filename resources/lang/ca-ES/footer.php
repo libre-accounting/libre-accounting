@@ -3,11 +3,11 @@
 return [
 
     'version'               => 'Versió',
-    'powered'               => 'Powered by Akaunting',
-    'link'                  => 'https://akaunting.com',
+    'powered'               => 'Powered By Libre Accounting',
+    'link'                  => 'https://libreaccounting.org',
     'software'              => 'Programari lliure de Facturació/Comptabilitat',
     'powered_by'            => 'Creat per',
-    'tag_line'              => 'Envia factures, fes un seguiment de les despeses i automatitza la comptabilitat amb Akaunting. :get_started_url',
+    'tag_line'              => 'Envia factures, fes un seguiment de les despeses i automatitza la comptabilitat amb Libre Accounting. :get_started_url',
     'get_started'           => 'Comença',
 
 ];

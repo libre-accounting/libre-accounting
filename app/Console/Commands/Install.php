@@ -48,7 +48,7 @@ class Install extends Command
      *
      * @var string
      */
-    protected $description = 'Allows to install Akaunting directly through CLI';
+    protected $description = 'Allows to install Libre Accounting directly through CLI';
 
     /**
      * Execute the console command.

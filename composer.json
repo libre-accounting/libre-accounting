@@ -1,7 +1,7 @@
 {
-    "name": "akaunting/akaunting",
-    "description": "Free accounting software built with Laravel",
-    "homepage": "https://akaunting.com",
+    "name": "libre-accounting/libre-accounting",
+    "description": "Open Source Accounting Software built with Laravel",
+    "homepage": "https://libreaccounting.org",
     "keywords": [
         "laravel",
         "accounting",

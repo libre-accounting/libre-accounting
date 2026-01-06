@@ -56,7 +56,7 @@ Zij zullen dan hun wachtwoord kunnen invoeren.',
     ],
 
     'invitation' => [
-        'message_1'         => 'U ontvangt deze e-mail omdat u bent uitgenodigd om deel te nemen aan Akaunting.',
+        'message_1'         => 'U ontvangt deze e-mail omdat u bent uitgenodigd om deel te nemen aan Libre Accounting.',
         'message_2'         => 'Als u niet mee wilt doen, hoeft u verder niets te doen.',
         'button'            => 'Aan de slag',
     ],
@@ -65,17 +65,17 @@ Zij zullen dan hun wachtwoord kunnen invoeren.',
         'invoice'           => 'Eenvoudig facturen aanmaken',
         'reports'           => 'Ontvang gedetailleerde rapporten',
         'expense'           => 'Volg elke uitgave',
-        'customize'         => 'Uw Akaunting Aanpassen',
+        'customize'         => 'Uw Libre Accounting Aanpassen',
     ],
 
     'roles' => [
         'admin' => [
             'name'          => 'Admin',
-            'description'   => 'Zij krijgen volledige toegang tot uw Akaunting inclusief klanten, facturen, rapporten, instellingen en apps.',
+            'description'   => 'Zij krijgen volledige toegang tot uw Libre Accounting inclusief klanten, facturen, rapporten, instellingen en apps.',
         ],
         'manager' => [
             'name'          => 'Beheerder',
-            'description'   => 'Zij krijgen volledige toegang tot je Akaunting, maar kunnen geen gebruikers en apps beheren.',
+            'description'   => 'Zij krijgen volledige toegang tot je Libre Accounting, maar kunnen geen gebruikers en apps beheren.',
         ],
         'customer' => [
             'name'          => 'Klant',

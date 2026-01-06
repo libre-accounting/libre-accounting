@@ -10,7 +10,7 @@ return [
         'upcoming_bills'    => '{1} :count tuleva lasku [2,*] :count tulevat laskut',
         'view_all'          => 'Näytä kaikki'
     ],
-    'docs_link'             => 'https://akaunting.com/docs',
-    'support_link'          => 'https://akaunting.com/support',
+    'docs_link'             => 'https://libreaccounting.org/docs',
+    'support_link'          => 'https://libreaccounting.org/support',
 
 ];

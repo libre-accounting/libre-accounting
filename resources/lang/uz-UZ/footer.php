@@ -3,8 +3,8 @@
 return [
 
     'version'               => 'Rusum',
-    'powered'               => 'Akaunting tizimida ishlaydi',
-    'link'                  => 'https://akaunting.com',
+    'powered'               => 'Libre Accounting tizimida ishlaydi',
+    'link'                  => 'https://libreaccounting.org',
     'software'              => 'Bepul buxgalteriya dasturi',
 
 ];

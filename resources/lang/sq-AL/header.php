@@ -10,7 +10,7 @@ return [
         'upcoming_bills'    => '{1} :count faturë e ardhshme |[2,*] :count fatura të ardhshme',
         'view_all'          => 'Shiko te Gjitha'
     ],
-    'docs_link'             => 'https://akaunting.com/docs',
-    'support_link'          => 'https://akaunting.com/support',
+    'docs_link'             => 'https://libreaccounting.org/docs',
+    'support_link'          => 'https://libreaccounting.org/support',
 
 ];

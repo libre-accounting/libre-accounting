@@ -40,7 +40,7 @@ return [
     'no_apps'               => 'अपने व्यवसाय के लिए सबसे अधिक पेशेवर ऐप्स देखें और उन्हें सर्वोत्तम मूल्य पर प्राप्त करें।',
     'become_developer'      => 'क्या आप एक डेवलपर हैं? <a href=":url" target="_blank">यहां</a> आप सीख सकते हैं कि ऐप कैसे बनाएं और आज बेचना शुरू करें!',
     'recommended_apps'      => 'अनुशंसित ऐप्स',
-    'can_not_install'       => 'मासिक सदस्यता केवल क्लाउड सेवा पर उपलब्ध है। <a href="https://akaunting.com/upgrad-to-yearly" target="_blank">और जानें।</a>',
+    'can_not_install'       => 'मासिक सदस्यता केवल क्लाउड सेवा पर उपलब्ध है। <a href="https://libreaccounting.org/upgrad-to-yearly" target="_blank">और जानें।</a>',
     'apps_managing'         => 'सबसे ट्रेंडिंग ऐप्स देखें और आज ही पेशेवर रूप से अपने वित्त का प्रबंधन शुरू करें।',
     'ready'                 => 'तैयार',
     'popular_this_week'     => 'इस सप्ताह में लोकप्रिय',

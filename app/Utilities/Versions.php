@@ -16,7 +16,7 @@ class Versions
     {
         $output = '';
 
-        $url = 'https://api.github.com/repos/akaunting/akaunting/releases';
+        $url = 'https://api.github.com/repos/libre-accounting/libre-accounting/releases';
 
         $http = new \GuzzleHttp\Client(['verify' => false]);
 
@@ -76,7 +76,7 @@ class Versions
         $versions = [];
 
         // Check core first
-        $url = 'core/version/' . $info['akaunting'] . '/' . $info['php'] . '/' . $info['mysql'] . '/' . $info['companies'];
+        $url = 'core/version/' . $info['libre-accounting'] . '/' . $info['php'] . '/' . $info['mysql'] . '/' . $info['companies'];
 
         # Installed modules start
         $modules = Arr::wrap($modules);
@@ -103,7 +103,7 @@ class Versions
         $url .= $module_version;
         # Installed modules end
 
-        $versions['core'] = static::getLatestVersion($url, $info['akaunting']);
+        $versions['core'] = static::getLatestVersion($url, $info['libre-accounting']);
 
         // Then modules
         foreach ($modules as $module) {
@@ -118,7 +118,7 @@ class Versions
             $alias = $module->get('alias');
             $version = $module->get('version');
 
-            $url = 'apps/' . $alias . '/version/' . $version . '/' . $info['akaunting'];
+            $url = 'apps/' . $alias . '/version/' . $version . '/' . $info['libre-accounting'];
 
             $versions[$alias] = static::getLatestVersion($url, $version);
         }
@@ -133,13 +133,13 @@ class Versions
         $info = Info::all();
 
         // Check core first
-        $url = 'core/version/' . $info['akaunting'] . '/' . $info['php'] . '/' . $info['mysql'] . '/' . $info['companies'];
-        $version = $info['akaunting'];
+        $url = 'core/version/' . $info['libre-accounting'] . '/' . $info['php'] . '/' . $info['mysql'] . '/' . $info['companies'];
+        $version = $info['libre-accounting'];
 
         if ($alias != 'core') {
             $version = module($alias)->get('version');
 
-            $url = 'apps/' . $alias . '/version/' . $version . '/' . $info['akaunting'];
+            $url = 'apps/' . $alias . '/version/' . $version . '/' . $info['libre-accounting'];
         }
 
         // Get data from cache

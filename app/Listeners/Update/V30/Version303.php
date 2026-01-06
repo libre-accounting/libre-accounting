@@ -27,11 +27,11 @@ class Version303 extends Listener
             return;
         }
 
-        Log::channel('stdout')->info('Starting the Akaunting 3.0.3 update...');
+        Log::channel('stdout')->info('Starting the Libre Accounting 3.0.3 update...');
 
         $this->updateCompanies();
 
-        Log::channel('stdout')->info('Akaunting 3.0.3 update finished.');
+        Log::channel('stdout')->info('Libre Accounting 3.0.3 update finished.');
     }
 
     public function updateCompanies()

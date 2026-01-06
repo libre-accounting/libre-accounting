@@ -40,7 +40,7 @@ return [
     'no_apps'               => 'Consulta les aplicacions més professionals per al teu negoci i aconsegueix-les al millor preu.',
     'become_developer'      => 'Ets desenvolupador? <a href=":url" target="_blank">Aquí</a> podràs aprendre com crear una App i començar-la a vendre de seguida!',
     'recommended_apps'      => 'Apps recomanades',
-    'can_not_install'       => 'Les subscripcions mensuals estan disponibles només al Cloud Service. <a href="https://akaunting.com/upgrade-to-yearly" target="_blank">Saber-ne més.</a>',
+    'can_not_install'       => 'Les subscripcions mensuals estan disponibles només al Cloud Service. <a href="https://libreaccounting.org/upgrade-to-yearly" target="_blank">Saber-ne més.</a>',
     'apps_managing'         => 'Comprova les aplicacions més actuals i comença a gestionar les finances de manera professional avui mateix.',
     'ready'                 => 'Llest',
     'popular_this_week'     => 'Popular aquesta setmana',

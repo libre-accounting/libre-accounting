@@ -10,7 +10,7 @@ return [
         'upcoming_bills'    => '{1} :count bil akan datang|[2,*] :count bil-bil akan datang',
         'view_all'          => 'Lihat Semua'
     ],
-    'docs_link'             => 'https://akaunting.com/docs',
-    'support_link'          => 'https://akaunting.com/sokongan',
+    'docs_link'             => 'https://libreaccounting.org/docs',
+    'support_link'          => 'https://libreaccounting.org/sokongan',
 
 ];

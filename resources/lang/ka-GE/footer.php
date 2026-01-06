@@ -4,7 +4,7 @@ return [
 
     'version'               => 'ვერსია',
     'powered'               => 'მუშაობს აქაუტინგზე',
-    'link'                  => 'https://akaunting.com',
+    'link'                  => 'https://libreaccounting.org',
     'software'              => 'უფასო საბუღალტრო პროგრამა',
 
 ];

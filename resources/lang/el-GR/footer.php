@@ -3,8 +3,8 @@
 return [
 
     'version'               => 'Έκδοση',
-    'powered'               => 'Powered By Akaunting',
-    'link'                  => 'https://akaunting.com',
+    'powered'               => 'Powered By Libre Accounting',
+    'link'                  => 'https://libreaccounting.org',
     'software'              => 'Δωρεάν λογισμικό λογιστικής',
 
 ];

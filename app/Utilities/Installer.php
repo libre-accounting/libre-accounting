@@ -121,7 +121,7 @@ class Installer
         }
 
         if (Console::run('help') !== true) {
-            $requirements[] = trans('install.error.php_version', ['php_version' => AKAUNTING_PHP]);
+            $requirements[] = trans('install.error.php_version', ['php_version' => LIBRE_ACCOUNTING_PHP]);
         }
 
         return $requirements;

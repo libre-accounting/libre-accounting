@@ -41,7 +41,7 @@ return [
     'no_apps'               => 'Periksa aplikasi paling profesional untuk bisnis Anda dan dapatkan dengan harga terbaik.',
     'become_developer'      => 'Apakah Anda seorang pengembang? <a href=":url" target="_blank"> Di Sini </a> Anda dapat belajar cara membuat aplikasi dan mulai menjual hari ini!',
     'recommended_apps'      => 'Aplikasi yang direkomendasikan',
-    'can_not_install'       => 'Langganan bulanan hanya tersedia untuk layanan Cloud. <a href="https://akaunting.com/upgrade-to-yearly" target="_blank">Pelajari lebih jauh.</a>',
+    'can_not_install'       => 'Langganan bulanan hanya tersedia untuk layanan Cloud. <a href="https://libreaccounting.org/upgrade-to-yearly" target="_blank">Pelajari lebih jauh.</a>',
     'apps_managing'         => 'Periksa aplikasi yang paling ngetren dan mulai kelola keuangan Anda secara profesional hari ini.',
     'ready'                 => 'Siap',
     'popular_this_week'     => 'Populer minggu ini',

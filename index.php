@@ -1,10 +1,11 @@
 <?php
 
 /**
- * @package     Akaunting
+ * @package     LibreAccounting
  * @copyright   2017-2022 Akaunting. All rights reserved.
+ * @copyright   2025 Libre Accounting. All rights reserved.
  * @license     GNU GPL version 3; see LICENSE.txt
- * @link        https://akaunting.com
+ * @link        https://libreaccounting.org
  */
 
 define('LARAVEL_START', microtime(true));

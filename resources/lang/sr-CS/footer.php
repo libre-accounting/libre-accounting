@@ -3,8 +3,8 @@
 return [
 
     'version'               => 'Vеrzija',
-    'powered'               => 'Omogućio vam je Akaunting',
-    'link'                  => 'https://Akaunting.com',
+    'powered'               => 'Omogućio vam je Libre Accounting',
+    'link'                  => 'https://libreaccounting.org',
     'software'              => 'Slobodan softver za knjigovodstvo',
 
 ];

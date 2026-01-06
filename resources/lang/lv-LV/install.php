@@ -45,7 +45,7 @@ return [
     ],
 
     'update' => [
-        'core'              => 'Akaunting jauna versija ir pieejama! Lūdzu, atjauniniet savu instalāciju.',
+        'core'              => 'Libre Accounting jauna versija ir pieejama! Lūdzu, atjauniniet savu instalāciju.',
         'module'            => ':module ir pieejama jaunā versija! Lūdzu, atjauniniet savu instalāciju.',
     ],
 ];

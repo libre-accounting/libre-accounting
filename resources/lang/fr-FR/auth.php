@@ -55,7 +55,7 @@ return [
     ],
 
     'invitation' => [
-        'message_1'         => 'Vous recevez cet e-mail parce que vous êtes invité à rejoindre Akaunting.',
+        'message_1'         => 'Vous recevez cet e-mail parce que vous êtes invité à rejoindre Libre Accounting.',
         'message_2'         => 'Si vous ne voulez pas vous inscrire, aucune action supplémentaire n\'est requise.',
         'button'            => 'C\'est parti',
     ],
@@ -64,17 +64,17 @@ return [
         'invoice'           => 'Créez facilement des factures',
         'reports'           => 'Obtenir des rapports détaillés',
         'expense'           => 'Suivre toutes les dépenses',
-        'customize'         => 'Personnaliser votre Akaunting',
+        'customize'         => 'Personnaliser votre Libre Accounting',
     ],
 
     'roles' => [
         'admin' => [
             'name'          => 'Administrateur',
-            'description'   => 'Ils obtiennent un accès complet à votre Akaunting, y compris vos clients, factures, rapports, paramètres et applications.',
+            'description'   => 'Ils obtiennent un accès complet à votre Libre Accounting, y compris vos clients, factures, rapports, paramètres et applications.',
         ],
         'manager' => [
             'name'          => 'Gérant',
-            'description'   => 'Ils ont un accès complet à votre Akaunting, mais ne peuvent pas gérer les utilisateurs et les applications.',
+            'description'   => 'Ils ont un accès complet à votre Libre Accounting, mais ne peuvent pas gérer les utilisateurs et les applications.',
         ],
         'customer' => [
             'name'          => 'Client',

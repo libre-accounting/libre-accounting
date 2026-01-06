@@ -1,7 +1,7 @@
 FROM php:8.1-fpm-alpine3.15
 
 # Arguments defined in docker-compose.yml
-ARG AKAUNTING_DOCKERFILE_VERSION=0.1
+ARG LIBRE_ACCOUNTING_DOCKERFILE_VERSION=0.1
 ARG SUPPORTED_LOCALES="en_US.UTF-8"
 
 # Add Repositories
@@ -25,18 +25,18 @@ RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
 RUN docker-php-ext-configure \
     opcache --enable-opcache
 
-# Download Akaunting application
-RUN mkdir -p /var/www/akaunting \
-    && curl -Lo /tmp/akaunting.zip 'https://akaunting.com/download.php?version=latest&utm_source=docker&utm_campaign=developers' \
-    && unzip /tmp/akaunting.zip -d /var/www/html \
-    && rm -f /tmp/akaunting.zip
+# Download Libre Accounting application
+RUN mkdir -p /var/www/libre-accounting \
+    && curl -Lo /tmp/libre-accounting.zip 'https://libreaccounting.org/download.php?version=latest&utm_source=docker&utm_campaign=developers' \
+    && unzip /tmp/libre-accounting.zip -d /var/www/html \
+    && rm -f /tmp/libre-accounting.zip
 
-COPY files/akaunting-php-fpm-nginx.sh /usr/local/bin/akaunting-php-fpm-nginx.sh
+COPY files/libre-accounting-php-fpm-nginx.sh /usr/local/bin/libre-accounting-php-fpm-nginx.sh
 COPY files/html /var/www/html
 
 # Setup Working Dir
 WORKDIR /var/www/html
 
 EXPOSE 9000
-ENTRYPOINT ["/usr/local/bin/akaunting-php-fpm-nginx.sh"]
+ENTRYPOINT ["/usr/local/bin/libre-accounting-php-fpm-nginx.sh"]
 CMD ["--start"]

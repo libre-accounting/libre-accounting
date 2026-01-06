@@ -40,7 +40,7 @@ return [
     'no_apps'               => 'Pārbaudiet sava uzņēmuma profesionālākās lietotnes un iegūstiet tās par labāko cenu.',
     'become_developer'      => 'Vai jūs esat izstrādātājs? <a href=":url" target="_blank">Šeit</a> varat uzzināt, kā izveidot lietotni un sākt pārdot jau šodien!',
     'recommended_apps'      => 'Ieteicamās lietojumprogrammas',
-    'can_not_install'       => 'Mēneša abonementi ir pieejami tikai mākoņpakalpojumā. <a href="https://akaunting.com/upgrade-to-yearly" target="_blank">Uzziniet vairāk.</a>',
+    'can_not_install'       => 'Mēneša abonementi ir pieejami tikai mākoņpakalpojumā. <a href="https://libreaccounting.org/upgrade-to-yearly" target="_blank">Uzziniet vairāk.</a>',
     'apps_managing'         => 'Apskatiet populārākās lietotnes un sāciet profesionāli pārvaldīt savas finanses jau šodien.',
     'ready'                 => 'Gatavs',
     'popular_this_week'     => 'Šonedēļ populāri',

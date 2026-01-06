@@ -10,7 +10,7 @@ return [
         'upcoming_bills'    => '{1} :count próxima conta|[2,*] :count próximas contas',
         'view_all'          => 'Visualizar tudo'
     ],
-    'docs_link'             => 'https://akaunting.com/docs',
-    'support_link'          => 'https://akaunting.com/support',
+    'docs_link'             => 'https://libreaccounting.org/docs',
+    'support_link'          => 'https://libreaccounting.org/support',
 
 ];

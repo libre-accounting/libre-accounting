@@ -10,7 +10,7 @@ return [
         'upcoming_bills'    => '{1} :count artėjantis mokėjimasl|[2,*] :count artėjantys mokėjimai',
         'view_all'          => 'Peržiūrėti visus'
     ],
-    'docs_link'             => 'https://akaunting.com/docs',
-    'support_link'          => 'https://akaunting.com/support',
+    'docs_link'             => 'https://libreaccounting.org/docs',
+    'support_link'          => 'https://libreaccounting.org/support',
 
 ];

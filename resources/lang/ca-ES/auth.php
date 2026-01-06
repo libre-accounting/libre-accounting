@@ -55,7 +55,7 @@ return [
     ],
 
     'invitation' => [
-        'message_1'         => 'Estàs rebent aquest correu electrònic perquè estàs convidat a unir-te a l\'Akaunting.',
+        'message_1'         => 'Estàs rebent aquest correu electrònic perquè estàs convidat a unir-te a l\'Libre Accounting.',
         'message_2'         => 'Si no t\'hi vols unir, no cal que facis res més.',
         'button'            => 'Comença',
     ],
@@ -64,17 +64,17 @@ return [
         'invoice'           => 'Crea factures fàcilment',
         'reports'           => 'Obté informes detallats',
         'expense'           => 'Fes el seguiment de qualsevol despesa',
-        'customize'         => 'Personalitza el teu Akaunting',
+        'customize'         => 'Personalitza el teu Libre Accounting',
     ],
 
     'roles' => [
         'admin' => [
             'name'          => 'Administrador',
-            'description'   => 'Tenen accés complet al vostre Akaunting, inclosos clients, factures, informes, configuracions i aplicacions.',
+            'description'   => 'Tenen accés complet al vostre Libre Accounting, inclosos clients, factures, informes, configuracions i aplicacions.',
         ],
         'manager' => [
             'name'          => 'Gerent',
-            'description'   => 'Tenen accés complet al teu Akaunting, però no poden gestionar usuaris i aplicacions.',
+            'description'   => 'Tenen accés complet al teu Libre Accounting, però no poden gestionar usuaris i aplicacions.',
         ],
         'customer' => [
             'name'          => 'Client',

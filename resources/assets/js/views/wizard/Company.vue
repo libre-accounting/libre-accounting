@@ -29,7 +29,7 @@
 
                                     <div class="mt-2">
                                         <small>
-                                            <a href="https://akaunting.com/dashboard" class="text-green" target="_blank">Click here</a>
+                                            <a href="https://libreaccounting.org/dashboard" class="text-green" target="_blank">Click here</a>
                                                 to get your API key.
                                         </small>
                                     </div>

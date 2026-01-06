@@ -3,8 +3,8 @@
 return [
 
     'version'               => 'Versi',
-    'powered'               => 'Dikuasakan Oleh Akaunting',
-    'link'                  => 'https://akaunting.com',
+    'powered'               => 'Dikuasakan Oleh Libre Accounting',
+    'link'                  => 'https://libreaccounting.org',
     'software'              => 'Perisian Perakaunan Percuma',
 
 ];

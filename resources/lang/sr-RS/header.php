@@ -11,6 +11,6 @@ return [
         'items_stock'       => '{1} :count ставка понестаје залиха|[2] :count ставке понестаје залиха |[3,*] :count ставке понестаје залиха',
         'view_all'          => 'Види све'
     ],
-    'docs_link'             => 'https://akaunting.com/docs',
+    'docs_link'             => 'https://libreaccounting.org/docs',
 
 ];

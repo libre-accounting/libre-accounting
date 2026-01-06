@@ -10,7 +10,7 @@ return [
         'upcoming_bills'    => '{1} :count Yaxınlaşan Faktura Mövcuddur|[2,*] :count Yaxınlaşan Faktura Mövcuddur',
         'view_all'          => 'Hamısını göstər'
     ],
-    'docs_link'             => 'https://akaunting.com/docs',
-    'support_link'          => 'https://akaunting.com/support',
+    'docs_link'             => 'https://libreaccounting.org/docs',
+    'support_link'          => 'https://libreaccounting.org/support',
 
 ];

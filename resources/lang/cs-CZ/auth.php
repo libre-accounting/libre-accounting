@@ -55,7 +55,7 @@ return [
     ],
 
     'invitation' => [
-        'message_1'         => 'Obdrželi jste tento e-mail, protože jste pozváni do Akauntingu.',
+        'message_1'         => 'Obdrželi jste tento e-mail, protože jste pozváni do Libre Accountingu.',
         'message_2'         => 'Pokud se nechcete připojit, není nutné žádné další akce.',
         'button'            => 'Začněte',
     ],
@@ -74,7 +74,7 @@ return [
         ],
         'manager' => [
             'name'          => 'Správce',
-            'description'   => 'Mají plný přístup k Vašemu Akauntingu, ale nemohou spravovat uživatele a aplikace.',
+            'description'   => 'Mají plný přístup k Vašemu Libre Accountingu, ale nemohou spravovat uživatele a aplikace.',
         ],
         'customer' => [
             'name'          => 'Zákazník',

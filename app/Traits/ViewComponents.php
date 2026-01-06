@@ -637,7 +637,7 @@ trait ViewComponents
                 break;
         }
 
-        return 'https://akaunting.com/docs/user-manual/' . $docsPath;
+        return 'https://libreaccounting.org/docs/user-manual/' . $docsPath;
     }
 
     public function getSuggestionModule()

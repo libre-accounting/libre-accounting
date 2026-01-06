@@ -5,14 +5,14 @@
         <span x-show="price_type == 'monthly'" class="text-sm text-red-700">
             {!! trans('modules.information_on_preme', [
                     'period'    => trans('modules.monthly'),
-                    'url'       => 'https://akaunting.com/features/why-akaunting-cloud?utm_source=software&utm_medium=app_show&utm_campaign=' . str_replace('-', '_', $module->slug) 
+                    'url'       => 'https://libreaccounting.org/features/why-akaunting-cloud?utm_source=software&utm_medium=app_show&utm_campaign=' . str_replace('-', '_', $module->slug) 
             ]) !!}
         </span>
 
         <span x-show="price_type == 'yearly'" class="text-sm text-red-700">
             {!! trans('modules.information_on_preme', [
                     'period'    => trans('modules.yearly'),
-                    'url'       => 'https://akaunting.com/features/why-akaunting-cloud?utm_source=software&utm_medium=app_show&utm_campaign=' . str_replace('-', '_', $module->slug) 
+                    'url'       => 'https://libreaccounting.org/features/why-akaunting-cloud?utm_source=software&utm_medium=app_show&utm_campaign=' . str_replace('-', '_', $module->slug) 
             ]) !!}
         </span>
     </div>
@@ -21,7 +21,7 @@
         <span x-show="price_type == 'monthly'" class="text-sm text-red-700">
             {!! trans('modules.information_on_preme', [
                     'period'    => trans('modules.monthly'),
-                    'url'       => 'https://akaunting.com/features/why-akaunting-cloud?utm_source=software&utm_medium=app_show&utm_campaign=' . str_replace('-', '_', $module->slug) 
+                    'url'       => 'https://libreaccounting.org/features/why-akaunting-cloud?utm_source=software&utm_medium=app_show&utm_campaign=' . str_replace('-', '_', $module->slug) 
             ]) !!}
         </span>
     </div>
@@ -30,14 +30,14 @@
         <span x-show="price_type == 'monthly'" class="text-sm text-red-700">
             {!! trans('modules.information_on_preme', [
                     'period'    => trans('modules.monthly'),
-                    'url'       => 'https://akaunting.com/features/why-akaunting-cloud?utm_source=software&utm_medium=app_show&utm_campaign=' . str_replace('-', '_', $module->slug) 
+                    'url'       => 'https://libreaccounting.org/features/why-akaunting-cloud?utm_source=software&utm_medium=app_show&utm_campaign=' . str_replace('-', '_', $module->slug) 
             ]) !!}
         </span>
 
         <span x-show="price_type == 'yearly'" class="text-sm text-red-700">
             {!! trans('modules.information_on_preme', [
                     'period'    => trans('modules.yearly'),
-                    'url'       => 'https://akaunting.com/features/why-akaunting-cloud?utm_source=software&utm_medium=app_show&utm_campaign=' . str_replace('-', '_', $module->slug) 
+                    'url'       => 'https://libreaccounting.org/features/why-akaunting-cloud?utm_source=software&utm_medium=app_show&utm_campaign=' . str_replace('-', '_', $module->slug) 
             ]) !!}
         </span>
     </div>

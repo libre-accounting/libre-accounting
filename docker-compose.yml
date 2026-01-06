@@ -11,8 +11,10 @@ services:
     restart: unless-stopped
     env_file:
       - docker/env/run.env
+    volumes:
+      - libre-accounting-uploads:/var/www/html/storage/app/uploads
     environment:
-      - AKAUNTING_SETUP
+      - LIBRE_ACCOUNTING_SETUP
     depends_on:
       - libre-accounting-db
 
@@ -26,4 +28,5 @@ services:
       - docker/env/db.env
 
 volumes:
+  libre-accounting-uploads:
   libre-accounting-db:

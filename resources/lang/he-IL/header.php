@@ -11,6 +11,6 @@ return [
         'items_stock'       => '{1} :count פריט אזל מהמלאי|[2,*] :count פריטים אזלו מהמלאי',
         'view_all'          => 'הצג הכל'
     ],
-    'docs_link'             => 'https://akaunting.com/docs',
+    'docs_link'             => 'https://libreaccounting.org/docs',
 
 ];

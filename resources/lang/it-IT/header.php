@@ -10,7 +10,7 @@ return [
         'upcoming_bills'    => '{1} :count fattura di acquisto imminente|[2, *] :count fatture di acquisto imminenti',
         'view_all'          => 'Visualizza tutti'
     ],
-    'docs_link'             => 'https://akaunting.com/docs',
-    'support_link'          => 'https://akaunting.com/support',
+    'docs_link'             => 'https://libreaccounting.org/docs',
+    'support_link'          => 'https://libreaccounting.org/support',
 
 ];

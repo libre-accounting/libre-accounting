@@ -45,7 +45,7 @@ return [
     ],
 
     'update' => [
-        'core'              => 'Akaunting new version is available! Please, update <a href=":url">your installation.</a>',
+        'core'              => 'Libre Accounting new version is available! Please, update <a href=":url">your installation.</a>',
         'module'            => ':module new version is available! Please, update <a href=":url">your installation.</a>',
     ],
 ];

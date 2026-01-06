@@ -3,8 +3,8 @@
 return [
 
     'version'               => '製品版',
-    'powered'               => 'Akauntingによって供給',
-    'link'                  => 'https://akaunting.com',
+    'powered'               => 'Libre Accountingによって供給',
+    'link'                  => 'https://libreaccounting.org',
     'software'              => '無料会計ソフトウェア',
 
 ];

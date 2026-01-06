@@ -36,7 +36,7 @@ return [
 
         'mail' => [
             'enabled' => env('FIREWALL_EMAIL_ENABLED', false),
-            'name' => env('FIREWALL_EMAIL_NAME', 'Akaunting Firewall'),
+            'name' => env('FIREWALL_EMAIL_NAME', 'Libre Accounting Firewall'),
             'from' => env('FIREWALL_EMAIL_FROM', 'firewall@mydomain.com'),
             'to' => env('FIREWALL_EMAIL_TO', 'admin@mydomain.com'),
         ],
@@ -44,7 +44,7 @@ return [
         'slack' => [
             'enabled' => env('FIREWALL_SLACK_ENABLED', false),
             'emoji' => env('FIREWALL_SLACK_EMOJI', ':fire:'),
-            'from' => env('FIREWALL_SLACK_FROM', 'Akaunting Firewall'),
+            'from' => env('FIREWALL_SLACK_FROM', 'Libre Accounting Firewall'),
             'to' => env('FIREWALL_SLACK_TO'), // webhook url
             'channel' => env('FIREWALL_SLACK_CHANNEL', null), // set null to use the default channel of webhook
         ],

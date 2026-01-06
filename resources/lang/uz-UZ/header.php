@@ -10,7 +10,7 @@ return [
         'upcoming_bills'    => '{1}: kelayotgan hisob-kitoblarni hisoblash | [2, *]: kelayotgan hisob-kitoblarni hisoblang',
         'view_all'          => 'Hammasini ko\'rish'
     ],
-    'docs_link'             => 'https://akaunting.com/docs',
-    'support_link'          => 'https://akaunting.com/support',
+    'docs_link'             => 'https://libreaccounting.org/docs',
+    'support_link'          => 'https://libreaccounting.org/support',
 
 ];

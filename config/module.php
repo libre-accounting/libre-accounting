@@ -152,10 +152,10 @@ return [
     |
     */
     'composer' => [
-        'vendor' => 'akaunting',
+        'vendor' => 'libre-accounting',
         'author' => [
-            'name' => 'Akaunting',
-            'email' => 'info@akaunting.com',
+            'name' => 'Libre Accounting',
+            'email' => 'info@libreaccounting.org',
         ],
     ],
 

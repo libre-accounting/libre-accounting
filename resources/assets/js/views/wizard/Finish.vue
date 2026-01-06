@@ -44,7 +44,7 @@
 
                 <div class="absolute w-1/2 ltr:right-0 rtl:left-0 ltr:pl-10 rtl:pr-10 mt-3 hidden lg:flex lg:flex-col">
                     <div class="flex">
-                        <img :src="image_src" class="absolute top-12 ltr:right-2 rtl:left-2 w-10/12 p-3 -mt-12" alt="Akaunting" />
+                        <img :src="image_src" class="absolute top-12 ltr:right-2 rtl:left-2 w-10/12 p-3 -mt-12" alt="Libre Accounting" />
                     </div>
 
                     <div class="flex">

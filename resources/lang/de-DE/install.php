@@ -45,7 +45,7 @@ return [
     ],
 
     'update' => [
-        'core'              => 'Akaunting neue Version ist verfügbar! Bitte aktualisieren Sie Ihre Installation.',
+        'core'              => 'Libre Accounting neue Version ist verfügbar! Bitte aktualisieren Sie Ihre Installation.',
         'module'            => ':module neue Version ist verfügbar! Bitte aktualisieren Sie Ihre Installation.',
     ],
 ];

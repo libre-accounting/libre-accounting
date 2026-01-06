@@ -19,7 +19,7 @@ class UpdateDb extends Command
      *
      * @var string
      */
-    protected $description = 'Allows to update Akaunting database manually';
+    protected $description = 'Allows to update Libre Accounting database manually';
 
     /**
      * Execute the console command.

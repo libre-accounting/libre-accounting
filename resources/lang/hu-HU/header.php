@@ -10,7 +10,7 @@ return [
         'upcoming_bills'    => '{1} :count közelgő számla|[2,*] :count közelgő számla',
         'view_all'          => 'Az összes megtekintése'
     ],
-    'docs_link'             => 'https://akaunting.com/docs',
-    'support_link'          => 'https://akaunting.com/support',
+    'docs_link'             => 'https://libreaccounting.org/docs',
+    'support_link'          => 'https://libreaccounting.org/support',
 
 ];

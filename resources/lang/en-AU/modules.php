@@ -39,7 +39,7 @@ return [
     'no_apps'               => 'Check the most professional apps for your business and get them at the best price.',
     'become_developer'      => 'Are you a developer? <a href=":url" target="_blank">Here</a> you can learn how to create an app and start selling today!',
     'recommended_apps'      => 'Recommended Apps',
-    'can_not_install'       => 'Monthly subscriptions are available only on Cloud service. <a href="https://akaunting.com/upgrade-to-yearly" target="_blank">Learn more.</a>',
+    'can_not_install'       => 'Monthly subscriptions are available only on Cloud service. <a href="https://libreaccounting.org/upgrade-to-yearly" target="_blank">Learn more.</a>',
     'apps_managing'         => 'Resend',
     'ready'                 => 'Ready',
     'popular_this_week'     => 'Popular this week',

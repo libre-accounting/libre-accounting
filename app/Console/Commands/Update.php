@@ -42,7 +42,7 @@ class Update extends Command
      *
      * @var string
      */
-    protected $description = 'Allows to update Akaunting and modules directly through CLI';
+    protected $description = 'Allows to update Libre Accounting and modules directly through CLI';
 
     /**
      * Execute the console command.

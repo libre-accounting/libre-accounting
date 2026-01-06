@@ -45,7 +45,7 @@ Hiba: Kérje meg a tárhelyszolgáltatót, hogy a PHP: php_version vagy magasabb
     ],
 
     'update' => [
-        'core'              => 'Új verzió érhető el az Akauntingból! Kérem frissítse a telepítést.',
+        'core'              => 'Új verzió érhető el az Libre Accountingból! Kérem frissítse a telepítést.',
         'module'            => 'A :module-ból új verzió érthető el! Kérem frissítse a telepítést.',
     ],
 ];

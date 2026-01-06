@@ -17,7 +17,7 @@ class Bugsnag
 
         app('bugsnag')->registerCallback(function ($report) use($tags) {
             $report->setMetaData([
-                'akaunting' => $tags
+                'libre-accounting' => $tags
             ]);
         });
     }

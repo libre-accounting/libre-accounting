@@ -10,7 +10,7 @@ RUN npm run production
 
 FROM php:8.1-apache AS php
 
-ARG AKAUNTING_DOCKERFILE_VERSION=0.1
+ARG LIBRE_ACCOUNTING_DOCKERFILE_VERSION=0.1
 ARG SUPPORTED_LOCALES="en_US.UTF-8"
 
 RUN apt-get update \
@@ -64,8 +64,8 @@ RUN composer install
 # Copy node dependencies
 COPY --from=node /app/public/js /var/www/html/public/js
 
-COPY docker/files/akaunting.sh /usr/local/bin/akaunting.sh
+COPY docker/files/libre-accounting.sh /usr/local/bin/libre-accounting.sh
 COPY docker/files/html /var/www/html
 
-ENTRYPOINT ["/usr/local/bin/akaunting.sh"]
+ENTRYPOINT ["/usr/local/bin/libre-accounting.sh"]
 CMD ["--start"]

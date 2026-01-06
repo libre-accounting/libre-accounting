@@ -22,8 +22,8 @@ return [
         ],
     ],
 
-    'docs_link'             => 'https://akaunting.com',
-    'support_link'          => 'https://akaunting.com/support',
+    'docs_link'             => 'https://libreaccounting.org',
+    'support_link'          => 'https://libreaccounting.org/support',
 
     'favorite' => [
         'added_favorite'    => 'Pievienota pie favorītiem',

@@ -44,7 +44,7 @@ return [
     ],
 
     'update' => [
-        'core'              => 'Nova različica Akaunting je na voljo! Prosiomo posodobite vašo namestitev.',
-        'module'            => 'Nova različica Akaunting je na voljo! Prosiomo posodobite vašo namestitev.',
+        'core'              => 'Nova različica Libre Accounting je na voljo! Prosiomo posodobite vašo namestitev.',
+        'module'            => 'Nova različica Libre Accounting je na voljo! Prosiomo posodobite vašo namestitev.',
     ],
 ];

@@ -3,8 +3,8 @@
 return [
 
     'version'               => 'Versioni',
-    'powered'               => 'Mundësuar nga Akaunting',
-    'link'                  => 'https://akaunting.com',
+    'powered'               => 'Mundësuar nga Libre Accounting',
+    'link'                  => 'https://libreaccounting.org',
     'software'              => 'Program Kontabiliteti Falas',
 
 ];

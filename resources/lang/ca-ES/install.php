@@ -45,7 +45,7 @@ return [
     ],
 
     'update' => [
-        'core'              => 'Hi ha una nova versió d\'Akaunting disponible. Si us plau, actualitza la teva instal·lació.',
+        'core'              => 'Hi ha una nova versió d\'Libre Accounting disponible. Si us plau, actualitza la teva instal·lació.',
         'module'            => 'Nova versió del mòdul :module! Si us plau, actualitza la teva instal·lació.',
     ],
 ];

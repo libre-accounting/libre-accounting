@@ -34,7 +34,7 @@ return [
     |
     */
 
-    'subtype' => env('API_SUBTYPE', 'akaunting'),
+    'subtype' => env('API_SUBTYPE', 'libre-accounting'),
 
     /*
     |--------------------------------------------------------------------------
@@ -84,7 +84,7 @@ return [
     |
     */
 
-    'name' => env('API_NAME', 'Akaunting'),
+    'name' => env('API_NAME', 'LibreAccounting'),
 
     /*
     |--------------------------------------------------------------------------

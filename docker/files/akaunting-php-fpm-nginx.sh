@@ -24,7 +24,7 @@ done
 mkdir -p storage/framework/{sessions,views,cache}
 mkdir -p storage/app/uploads
 
-if [ "$do_setup" -o "$AKAUNTING_SETUP" == "true" ]; then
+if [ "$do_setup" -o "$LIBRE_ACCOUNTING_SETUP" == "true" ]; then
     retry_for=30
     retry_interval=5
     while sleep $retry_interval; do

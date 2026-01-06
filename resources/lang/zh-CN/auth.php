@@ -64,17 +64,17 @@ return [
         'invoice'           => '轻松创建发票',
         'reports'           => '获取详细报表',
         'expense'           => '追踪任何开支',
-        'customize'         => '自定义您的 Akaunting',
+        'customize'         => '自定义您的 Libre Accounting',
     ],
 
     'roles' => [
         'admin' => [
             'name'          => '管理员',
-            'description'   => '他们可以完全访问您的 Akaunting ，包括客户、发票、报告、设置和应用程序。',
+            'description'   => '他们可以完全访问您的 Libre Accounting ，包括客户、发票、报告、设置和应用程序。',
         ],
         'manager' => [
             'name'          => '经理',
-            'description'   => '他们可以完全访问您的 Akaunting, 但无法管理用户和应用程序。',
+            'description'   => '他们可以完全访问您的 Libre Accounting, 但无法管理用户和应用程序。',
         ],
         'customer' => [
             'name'          => '客户',

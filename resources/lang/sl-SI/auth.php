@@ -57,7 +57,7 @@ Napaka: ni mogoče preklicati podjetja! Podjetju :company mora biti dodeljen vsa
 
     'invitation' => [
         'message_1'         => '
-To e-pošto ste prejeli, ker ste vabljeni, da se pridružite Programu Akaunting.',
+To e-pošto ste prejeli, ker ste vabljeni, da se pridružite Programu Libre Accounting.',
         'message_2'         => 'Če se ne želite pridružiti, vam ni treba storiti ničesar več.',
         'button'            => 'Začnite',
     ],
@@ -68,7 +68,7 @@ To e-pošto ste prejeli, ker ste vabljeni, da se pridružite Programu Akaunting.
         'expense'           => '
 Spremljajte kakršne koli stroške',
         'customize'         => '
-Prilagodite svoj Akaunting',
+Prilagodite svoj Libre Accounting',
     ],
 
     'roles' => [
@@ -78,7 +78,7 @@ Prilagodite svoj Akaunting',
         ],
         'manager' => [
             'name'          => 'Upravitelj',
-            'description'   => 'Dobijo popoln dostop do vašega Akauntinga, vendar ne morejo upravljati uporabnikov in aplikacij.',
+            'description'   => 'Dobijo popoln dostop do vašega Libre Accountinga, vendar ne morejo upravljati uporabnikov in aplikacij.',
         ],
         'customer' => [
             'name'          => 'Stranka',

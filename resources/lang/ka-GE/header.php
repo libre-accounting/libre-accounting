@@ -10,7 +10,7 @@ return [
         'upcoming_bills'    => '{1} :მომავალი ანგარიშის დათვლა|[2,*] :მომავალი ანგარიშის დათვლა',
         'view_all'          => 'ყველას დათვალიერება'
     ],
-    'docs_link'             => 'https://akaunting.com',
-    'support_link'          => 'https://akaunting.com/support',
+    'docs_link'             => 'https://libreaccounting.org',
+    'support_link'          => 'https://libreaccounting.org/support',
 
 ];

@@ -55,7 +55,7 @@ return [
     ],
 
     'invitation' => [
-        'message_1'         => 'Du får detta e-postmeddelande eftersom du är inbjuden att gå med i Akaunting.',
+        'message_1'         => 'Du får detta e-postmeddelande eftersom du är inbjuden att gå med i Libre Accounting.',
         'message_2'         => 'Om du inte vill gå med krävs inga ytterligare åtgärder.',
         'button'            => 'Kom igång',
     ],
@@ -64,17 +64,17 @@ return [
         'invoice'           => 'Skapa fakturor enkelt',
         'reports'           => 'Få detaljerade redovisningsrapporter',
         'expense'           => 'Spåra alla kostnader och utgifter',
-        'customize'         => 'Anpassa Akaunting',
+        'customize'         => 'Anpassa Libre Accounting',
     ],
 
     'roles' => [
         'admin' => [
             'name'          => 'Administratör',
-            'description'   => 'De får full tillgång till din Akaunting inklusive kunder, fakturor, rapporter, inställningar och appar.',
+            'description'   => 'De får full tillgång till din Libre Accounting inklusive kunder, fakturor, rapporter, inställningar och appar.',
         ],
         'manager' => [
             'name'          => 'Föreståndare',
-            'description'   => 'De får full tillgång till din Akaunting, men kan inte hantera användare och appar.',
+            'description'   => 'De får full tillgång till din Libre Accounting, men kan inte hantera användare och appar.',
         ],
         'customer' => [
             'name'          => 'Kund',

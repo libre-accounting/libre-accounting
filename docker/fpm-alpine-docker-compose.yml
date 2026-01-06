@@ -2,9 +2,9 @@ version: '3.7'
 
 services:
 
-  akaunting:
+  libre-accounting:
     build:
       dockerfile: fpm-alpine.Dockerfile
       context: .
-  akaunting-proxy:
+  libre-accounting-proxy:
     image: nginx:1.19.0-alpine

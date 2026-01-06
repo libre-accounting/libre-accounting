@@ -2,40 +2,40 @@ version: '3.7'
 
 services:
 
-  akaunting:
-    container_name: akaunting
+  libre-accounting:
+    container_name: libre-accounting
     build:
       dockerfile: fpm.Dockerfile
       context: .
     volumes:
-      - akaunting-data:/var/www/html
+      - libre-accounting-data:/var/www/html
     restart: unless-stopped
     env_file:
       - env/run.env
     environment:
-      - AKAUNTING_SETUP
+      - LIBRE_ACCOUNTING_SETUP
     depends_on:
-      - akaunting-db
+      - libre-accounting-db
 
-  akaunting-proxy:
+  libre-accounting-proxy:
     image: nginx:1.19.0
     ports:
       - 8080:80
     depends_on:
-      - akaunting
+      - libre-accounting
     volumes:
-      - akaunting-data:/var/www/html
+      - libre-accounting-data:/var/www/html
       - ./nginx/templates:/etc/nginx/templates
 
-  akaunting-db:
-    container_name: akaunting-db
+  libre-accounting-db:
+    container_name: libre-accounting-db
     image: mariadb
     volumes:
-      - akaunting-db:/var/lib/mysql
+      - libre-accounting-db:/var/lib/mysql
     restart: unless-stopped
     env_file:
       - env/db.env
 
 volumes:
-  akaunting-data:
-  akaunting-db:
+  libre-accounting-data:
+  libre-accounting-db:

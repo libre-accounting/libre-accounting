@@ -11,6 +11,6 @@ return [
         'items_stock'       => '{1} : اسٹاک|سے شمار شے [2، *]: شمار اشیاء اسٹاک سے باہر',
         'view_all'          => 'سب دیکھیے'
     ],
-    'docs_link'             => 'https://akaunting.com',
+    'docs_link'             => 'https://libreaccounting.org',
 
 ];

@@ -28,7 +28,7 @@ class Version304 extends Listener
             return;
         }
 
-        Log::channel('stdout')->info('Starting the Akaunting 3.0.4 update...');
+        Log::channel('stdout')->info('Starting the Libre Accounting 3.0.4 update...');
 
         $this->updateDatabase();
 
@@ -36,7 +36,7 @@ class Version304 extends Listener
 
         $this->deleteOldFiles();
 
-        Log::channel('stdout')->info('Akaunting 3.0.4 update finished.');
+        Log::channel('stdout')->info('Libre Accounting 3.0.4 update finished.');
     }
 
     public function updateDatabase()

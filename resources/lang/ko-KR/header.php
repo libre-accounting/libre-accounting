@@ -11,6 +11,6 @@ return [
         'items_stock'       => '{1} :count 개의 재고[2,*] :count 개의 재고',
         'view_all'          => '모두 보기'
     ],
-    'docs_link'             => 'https://akaunting.com/docs',
+    'docs_link'             => 'https://libreaccounting.org/docs',
 
 ];

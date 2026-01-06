@@ -8,7 +8,7 @@ use Throwable;
 class LastCategoryDelete extends Exception
 {
     /*
-        100000000   => Akaunting charecters 
+        100000000   => Libre Accounting characters 
         800         => Setting category menu number  
         40          => CRUD (last item)
         1           => First authorized exception

@@ -10,7 +10,7 @@ return [
         'upcoming_bills'    => '{1} :count factura por vencer|[2,*] :count facturas por vencer',
         'view_all'          => 'Ver todas'
     ],
-    'docs_link'             => 'https://akaunting.com/docs',
-    'support_link'          => 'https://akaunting.com/support',
+    'docs_link'             => 'https://libreaccounting.org/docs',
+    'support_link'          => 'https://libreaccounting.org/support',
 
 ];

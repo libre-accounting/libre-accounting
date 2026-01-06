@@ -3,8 +3,8 @@
 return [
 
     'version'               => 'Útgáfa',
-    'powered'               => 'Keyrt af Akaunting',
-    'link'                  => 'https://akaunting.com',
+    'powered'               => 'Keyrt af Libre Accounting',
+    'link'                  => 'https://libreaccounting.org',
     'software'              => 'Opinn bókhalds hugbúnaður',
 
 ];

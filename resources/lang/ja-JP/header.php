@@ -10,7 +10,7 @@ return [
         'upcoming_bills'    => '{1} :今後の請求書を数える|[2,*] :count upcoming bills',
         'view_all'          => '全てを見る'
     ],
-    'docs_link'             => 'https://akaunting.com/docs',
-    'support_link'          => 'https://akaunting.com/support',
+    'docs_link'             => 'https://libreaccounting.org/docs',
+    'support_link'          => 'https://libreaccounting.org/support',
 
 ];

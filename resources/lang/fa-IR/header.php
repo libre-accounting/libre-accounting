@@ -10,7 +10,7 @@ return [
         'upcoming_bills'    => '{1}:count صورتحساب دارید | [2, *]:count صورتحساب دارید',
         'view_all'          => 'نمایش همه'
     ],
-    'docs_link'             => 'https://akaunting.com/docs',
-    'support_link'          => 'https://akaunting.com/support',
+    'docs_link'             => 'https://libreaccounting.org/docs',
+    'support_link'          => 'https://libreaccounting.org/support',
 
 ];

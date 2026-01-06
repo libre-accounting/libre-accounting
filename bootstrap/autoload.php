@@ -1,11 +1,11 @@
 <?php
 
 // Define minimum supported PHP version
-define('AKAUNTING_PHP', '8.0.2');
+define('LIBRE_ACCOUNTING_PHP', '8.0.2');
 
 // Check PHP version
-if (version_compare(PHP_VERSION, AKAUNTING_PHP, '<')) {
-    $message = 'Error: Ask your hosting provider to use PHP ' . AKAUNTING_PHP . ' or higher for HTTP, CLI, and php command.' . PHP_EOL . PHP_EOL . 'Current PHP version: ' . PHP_VERSION . PHP_EOL;
+if (version_compare(PHP_VERSION, LIBRE_ACCOUNTING_PHP, '<')) {
+    $message = 'Error: Ask your hosting provider to use PHP ' . LIBRE_ACCOUNTING_PHP . ' or higher for HTTP, CLI, and php command.' . PHP_EOL . PHP_EOL . 'Current PHP version: ' . PHP_VERSION . PHP_EOL;
 
     if (defined('STDOUT')) {
         fwrite(STDOUT, $message);

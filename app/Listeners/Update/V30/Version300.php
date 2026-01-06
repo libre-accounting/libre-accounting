@@ -43,7 +43,7 @@ class Version300 extends Listener
             return;
         }
 
-        Log::channel('stdout')->info('Starting the Akaunting 3.0 update...');
+        Log::channel('stdout')->info('Starting the Libre Accounting 3.0 update...');
 
         $this->updateDatabase();
 
@@ -57,7 +57,7 @@ class Version300 extends Listener
 
         $this->clearNotifications();
 
-        Log::channel('stdout')->info('Akaunting 3.0 update finished.');
+        Log::channel('stdout')->info('Libre Accounting 3.0 update finished.');
     }
 
     public function updateDatabase()

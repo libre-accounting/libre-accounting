@@ -40,7 +40,7 @@ return [
     'no_apps'               => 'Er zijn nog geen Apps in deze categorie beschikbaar.',
     'become_developer'      => 'Bent u een ontwikkelaar? <a href=":url" target="_blank">Hier</a> leert u hoe u vandaag nog een app kunt maken en deze kunt verkopen!',
     'recommended_apps'      => 'Aanbevolen Apps',
-    'can_not_install'       => 'Maandelijkse abonnementen zijn alleen beschikbaar op de Cloud service. <a href="https://akaunting.com/upgrade-to-yearly" target="_blank">Meer informatie</a>',
+    'can_not_install'       => 'Maandelijkse abonnementen zijn alleen beschikbaar op de Cloud service. <a href="https://libreaccounting.org/upgrade-to-yearly" target="_blank">Meer informatie</a>',
     'apps_managing'         => 'Bekijk de meest trending apps en begin vandaag nog met het professioneel beheren van je financiën.',
     'ready'                 => 'Klaar',
     'popular_this_week'     => 'Populair deze week',

@@ -10,7 +10,7 @@ return [
         'upcoming_bills'    => '{1} :count 个即将到來的账单 | [2,*] :count 个即将到來的账单',
         'view_all'          => '查看全部'
     ],
-    'docs_link'             => 'https://akaunting.com/docs',
-    'support_link'          => 'https://akaunting.com/support',
+    'docs_link'             => 'https://libreaccounting.org/docs',
+    'support_link'          => 'https://libreaccounting.org/support',
 
 ];

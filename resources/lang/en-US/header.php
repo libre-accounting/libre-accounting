@@ -10,7 +10,7 @@ return [
         'upcoming_bills'    => '{1} :count upcoming bill|[2,*] :count upcoming bills',
         'view_all'          => 'View All'
     ],
-    'docs_link'             => 'https://akaunting.com/docs',
-    'support_link'          => 'https://akaunting.com/support',
+    'docs_link'             => 'https://libreaccounting.org/docs',
+    'support_link'          => 'https://libreaccounting.org/support',
 
 ];

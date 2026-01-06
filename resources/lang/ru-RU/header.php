@@ -10,7 +10,7 @@ return [
         'upcoming_bills'    => '{1} :count входящая закупка|[2,3,4] :count входящих закупок|[5,*] :count входящих закупок',
         'view_all'          => 'Просмотреть все'
     ],
-    'docs_link'             => 'https://akaunting.com/docs',
-    'support_link'          => 'https://akaunting.com/support',
+    'docs_link'             => 'https://libreaccounting.org/docs',
+    'support_link'          => 'https://libreaccounting.org/support',
 
 ];

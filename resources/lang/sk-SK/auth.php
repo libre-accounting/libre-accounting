@@ -55,7 +55,7 @@ return [
     ],
 
     'invitation' => [
-        'message_1'         => 'Tento e-mail ste dostali, pretože ste pozvaní do Akauntingu.',
+        'message_1'         => 'Tento e-mail ste dostali, pretože ste pozvaní do Libre Accountingu.',
         'message_2'         => 'Ak sa nechcete pripojiť, nie sú potrebné žiadne ďalšie kroky.',
         'button'            => 'Začíname',
     ],
@@ -64,17 +64,17 @@ return [
         'invoice'           => 'Vytvárajte faktúry jednoducho',
         'reports'           => 'Získajte podrobné prehľady',
         'expense'           => 'Sledujte akékoľvek výdavky',
-        'customize'         => 'Prispôsobte si svoj Akaunting',
+        'customize'         => 'Prispôsobte si svoj Libre Accounting',
     ],
 
     'roles' => [
         'admin' => [
             'name'          => 'Administrátor',
-            'description'   => 'Získajú úplný prístup k vášmu Akauntingu vrátane zákazníkov, faktúr, prehľadov, nastavení a aplikácií.',
+            'description'   => 'Získajú úplný prístup k vášmu Libre Accountingu vrátane zákazníkov, faktúr, prehľadov, nastavení a aplikácií.',
         ],
         'manager' => [
             'name'          => 'Manažér',
-            'description'   => 'Získajú úplný prístup k vášmu Akauntingu, ale nemôžu spravovať používateľov a aplikácie.',
+            'description'   => 'Získajú úplný prístup k vášmu Libre Accountingu, ale nemôžu spravovať používateľov a aplikácie.',
         ],
         'customer' => [
             'name'          => 'Zákazník',

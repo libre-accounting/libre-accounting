@@ -44,7 +44,7 @@ class Info
         }
 
         $versions = [
-            'akaunting' => version('short'),
+            'libre-accounting' => version('short'),
             'laravel' => InstalledVersions::getPrettyVersion('laravel/framework'),
             'php' => static::phpVersion(),
             'mysql' => static::mysqlVersion(),

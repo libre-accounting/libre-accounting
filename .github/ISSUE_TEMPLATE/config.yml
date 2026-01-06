@@ -1,11 +1,11 @@
 blank_issues_enabled: false
 contact_links:
   - name: Feature request
-    url: https://akaunting.com/forum
+    url: https://libreaccounting.org/forum
     about: 'For ideas or feature requests, start a new discussion'
   - name: Support, help, and other
-    url: https://akaunting.com/support
+    url: https://libreaccounting.org/support
     about: 'This repository is only for reporting bugs'
   - name: Documentation
-    url: https://github.com/akaunting/docs
-    about: For documentation improvements, open a pull request at the akaunting/docs repository
+    url: https://github.com/libre-accounting/docs
+    about: For documentation improvements, open a pull request at the libre-accounting/docs repository

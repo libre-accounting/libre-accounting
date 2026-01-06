@@ -55,7 +55,7 @@ return [
     ],
 
     'invitation' => [
-        'message_1'         => 'Sait tämän viestin koska sinut on kutsuttu mukaan käyttämään Akaunting:ia ',
+        'message_1'         => 'Sait tämän viestin koska sinut on kutsuttu mukaan käyttämään Libre Accounting:ia ',
         'message_2'         => 'Jos et halua liittyä, ei sinun tarvitse tehdä mitään.',
         'button'            => 'Aloita',
     ],
@@ -64,18 +64,18 @@ return [
         'invoice'           => 'Tee laskuja helposti',
         'reports'           => 'Saa yksilöityjä raportteja',
         'expense'           => 'Seuraa kulujasi ',
-        'customize'         => 'Luo omanlainen Akaunting',
+        'customize'         => 'Luo omanlainen Libre Accounting',
     ],
 
     'roles' => [
         'admin' => [
             'name'          => 'Ylläpitäjä',
-            'description'   => 'He saavat täydet oikeudet kaikkiin Akaunting:in palveluihin kuten asiakastietoihin, laskuihin, raportteihin, asetuksiin ja sovelluksiin
+            'description'   => 'He saavat täydet oikeudet kaikkiin Libre Accounting:in palveluihin kuten asiakastietoihin, laskuihin, raportteihin, asetuksiin ja sovelluksiin
 ',
         ],
         'manager' => [
             'name'          => 'Valvoja',
-            'description'   => 'He saavat täydet oikeudet Akaunting:iin mutta ei voi hallinnoida käyttäjiä tai sovelluksia
+            'description'   => 'He saavat täydet oikeudet Libre Accounting:iin mutta ei voi hallinnoida käyttäjiä tai sovelluksia
 ',
         ],
         'customer' => [

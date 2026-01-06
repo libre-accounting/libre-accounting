@@ -3,7 +3,7 @@
 mkdir -p storage/framework/{sessions,views,cache}
 mkdir -p storage/app/uploads
 
-if [ "$AKAUNTING_SETUP" == "true" ]; then
+if [ "$LIBRE_ACCOUNTING_SETUP" == "true" ]; then
     retry_for=30
     retry_interval=5
     while sleep $retry_interval; do

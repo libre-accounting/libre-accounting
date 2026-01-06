@@ -40,7 +40,7 @@ return [
     'no_apps'               => 'V této kategorii zatím nejsou žádné aplikace.',
     'become_developer'      => 'Jste vývojář/ka? <a href=":url" target="_blank">Zde</a> se dozvíte, jak vytvořit a hned začít prodávat vaší aplikaci!',
     'recommended_apps'      => 'Doporučené aplikace',
-    'can_not_install'       => 'Měsíční předplatné jsou k dispozici pouze pro Cloudovou službu. <a href="https://akaunting.com/upgrade-to-yearly" target="_blank">Další informace</a>',
+    'can_not_install'       => 'Měsíční předplatné jsou k dispozici pouze pro Cloudovou službu. <a href="https://libreaccounting.org/upgrade-to-yearly" target="_blank">Další informace</a>',
     'apps_managing'         => 'Podívejte se na nejpopulárnější aplikace a začněte dnes profesionálně spravovat své finance.',
     'ready'                 => 'Připraveno',
     'popular_this_week'     => 'Populární tento týden',

@@ -12,9 +12,9 @@ return [
     'search'                => 'Пребарување',
     'install'               => 'Инсталирај',
     'buy_now'               => 'Купи сега',
-    'token_link'            => '<a href="https://akaunting.com/tokens" target="_blank">Кликнете овде</a>за превземање на вашиот API токен.',
+    'token_link'            => '<a href="https://libreaccounting.org/tokens" target="_blank">Кликнете овде</a>за превземање на вашиот API токен.',
     'no_apps'               => 'Нема апликации во оваа категориај сеуште.',
-    'developer'             => 'Дали сте програмер?<a href="https://akaunting.com/blog/akaunting-app-store" target="_blank">Овде</a> можете да научите како да програмирање и да заработите уште денес!
+    'developer'             => 'Дали сте програмер?<a href="https://libreaccounting.org/blog/akaunting-app-store" target="_blank">Овде</a> можете да научите како да програмирање и да заработите уште денес!
  
 ',
 

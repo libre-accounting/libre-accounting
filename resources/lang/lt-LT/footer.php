@@ -3,8 +3,8 @@
 return [
 
     'version'               => 'Versija',
-    'powered'               => 'Sukurta Akaunting',
-    'link'                  => 'https://akaunting.com',
+    'powered'               => 'Sukurta Libre Accounting',
+    'link'                  => 'https://libreaccounting.org',
     'software'              => 'Laisva apskaitos programa',
 
 ];

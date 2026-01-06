@@ -2,7 +2,7 @@
 
 return [
 
-    'name'      =>  'Akaunting',
+    'name'      =>  'LibreAccounting',
 
     'code'      =>  'Tailwind',
 

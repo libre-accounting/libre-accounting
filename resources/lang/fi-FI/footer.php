@@ -3,8 +3,8 @@
 return [
 
     'version'               => 'Versio',
-    'powered'               => 'Toteutettu ohjelmistolla Akaunting',
-    'link'                  => 'https://akaunting.com',
+    'powered'               => 'Toteutettu ohjelmistolla Libre Accounting',
+    'link'                  => 'https://libreaccounting.org',
     'software'              => 'Ilmainen kirjanpito-ohjelma',
 
 ];

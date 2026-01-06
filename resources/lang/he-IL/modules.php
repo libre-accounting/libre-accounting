@@ -12,9 +12,9 @@ return [
     'search'                => 'חיפוש',
     'install'               => 'התקנה',
     'buy_now'               => 'קנה עכשיו',
-    'token_link'            => '<a href="https://akaunting.com/tokens" target="_blank">לחץ כאן</a> כדי לקבל את ה-API אסימון.',
+    'token_link'            => '<a href="https://libreaccounting.org/tokens" target="_blank">לחץ כאן</a> כדי לקבל את ה-API אסימון.',
     'no_apps'               => 'אין  עדיין יישומים בקטגוריה זאת.',
-    'developer'             => 'האם אתה מפתח? <a href="https://akaunting.com/blog/akaunting-app-store" target="_blank">כאן</a> תלמד כיצד ליצור app ולהתחיל למכור היום!',
+    'developer'             => 'האם אתה מפתח? <a href="https://libreaccounting.org/blog/akaunting-app-store" target="_blank">כאן</a> תלמד כיצד ליצור app ולהתחיל למכור היום!',
 
     'recommended_apps'      => 'Recommended Apps',
 

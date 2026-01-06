@@ -30,7 +30,7 @@ jobs:
         localization_branch_name: 'translations'
         commit_message: 'new crowdin translations'
         pull_request_title: 'New Crowdin translations'
-        pull_request_body: 'https://crowdin.com/project/akaunting'
+        pull_request_body: 'https://crowdin.com/project/libre-accounting'
         pull_request_labels: 'Translation'
         
         project_id: ${{ secrets.CROWDIN_CORE_ID }}

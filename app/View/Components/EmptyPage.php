@@ -202,7 +202,7 @@ class EmptyPage extends Component
                 $docs_path = 'app-manual/' . $this->docsCategory . '/' . $this->alias;
         }
 
-        return 'https://akaunting.com/docs/' . $docs_path;
+        return 'https://libreaccounting.org/docs/' . $docs_path;
     }
 
     protected function getImage($page, $image)

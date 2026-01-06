@@ -90,7 +90,7 @@ class Updates extends Controller
     public function run($alias, $version)
     {
         if ($alias == 'core') {
-            $name = 'Akaunting ' . $version;
+            $name = 'Libre Accounting ' . $version;
 
             $installed = version('short');
         } else {

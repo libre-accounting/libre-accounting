@@ -37,7 +37,7 @@ class Contact extends Factory
             'phone' => $this->faker->phoneNumber,
             'address' => $this->faker->address,
             'country' => $this->faker->randomElement($countries),
-            'website' => 'https://akaunting.com',
+            'website' => 'https://libreaccounting.org',
             'currency_code' => default_currency(),
             'reference' => $this->faker->text(5),
             'enabled' => $this->faker->boolean ? 1 : 0,

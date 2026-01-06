@@ -22,7 +22,7 @@ return [
         'profit_loss'           => 'Výnosy a náklady včetně nezaplacených faktur a účtů',
         'expenses_by_category'  => 'Nejvyšší výdaje v různých kategoriích',
         'account_balance'       => 'Aktuální zůstatek Vašich bankovních účtů',
-        'bank_feeds'            => 'Automaticky importovat vaše transakce do Akaunting </br>propojením vašich bankovních účtů',
+        'bank_feeds'            => 'Automaticky importovat vaše transakce do Libre Accounting </br>propojením vašich bankovních účtů',
     ],
 
     'periods' => [

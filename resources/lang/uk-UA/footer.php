@@ -3,8 +3,8 @@
 return [
 
     'version'               => 'Версія',
-    'powered'               => 'Зроблено в Akaunting',
-    'link'                  => 'https://akaunting.com',
+    'powered'               => 'Зроблено в Libre Accounting',
+    'link'                  => 'https://libreaccounting.org',
     'software'              => 'Безкоштовна Бухгалтерська Програма',
 
 ];

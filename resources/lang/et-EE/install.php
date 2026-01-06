@@ -44,7 +44,7 @@ return [
     ],
 
     'update' => [
-        'core'              => 'Akauntingust on uus versioon! Palun uuenda enda installatsiooni.',
+        'core'              => 'Libre Accountingust on uus versioon! Palun uuenda enda installatsiooni.',
         'module'            => ':module-st on uus versioon! Palun uuenda enda installatsiooni.',
     ],
 ];
