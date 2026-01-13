@@ -16,7 +16,19 @@ class UpdateTransaction extends Job implements ShouldUpdate
 
         event(new TransactionUpdating($this->model, $this->request));
 
-        if (! array_key_exists($this->request->get('type'), config('type.transaction'))) {
+        // Only set default type if no type is provided AND the model doesn't have a type
+        $request_type = $this->request->get('type');
+
+        if ($request_type !== null && ! array_key_exists($request_type, config('type.transaction'))) {
+            // Invalid type provided, default to income type based on recurring frequency
+            $type = (empty($this->request->get('recurring_frequency')) || ($this->request->get('recurring_frequency') == 'no')) ? Transaction::INCOME_TYPE : Transaction::INCOME_RECURRING_TYPE;
+
+            $this->request->merge(['type' => $type]);
+        } elseif ($request_type === null && $this->model->exists) {
+            // No type provided but model exists, preserve existing type
+            $this->request->merge(['type' => $this->model->type]);
+        } elseif ($request_type === null) {
+            // No type provided and new model, default to income
             $type = (empty($this->request->get('recurring_frequency')) || ($this->request->get('recurring_frequency') == 'no')) ? Transaction::INCOME_TYPE : Transaction::INCOME_RECURRING_TYPE;
 
             $this->request->merge(['type' => $type]);
