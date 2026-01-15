@@ -54,13 +54,7 @@
                     @endif
                 </div>
 
-                <div class="relative w-full lg:w-5/12"
-                    @if (in_array('cloud', $module->where_to_use) && count($module->where_to_use) == 1)
-                        x-data="{ price_type : 'lifetime' }"
-                    @else
-                        x-data="{ price_type : 'yearly' }"
-                    @endif
-                >
+                <div class="relative w-full lg:w-5/12">
                     <div class="flex flex-col space-y-6">
                         <div class="flex flex-col cursor-default">
                             <div class="flex flex-col space-y-4">
@@ -109,15 +103,7 @@
 
                         <div class="flex items-center space-x-4 justify-between">
                             <x-layouts.modules.show.price :module="$module" />
-
-                            <div class="flex lg:justify-center">
-                                @if ($module->price != '0.0000')
-                                    <x-layouts.modules.show.toggle />
-                                @endif
-                            </div>
                         </div>
-
-                        <x-layouts.modules.show.information :module="$module" />
                     </div>
 
                     <div class="flex justify-around mt-5">

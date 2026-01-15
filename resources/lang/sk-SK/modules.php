@@ -14,7 +14,7 @@ return [
     'buy_now'               => 'Kúpiť teraz',
     'token_link'            => '<a href="https://libreaccounting.org/tokens" target="_blank">Kliknite tu</a> a získajte Váš API token.',
     'no_apps'               => 'Neexistujú žiadne aplikácie v tejto kategórii zatiaľ.',
-    'developer'             => 'Ste vývojár? tu <a href="https://libreaccounting.org/blog/akaunting-app-store" target="_blank"></a> sa môžete naučiť, ako vytvoriť aplikáciu a začať predávať ešte dnes!',
+    'developer'             => 'Ste vývojár? tu <a href="https://libreaccounting.org/blog/app-store" target="_blank"></a> sa môžete naučiť, ako vytvoriť aplikáciu a začať predávať ešte dnes!',
 
     'recommended_apps'      => 'Odporúčané aplikácie',
 

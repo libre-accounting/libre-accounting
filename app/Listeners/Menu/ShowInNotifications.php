@@ -37,7 +37,7 @@ class ShowInNotifications
                     continue;
                 }
 
-                $name = ($prefix == 'core') ? 'Akaunting' : module($key)?->getName();
+                $name = ($prefix == 'core') ? config('app.name') : module($key)?->getName();
 
                 $new = new DatabaseNotification();
                 $new->id = $key;

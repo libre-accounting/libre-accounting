@@ -11,13 +11,12 @@ use App\Jobs\Auth\DeleteUser;
 use App\Jobs\Auth\UpdateUser;
 use App\Models\Auth\Role;
 use App\Models\Auth\User;
-use App\Traits\Cloud;
 use App\Traits\Uploads;
 use Illuminate\Http\Request as BaseRequest;
 
 class Users extends Controller
 {
-    use Cloud, Uploads;
+    use Uploads;
 
     public function __construct()
     {
@@ -88,7 +87,7 @@ class Users extends Controller
 
         $companies = user()->companies()->take(setting('default.select_limit'))->get()->sortBy('name')->pluck('name', 'id');
 
-        $roles_url = $this->getCloudRolesPageUrl();
+        $roles_url = 'https://libreaccounting.org/apps/roles?utm_source=software&utm_medium=user&utm_campaign=roles';
 
         return view('auth.users.create', compact('roles', 'companies', 'landing_pages', 'roles_url'));
     }
@@ -177,7 +176,7 @@ class Users extends Controller
             }
         }
 
-        $roles_url = $this->getCloudRolesPageUrl();
+        $roles_url = 'https://libreaccounting.org/apps/roles?utm_source=software&utm_medium=user&utm_campaign=roles';
 
         $route = (request()->route()->getName() == 'profile.edit') ? 'profile.update' : 'users.update';
 

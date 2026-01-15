@@ -16,19 +16,7 @@ class Versions
     {
         $output = '';
 
-        $url = 'https://api.github.com/repos/libre-accounting/libre-accounting/releases';
-
-        $http = new \GuzzleHttp\Client(['verify' => false]);
-
-        $json = $http->get($url, ['timeout' => 30])->getBody()->getContents();
-
-        if (empty($json)) {
-            return $output;
-        }
-
-        $releases = json_decode($json);
-
-        foreach ($releases as $release) {
+        foreach (static::getReleases() as $release) {
             if (version_compare($release->tag_name, version('short'), '<=')) {
                 continue;
             }
@@ -49,6 +37,59 @@ class Versions
         }
 
         return $output;
+    }
+
+    public static function getReleases($timeout = 30)
+    {
+        $url = 'https://api.github.com/repos/libre-accounting/libre-accounting/releases';
+
+        try {
+            $http = new \GuzzleHttp\Client(['verify' => false]);
+
+            $json = $http->get($url, ['timeout' => $timeout])->getBody()->getContents();
+        } catch (\Exception $e) {
+            return [];
+        }
+
+        if (empty($json)) {
+            return [];
+        }
+
+        $releases = json_decode($json);
+
+        return is_array($releases) ? $releases : [];
+    }
+
+    public static function getLatestCoreVersion($current)
+    {
+        $version = new \stdClass();
+
+        $version->can_update = true;
+        $version->latest = $current;
+        $version->errors = false;
+        $version->message = '';
+
+        $latest = $current;
+
+        foreach (static::getReleases(10) as $release) {
+            if (! empty($release->prerelease) || ! empty($release->draft)) {
+                continue;
+            }
+
+            $tag = ltrim($release->tag_name ?? '', 'v');
+
+            if ($tag === '') {
+                continue;
+            }
+
+            if (version_compare($tag, $latest, '>')) {
+                $latest = $tag;
+            }
+        }
+
+        $version->latest = $latest;
+
+        return $version;
     }
 
     public static function latest($alias)
@@ -75,37 +116,12 @@ class Versions
 
         $versions = [];
 
-        // Check core first
-        $url = 'core/version/' . $info['libre-accounting'] . '/' . $info['php'] . '/' . $info['mysql'] . '/' . $info['companies'];
-
-        # Installed modules start
-        $modules = Arr::wrap($modules);
-
-        $installed_modules = [];
-        $module_version = '?modules=';
-
-        foreach ($modules as $module) {
-            if (is_string($module)) {
-                $module = module($module);
-            }
-
-            if (! $module instanceof \Akaunting\Module\Module) {
-                continue;
-            }
-
-            $alias = $module->get('alias');
-
-            $installed_modules[] = $alias;
-        }
-
-        $module_version .= implode(',', $installed_modules);
-
-        $url .= $module_version;
-        # Installed modules end
-
-        $versions['core'] = static::getLatestVersion($url, $info['libre-accounting']);
+        // Check core against our own releases (not the Akaunting API)
+        $versions['core'] = static::getLatestCoreVersion($info['libre-accounting']);
 
         // Then modules
+        $modules = Arr::wrap($modules);
+
         foreach ($modules as $module) {
             if (is_string($module)) {
                 $module = module($module);
@@ -132,20 +148,19 @@ class Versions
     {
         $info = Info::all();
 
-        // Check core first
-        $url = 'core/version/' . $info['libre-accounting'] . '/' . $info['php'] . '/' . $info['mysql'] . '/' . $info['companies'];
-        $version = $info['libre-accounting'];
-
-        if ($alias != 'core') {
-            $version = module($alias)->get('version');
-
-            $url = 'apps/' . $alias . '/version/' . $version . '/' . $info['libre-accounting'];
-        }
-
         // Get data from cache
         $versions = Cache::get('versions', []);
 
-        $versions[$alias] = static::getLatestVersion($url, $version);
+        if ($alias == 'core') {
+            // Check core against our own releases (not the Akaunting API)
+            $versions['core'] = static::getLatestCoreVersion($info['libre-accounting']);
+        } else {
+            $version = module($alias)->get('version');
+
+            $url = 'apps/' . $alias . '/version/' . $version . '/' . $info['libre-accounting'];
+
+            $versions[$alias] = static::getLatestVersion($url, $version);
+        }
 
         Cache::put('versions', $versions, Date::now()->addHour(6));
 

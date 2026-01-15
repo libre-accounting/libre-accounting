@@ -32,7 +32,6 @@ return [
     'billed_monthly'        => 'Mjesečna naplata',
     'save_year'             => 'Sačuvali ste <strong>:price</strong> godišnje!',
     'if_paid_year'          => 'Ili <strong>:price/mjesečno</strong>ako platite godišnje',
-    'information_monthly'   => 'Ova opcija je dostupna samo u sklopu <strong>Cloud Servisa</strong>',
     'install'               => 'Instaliraj',
     'buy_now'               => 'Kupi odmah',
     'get_api_key'           => '<a href=":url" target="_blank"> Kliknite ovdje </a> da biste dobili svoj API ključ.',
@@ -43,11 +42,7 @@ return [
     'apps_managing'         => 'Provjerite najpopularnije aplikacije i počnite profesionalno upravljati svojim financijama već danas.',
     'ready'                 => 'Spremni',
     'popular_this_week'     => 'Popularno ove sedmice',
-    'install_cloud'         => 'Koristite na Cloud servise',
-    'get_cloud'             => 'Preuzmite Cloud servise',
     'get_premium_cloud'     => 'Preuzmite Premium Cloud',
-    'only_works_cloud'      => 'Ova aplikacija je radi samo u sklopu <strong>Cloud Servisa</strong>',
-    'only_premium_plan'     => 'Ova aplikacija je radi samo u sklopu <strong>Cloud Premium  Servisa</strong>',
 
     'about'                 => 'O aplikaciji',
 

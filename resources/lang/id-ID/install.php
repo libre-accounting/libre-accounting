@@ -45,7 +45,7 @@ return [
     ],
 
     'update' => [
-        'core'              => 'Versi baru akaunting tersedia! Harap perbarui <a href=":url">pemasangan Anda.</a>',
+        'core'              => 'Versi baru Libre Accounting tersedia! Harap perbarui <a href=":url">pemasangan Anda.</a>',
         'module'            => ':module versi baru tersedia! Harap perbarui <a href=":url">pemasangan Anda.</a>',
     ],
 ];

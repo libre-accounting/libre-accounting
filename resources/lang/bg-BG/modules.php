@@ -32,7 +32,6 @@ return [
     'billed_monthly'        => 'Месечна фактура',
     'save_year'             => 'Спестявате <strong>:price</strong> на година!',
     'if_paid_year'          => 'Или <strong>:price/mo</strong> ако се плаща годишно',
-    'information_monthly'   => 'Тази опция е валидна само за <strong>Cloud Service</strong>',
     'install'               => 'Инсталирай',
     'buy_now'               => 'Купете сега',
     'get_api_key'           => '<a href=":url" target="_blank">Натиснете тук</a> за да получите вашия API ключ.',
@@ -43,14 +42,8 @@ return [
     'apps_managing'         => 'Вижте най-актуалните приложения и започнете да управлявате финансите си професионално днес.',
     'ready'                 => 'Готово',
     'popular_this_week'     => 'Популярно тази седмица',
-    'install_cloud'         => 'Използвайте в Cloud Service',
-    'get_cloud'             => 'Вземи Cloud Service',
     'get_premium_cloud'     => 'Вземи Premium Cloud
 ',
-    'switch_to_cloud'       => 'Преминете към Cloud',
-    'hosted_on_akaunting'   => 'Хоствано на akaunting.com',
-    'only_works_cloud'      => 'Това приложение е достъпно само в <strong>Cloud</strong>.',
-    'only_premium_plan'     => 'Това приложение е достъпно само в <strong>Premium Cloud</strong>.',
     'not_found'             => 'Не е открито приложение',
 
     'about'                 => 'Относно',

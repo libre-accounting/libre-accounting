@@ -15,7 +15,7 @@ return [
     'buy_now'               => 'ახლავე ყიდვა',
     'token_link'            => '<a href="https://libreaccounting.org/tokens" target="_blank">აქ დააჭირეთ</a> რომ მიიღოთ თქვენი API ნიშანი.',
     'no_apps'               => 'ამ კატეგორიაში აპლიკაციები არ არის.',
-    'developer'             => 'თქვენ ხართ შემქმნელი? <a href="https://libreaccounting.org/blog/akaunting-app-store" target="_blank">აქ</a> შეგიძლიათ გაიგოთ, თუ როგორ შექმნათ აპლიკაცია და დაიწყე გაყიდვა დღესვე!',
+    'developer'             => 'თქვენ ხართ შემქმნელი? <a href="https://libreaccounting.org/blog/app-store" target="_blank">აქ</a> შეგიძლიათ გაიგოთ, თუ როგორ შექმნათ აპლიკაცია და დაიწყე გაყიდვა დღესვე!',
 
     'recommended_apps'      => 'რეკომენდირებული აპლიკაცია',
 

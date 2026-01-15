@@ -6,7 +6,6 @@ use App\Models\Auth\User;
 use App\Models\Common\Company;
 use App\Models\Common\Contact;
 use App\Models\Document\Document;
-use App\Traits\Cloud;
 use Composer\InstalledVersions;
 use Illuminate\Support\Facades\DB;
 
@@ -16,9 +15,7 @@ class Info
     {
         static $info = [];
 
-        $is_cloud = (new class { use Cloud; })->isCloud();
-
-        if (! empty($info) || $is_cloud) {
+        if (! empty($info)) {
             return $info;
         }
 

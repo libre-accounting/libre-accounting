@@ -32,7 +32,6 @@ return [
     'billed_monthly'        => 'Facturado mensual',
     'save_year'             => 'Ahorras <strong>:price</strong> al año!',
     'if_paid_year'          => 'O <strong>:price/mes</strong> si se paga anualmente',
-    'information_monthly'   => 'Esta opción es válida sólo para <strong>Cloud Service</strong>',
     'install'               => 'Instalar',
     'buy_now'               => 'Comprar ahora',
     'get_api_key'           => '<a href=":url" target="_blank">Haga clic aquí</a> para obtener su clave API.',
@@ -43,13 +42,7 @@ return [
     'apps_managing'         => 'Comprueba las aplicaciones más populares y empieza a administrar tus finanzas hoy en día.',
     'ready'                 => 'Listo',
     'popular_this_week'     => 'Popular esta semana',
-    'install_cloud'         => 'Usar en el servicio de la nube',
-    'get_cloud'             => 'Obtener servicio en la nube',
     'get_premium_cloud'     => 'Obtener Nube Premium',
-    'switch_to_cloud'       => 'Cambiar a la nube',
-    'hosted_on_akaunting'   => 'Alojado en akaunting.com',
-    'only_works_cloud'      => 'Esta aplicación está disponible solamente en <strong>Nube<strong>',
-    'only_premium_plan'     => 'Esta aplicación está disponible solamente en <strong>Nube Premium</strong>',
 
     'about'                 => 'Acerca de',
 

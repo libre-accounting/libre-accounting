@@ -14,7 +14,7 @@ return [
     'buy_now'               => 'Mua ngay',
     'token_link'            => '<a href="https://libreaccounting.org/tokens" target="_blank"> Click vào đây</a> để lấy API token của bạn.',
     'no_apps'               => 'Chưa có ứng dụng nào trong mục này.',
-    'developer'             => 'Bạn có phải là nhà phát triển? <a href="https://libreaccounting.org/blog/akaunting-app-store" target="_blank">Tại đây</a> bạn có thể tìm hiểu cách làm thế nào để tạo ra một ứng dụng và bắt đầu bán hôm nay!',
+    'developer'             => 'Bạn có phải là nhà phát triển? <a href="https://libreaccounting.org/blog/app-store" target="_blank">Tại đây</a> bạn có thể tìm hiểu cách làm thế nào để tạo ra một ứng dụng và bắt đầu bán hôm nay!',
 
     'recommended_apps'      => 'Recommended Apps',
 
