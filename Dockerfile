@@ -57,10 +57,14 @@ RUN docker-php-ext-configure gd \
  && pecl install redis \
  && docker-php-ext-enable redis
 
-COPY . /var/www/html
-# Install PHP dependencies
+WORKDIR /var/www/html
+# Install PHP dependencies first so this layer is cached across source changes
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
-RUN composer install
+COPY composer.json composer.lock ./
+RUN composer install --no-scripts --no-autoloader --prefer-dist --no-interaction
+# Now copy the application source and finish the composer setup
+COPY . /var/www/html
+RUN composer dump-autoload --optimize
 # Copy node dependencies
 COPY --from=node /app/public/js /var/www/html/public/js
 
