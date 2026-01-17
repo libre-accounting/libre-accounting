@@ -1,8 +1,9 @@
 name: Translations
 
 on:
-  schedule:
-    - cron: '0 0 * * *'
+  # Scheduled sync is disabled until Crowdin is configured for this fork
+  # (needs a crowdin.yml plus the CROWDIN_CORE_ID / CROWDIN_PERSONAL_TOKEN secrets).
+  # Run it manually from the Actions tab once that's set up.
   workflow_dispatch:
 
 jobs:

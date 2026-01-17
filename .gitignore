@@ -85,6 +85,7 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 .env
+!docker/files/html/.env
 robots.txt
 _ide_helper.php
 _ide_helper_models.php
