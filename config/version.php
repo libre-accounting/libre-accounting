@@ -8,15 +8,15 @@ return [
 
     'major'     =>  '3',
 
-    'minor'     =>  '0',
+    'minor'     =>  '1',
 
-    'patch'     =>  '17',
+    'patch'     =>  '0',
 
     'build'     =>  '',
 
     'status'    =>  'Stable',
 
-    'date'      =>  '30-August-2023',
+    'date'      =>  '17-January-2026',
 
     'time'      =>  '13:00',
 
