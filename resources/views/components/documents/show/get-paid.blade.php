@@ -32,23 +32,6 @@
             @endif
 
             @stack('timeline_get_paid_body_button_payment_end')
-
-            @if (! $hideAcceptPayment)
-                <x-link href="{{ route('apps.categories.show', [
-                        'alias' => 'payment-method',
-                        'utm_source' => $type,
-                        'utm_medium' => 'app',
-                        'utm_campaign' => 'payment_method',
-                    ]) }}"
-                    id="show-slider-actions-online-payment-{{ $document->type }}"
-                    override="class"
-                    class="py-1.5 mb-3 sm:mb-0 text-xs bg-transparent hover:bg-transparent font-medium leading-6"
-                >
-                    <x-link.hover>
-                        {{ trans('documents.accept_payment_online') }}
-                    </x-link.hover>
-                </x-link>
-            @endif
         </div>
 
         <div class="text-xs mt-6" style="margin-left: 0 !important;">

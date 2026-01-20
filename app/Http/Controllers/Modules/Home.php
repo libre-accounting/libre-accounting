@@ -3,26 +3,31 @@
 namespace App\Http\Controllers\Modules;
 
 use App\Abstracts\Http\Controller;
+use App\Traits\Modules;
 
 class Home extends Controller
 {
+    use Modules;
+
     /**
-     * Display a listing of the resource.
+     * Display the locally bundled apps.
      *
      * @return Response
      */
     public function index()
     {
-        return $this->response('modules.home.index');
-    }
+        $modules = collect(module()->all())->map(function ($module) {
+            $alias = $module->get('alias');
 
-    /**
-     * Show the form for viewing the specified resource.
-     *
-     * @return Response
-     */
-    public function show()
-    {
-        return redirect()->route('apps.home.index');
+            return (object) [
+                'alias'         => $alias,
+                'name'          => $module->getName(),
+                'description'   => $module->get('description'),
+                'version'       => $module->get('version'),
+                'enabled'       => $this->moduleIsEnabled($alias),
+            ];
+        })->sortBy('name')->values();
+
+        return view('modules.home.index', compact('modules'));
     }
 }

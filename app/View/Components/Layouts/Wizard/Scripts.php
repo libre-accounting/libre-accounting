@@ -6,12 +6,9 @@ use Akaunting\Money\Currency as MoneyCurrency;
 use App\Abstracts\View\Component;
 use App\Models\Common\Media;
 use App\Models\Setting\Currency;
-use App\Traits\Modules;
 
 class Scripts extends Component
 {
-    use Modules;
-
     public $company;
 
     public $translations;
@@ -38,11 +35,8 @@ class Scripts extends Component
         // Prepare codes
         $this->currency_codes = $this->getCurrencyCodes();
 
-        $this->modules = $this->getFeaturedModules([
-            'query' => [
-                'limit' => 5
-            ]
-        ]);
+        // The Akaunting marketplace has been removed; no recommended apps to suggest.
+        $this->modules = [];
 
         return view('components.layouts.wizard.scripts');
     }
@@ -51,7 +45,6 @@ class Scripts extends Component
     {
         $company = company();
 
-        $company->api_key = setting('apps.api_key');
         $company->financial_start = setting('localisation.financial_start');
 
         $logo_id = setting('company.logo');

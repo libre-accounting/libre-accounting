@@ -7,7 +7,6 @@ use App\Events\Install\UpdateDownloaded;
 use App\Events\Install\UpdateFailed;
 use App\Events\Install\UpdateUnzipped;
 use App\Jobs\Install\CopyFiles;
-use App\Jobs\Install\DownloadFile;
 use App\Jobs\Install\FinishUpdate;
 use App\Jobs\Install\UnzipFile;
 use App\Traits\Jobs;
@@ -117,23 +116,15 @@ class Update extends Command
 
     public function download()
     {
-        $this->info('Downloading update...');
+        // In-app update download was removed with the Akaunting marketplace.
+        // Update the code via git or by pulling a new Docker image, then run migrations.
+        $message = 'In-app update download is no longer supported. Update via git or Docker, then run the database migrations.';
 
-        try {
-            $path = $this->dispatch(new DownloadFile($this->alias, $this->new));
+        $this->error($message);
 
-            event(new UpdateDownloaded($this->alias, $this->new, $this->old));
-        } catch (\Exception $e) {
-            $message = $e->getMessage();
+        event(new UpdateFailed($this->alias, $this->new, $this->old, 'Download', $message));
 
-            $this->error($message);
-
-            event(new UpdateFailed($this->alias, $this->new, $this->old, 'Download', $message));
-
-            return false;
-        }
-
-        return $path;
+        return false;
     }
 
     public function unzip($path)

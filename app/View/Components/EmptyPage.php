@@ -342,41 +342,13 @@ class EmptyPage extends Component
 
     public function getSuggestionModule()
     {
-        return ! empty($this->suggestions) ? Arr::random($this->suggestions) : false;
+        // The Akaunting marketplace has been removed.
+        return false;
     }
 
     public function getSuggestionModules()
     {
-        if ((! $user = user()) || $user->cannot('read-modules-home')) {
-            return [];
-        }
-
-        if (! $path = Route::current()->uri()) {
-            return [];
-        }
-
-        $path = str_replace('{company_id}/', '', $path);
-
-        if (! $suggestions = $this->getSuggestions($path)) {
-            return [];
-        }
-
-        $modules = [];
-
-        foreach ($suggestions->modules as $s_module) {
-            if ($this->moduleIsEnabled($s_module->alias)) {
-                continue;
-            }
-
-            $s_module->action_url = company_id() . '/' . $s_module->action_url;
-
-            $modules[] = $s_module;
-        }
-
-        if (empty($modules)) {
-            return [];
-        }
-
-        return $modules;
+        // The Akaunting marketplace has been removed.
+        return [];
     }
 }

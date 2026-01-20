@@ -33,17 +33,10 @@
 
                             <x-table.td kind="right" class="w-6/12" kind="cursor-none">
                                 <x-slot name="first" class="flex justify-end" override="class">
-                                    @if (! $core->errors)
-                                        <x-link href="{{ route('updates.run', ['alias' => 'core', 'version' => $core->latest]) }}" class="px-3 py-1.5 rounded-xl text-sm font-medium leading-6 ltr:mr-2 rtl:ml-2 bg-green text-white hover:bg-green-700 disabled:bg-green-100" override="class">
-                                            {{ trans('updates.update', ['version' => $core->latest]) }}
-                                        </x-link>
-                                    @else
-                                        <x-tooltip id="tooltip-core-button" placement="top" :message="$core->message">
-                                            <x-button class="px-3 py-1.5 rounded-xl text-sm font-medium leading-6 ltr:mr-2 rtl:ml-2 text-white bg-green-300 cursor-default" override="class">
-                                                {{ trans('updates.update', ['version' => $core->latest]) }}
-                                            </x-button>
-                                        </x-tooltip>
-                                    @endif
+                                    <span class="px-3 py-1.5 ltr:mr-2 rtl:ml-2 text-sm font-medium leading-6 text-black-400">
+                                        v{{ $core->latest }}
+                                    </span>
+
 
                                     <x-button @click="onChangelog">
                                         {{ trans('updates.changelog') }}

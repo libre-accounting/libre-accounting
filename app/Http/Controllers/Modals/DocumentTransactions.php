@@ -66,16 +66,6 @@ class DocumentTransactions extends Controller
                 'text' => trans('general.cancel'),
                 'class' => 'btn-outline-secondary'
             ],
-            'payment' => [
-                'text' => trans('invoices.accept_payments'),
-                'class' => 'long-texts',
-                'url' => route('apps.categories.show', [
-                    'alias' => 'payment-method',
-                    'utm_source' => $document->type . '_payment',
-                    'utm_medium' => 'app',
-                    'utm_campaign' => 'payment_method',
-                ])
-            ],
             'confirm' => [
                 'text' => trans('general.save'),
                 'class' => 'disabled:bg-green-100'
@@ -148,11 +138,6 @@ class DocumentTransactions extends Controller
             'cancel' => [
                 'text' => trans('general.cancel'),
                 'class' => 'btn-outline-secondary'
-            ],
-            'payment' => [
-                'text' => trans('invoices.accept_payments'),
-                'class' => 'long-texts',
-                'url' => route('apps.categories.show', 'payment-method')
             ],
             'confirm' => [
                 'text' => trans('general.save'),

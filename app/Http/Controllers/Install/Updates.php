@@ -6,10 +6,8 @@ use App\Abstracts\Http\Controller;
 use App\Http\Requests\Module\Install as InstallRequest;
 use App\Events\Install\UpdateCacheCleared;
 use App\Events\Install\UpdateCopied;
-use App\Events\Install\UpdateDownloaded;
 use App\Events\Install\UpdateUnzipped;
 use App\Jobs\Install\CopyFiles;
-use App\Jobs\Install\DownloadFile;
 use App\Jobs\Install\FinishUpdate;
 use App\Jobs\Install\UnzipFile;
 use App\Utilities\Versions;
@@ -160,42 +158,6 @@ class Updates extends Controller
             'data' => $steps,
             'message' => null
         ]);
-    }
-
-    /**
-     * Download the file
-     *
-     * @param  $request
-     *
-     * @return Response
-     */
-    public function download(InstallRequest $request)
-    {
-        set_time_limit(900); // 15 minutes
-
-        try {
-            $path = $this->dispatch(new DownloadFile($request['alias'], $request['version']));
-
-            event(new UpdateDownloaded($request['alias'], $request['version'], $request['installed']));
-
-            $json = [
-                'success' => true,
-                'error' => false,
-                'message' => null,
-                'data' => [
-                    'path' => $path,
-                ],
-            ];
-        } catch (\Exception $e) {
-            $json = [
-                'success' => false,
-                'error' => true,
-                'message' => $e->getMessage(),
-                'data' => [],
-            ];
-        }
-
-        return response()->json($json);
     }
 
     /**

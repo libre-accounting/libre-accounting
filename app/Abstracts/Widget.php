@@ -57,14 +57,7 @@ abstract class Widget
         }
 
         if (Reports::isModule($this->report_class) && Reports::isModuleDisabled($this->report_class)) {
-            $alias = Reports::getModuleAlias($this->report_class);
-
-            return route('apps.app.show', [
-                'alias'         => $alias,
-                'utm_source'    => 'widget',
-                'utm_medium'    => 'app',
-                'utm_campaign'  => str_replace('-', '_', $alias),
-            ]);
+            return $empty_url;
         }
 
         if (! class_exists($this->report_class)) {

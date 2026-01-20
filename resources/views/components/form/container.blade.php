@@ -12,8 +12,4 @@
             {!! $foot !!}
         @endif
     </div>
-
-    <x-tips position="relative" />
 </div>
-
-<x-tips position="fixed" />

@@ -54,38 +54,6 @@ class ShowInNotifications
             }
         }
 
-        // New app notifcations
-        $new_apps = $this->getNotifications('new-apps');
-
-        foreach ($new_apps as $key => $new_app) {
-            if (setting('notifications.' . user()->id . '.' . $new_app->alias)) {
-                unset($new_apps[$key]);
-
-                continue;
-            }
-
-            $app_url = route('apps.app.show', [
-                'alias'         => $new_app->alias,
-                'utm_source'    => 'notification',
-                'utm_medium'    => 'app',
-                'utm_campaign'  => str_replace('-', '_', $new_app->alias),
-            ]);
-
-            $new = new DatabaseNotification();
-            $new->id = $key;
-            $new->type = 'new-apps';
-            $new->notifiable_type = "users";
-            $new->notifiable_id = user()->id;
-            $new->data = [
-                'title' => $new_app->name,
-                'description' => trans('notifications.new_apps', ['app' => $new_app->name, 'url' => $app_url]),
-                'alias' => $new_app->alias,
-            ];
-            $new->created_at = $new_app->started_at->date;
-
-            $notifications->push($new);
-        }
-
         $unReadNotifications = user()->unReadNotifications;
 
         foreach ($unReadNotifications as $unReadNotification) {

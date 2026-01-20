@@ -31,8 +31,6 @@
 
             @stack('header_button_end')
 
-            <x-suggestions />
-
             @stack('header_suggestion_end')
 
             {!! $moreButtons !!}

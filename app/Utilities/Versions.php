@@ -2,16 +2,12 @@
 
 namespace App\Utilities;
 
-use App\Traits\SiteApi;
 use App\Utilities\Date;
 use GrahamCampbell\Markdown\Facades\Markdown;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 
 class Versions
 {
-    use SiteApi;
-
     public static function changelog()
     {
         $output = '';
@@ -92,109 +88,35 @@ class Versions
         return $version;
     }
 
-    public static function latest($alias)
+    public static function latest($alias = 'core')
     {
-        $versions = static::all($alias);
-
-        if (empty($versions[$alias])) {
-            return static::getVersionByAlias($alias);
-        }
-
-        return $versions[$alias];
+        return static::getVersionByAlias($alias);
     }
 
     public static function all($modules = null)
     {
-        // Get data from cache
-        $versions = Cache::get('versions');
-
-        if (! empty($versions)) {
-            return $versions;
-        }
-
-        $info = Info::all();
-
-        $versions = [];
-
-        // Check core against our own releases (not the Akaunting API)
-        $versions['core'] = static::getLatestCoreVersion($info['libre-accounting']);
-
-        // Then modules
-        $modules = Arr::wrap($modules);
-
-        foreach ($modules as $module) {
-            if (is_string($module)) {
-                $module = module($module);
-            }
-
-            if (! $module instanceof \Akaunting\Module\Module) {
-                continue;
-            }
-
-            $alias = $module->get('alias');
-            $version = $module->get('version');
-
-            $url = 'apps/' . $alias . '/version/' . $version . '/' . $info['libre-accounting'];
-
-            $versions[$alias] = static::getLatestVersion($url, $version);
-        }
-
-        Cache::put('versions', $versions, Date::now()->addHour(6));
-
-        return $versions;
+        return ['core' => static::getLatestCoreVersion(version('short'))];
     }
 
     public static function getVersionByAlias($alias)
     {
-        $info = Info::all();
-
-        // Get data from cache
-        $versions = Cache::get('versions', []);
-
         if ($alias == 'core') {
-            // Check core against our own releases (not the Akaunting API)
-            $versions['core'] = static::getLatestCoreVersion($info['libre-accounting']);
-        } else {
-            $version = module($alias)->get('version');
-
-            $url = 'apps/' . $alias . '/version/' . $version . '/' . $info['libre-accounting'];
-
-            $versions[$alias] = static::getLatestVersion($url, $version);
+            return static::getLatestCoreVersion(version('short'));
         }
 
-        Cache::put('versions', $versions, Date::now()->addHour(6));
-
-        return $versions[$alias];
-    }
-
-    public static function getLatestVersion($url, $latest)
-    {
+        // Modules are bundled locally now — no remote version checks.
         $version = new \stdClass();
 
-        $version->can_update = true;
-        $version->latest = $latest;
+        $version->can_update = false;
+        $version->latest = module($alias) ? module($alias)->get('version') : null;
         $version->errors = false;
         $version->message = '';
-
-        if (! $body = static::getResponseBody('GET', $url, ['timeout' => 10])) {
-            return $version;
-        }
-
-        if (! is_object($body)) {
-            return $version;
-        }
-
-        $version->can_update = $body->success;
-        $version->latest = $body->data->latest;
-        $version->errors = $body->errors;
-        $version->message = $body->message;
 
         return $version;
     }
 
     public static function getUpdates()
     {
-        // Get data from cache
         $updates = Cache::get('updates');
 
         if (! empty($updates)) {
@@ -203,28 +125,10 @@ class Versions
 
         $updates = [];
 
-        $modules = module()->all();
+        $core = static::getLatestCoreVersion(version('short'));
 
-        $versions = static::all($modules);
-
-        foreach ($versions as $alias => $latest_version) {
-            if ($alias == 'core') {
-                $installed_version = version('short');
-            } else {
-                $module = module($alias);
-
-                if (!$module instanceof \Akaunting\Module\Module) {
-                    continue;
-                }
-
-                $installed_version = $module->get('version');
-            }
-
-            if (version_compare($installed_version, $latest_version->latest, '>=')) {
-                continue;
-            }
-
-            $updates[$alias] = $latest_version;
+        if (version_compare(version('short'), $core->latest, '<')) {
+            $updates['core'] = $core;
         }
 
         Cache::put('updates', $updates, Date::now()->addHour(6));

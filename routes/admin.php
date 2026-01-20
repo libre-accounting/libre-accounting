@@ -207,35 +207,12 @@ Route::group(['as' => 'settings.'], function () {
 });
 
 Route::group(['as' => 'apps.', 'prefix' => 'apps'], function () {
-    Route::resource('api-key', 'Modules\ApiKey');
+    // Local apps only — the remote Akaunting marketplace has been removed.
+    Route::get('/', 'Modules\Home@index')->name('home.index');
 
-    Route::group(['middleware' => 'api.key'], function () {
-        Route::resource('home', 'Modules\Home');
-
-        Route::resource('my', 'Modules\My');
-
-        Route::get('categories/{alias}', 'Modules\Tiles@categoryModules')->name('categories.show');
-        Route::get('vendors/{alias}', 'Modules\Tiles@vendorModules')->name('vendors.show');
-        Route::get('docs/{alias}', 'Modules\Item@documentation')->name('docs.show');
-
-        Route::get('paid', 'Modules\Tiles@paidModules')->name('paid');
-        Route::get('new', 'Modules\Tiles@newModules')->name('new');
-        Route::get('free', 'Modules\Tiles@freeModules')->name('free');
-        Route::get('search', 'Modules\Tiles@searchModules')->name('search');
-        Route::post('{type}/load-more', 'Modules\Tiles@loadMore')->name('load-more');
-        Route::post('steps', 'Modules\Item@steps')->name('steps');
-        Route::post('download', 'Modules\Item@download')->name('download');
-        Route::post('unzip', 'Modules\Item@unzip')->name('unzip');
-        Route::post('copy', 'Modules\Item@copy')->name('copy');
-        Route::post('install', 'Modules\Item@install')->name('install');
-
-        Route::post('{alias}/releases', 'Modules\Item@releases')->name('app.releases');
-        Route::post('{alias}/reviews', 'Modules\Item@reviews')->name('app.reviews');
-        Route::get('{alias}/uninstall', 'Modules\Item@uninstall')->name('app.uninstall');
-        Route::get('{alias}/enable', 'Modules\Item@enable')->name('app.enable');
-        Route::get('{alias}/disable', 'Modules\Item@disable')->name('app.disable');
-        Route::get('{alias}', 'Modules\Item@show')->name('app.show');
-    });
+    Route::get('{alias}/enable', 'Modules\Item@enable')->name('app.enable');
+    Route::get('{alias}/disable', 'Modules\Item@disable')->name('app.disable');
+    Route::get('{alias}/uninstall', 'Modules\Item@uninstall')->name('app.uninstall');
 });
 
 Route::group(['prefix' => 'install'], function () {
@@ -244,9 +221,6 @@ Route::group(['prefix' => 'install'], function () {
     Route::get('updates/check', 'Install\Updates@check')->name('updates.check');
     Route::get('updates/run/{alias}/{version}', 'Install\Updates@run')->name('updates.run');
     Route::post('updates/steps', 'Install\Updates@steps')->name('updates.steps');
-    Route::post('updates/download', 'Install\Updates@download')->middleware('api.key')->name('updates.download');
-    Route::post('updates/unzip', 'Install\Updates@unzip')->middleware('api.key')->name('updates.unzip');
-    Route::post('updates/copy-files', 'Install\Updates@copyFiles')->middleware('api.key')->name('updates.copy');
     Route::post('updates/migrate', 'Install\Updates@migrate')->name('updates.migrate');
     Route::post('updates/finish', 'Install\Updates@finish')->name('updates.finish');
     Route::post('updates/redirect', 'Install\Updates@redirect')->name('updates.redirect');
