@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Doc:Document xmlns:Doc="urn:iso:std:iso:20022:tech:xsd:camt.053.001.08">
+  <Doc:BkToCstmrStmt>
+    <Doc:GrpHdr>
+      <Doc:MsgId>STMT-2026-0099</Doc:MsgId>
+      <Doc:CreDtTm>2026-01-15T08:00:00</Doc:CreDtTm>
+    </Doc:GrpHdr>
+    <Doc:Stmt>
+      <Doc:Id>STMT-ACC-099</Doc:Id>
+      <Doc:FrToDt>
+        <Doc:FrDtTm>2026-01-01T00:00:00</Doc:FrDtTm>
+        <Doc:ToDtTm>2026-01-14T23:59:59</Doc:ToDtTm>
+      </Doc:FrToDt>
+      <Doc:Acct>
+        <Doc:Id>
+          <Doc:IBAN>PL27114020040000300201355387</Doc:IBAN>
+        </Doc:Id>
+        <Doc:Ccy>PLN</Doc:Ccy>
+      </Doc:Acct>
+      <Doc:Bal>
+        <Doc:Tp>
+          <Doc:CdOrPrtry>
+            <Doc:Cd>OPBD</Doc:Cd>
+          </Doc:CdOrPrtry>
+        </Doc:Tp>
+        <Doc:Amt Ccy="PLN">5000.00</Doc:Amt>
+        <Doc:CdtDbtInd>CRDT</Doc:CdtDbtInd>
+      </Doc:Bal>
+      <Doc:Bal>
+        <Doc:Tp>
+          <Doc:CdOrPrtry>
+            <Doc:Cd>CLBD</Doc:Cd>
+          </Doc:CdOrPrtry>
+        </Doc:Tp>
+        <Doc:Amt Ccy="PLN">4700.00</Doc:Amt>
+        <Doc:CdtDbtInd>CRDT</Doc:CdtDbtInd>
+      </Doc:Bal>
+      <Doc:Ntry>
+        <Doc:Amt Ccy="PLN">300.00</Doc:Amt>
+        <Doc:CdtDbtInd>DBIT</Doc:CdtDbtInd>
+        <Doc:Sts>
+          <Doc:Cd>BOOK</Doc:Cd>
+        </Doc:Sts>
+        <Doc:BookgDt>
+          <Doc:Dt>2026-01-09</Doc:Dt>
+        </Doc:BookgDt>
+        <Doc:ValDt>
+          <Doc:Dt>2026-01-09</Doc:Dt>
+        </Doc:ValDt>
+        <Doc:AcctSvcrRef>BATCH-REF-1</Doc:AcctSvcrRef>
+        <Doc:NtryDtls>
+          <Doc:TxDtls>
+            <Doc:Amt Ccy="PLN">120.00</Doc:Amt>
+            <Doc:CdtDbtInd>DBIT</Doc:CdtDbtInd>
+            <Doc:Refs>
+              <Doc:EndToEndId>E2E-A</Doc:EndToEndId>
+            </Doc:Refs>
+            <Doc:RltdPties>
+              <Doc:Cdtr>
+                <Doc:Nm>Vendor A</Doc:Nm>
+              </Doc:Cdtr>
+            </Doc:RltdPties>
+            <Doc:RmtInf>
+              <Doc:Ustrd>First part</Doc:Ustrd>
+            </Doc:RmtInf>
+          </Doc:TxDtls>
+          <Doc:TxDtls>
+            <Doc:Amt Ccy="PLN">180.00</Doc:Amt>
+            <Doc:CdtDbtInd>DBIT</Doc:CdtDbtInd>
+            <Doc:Refs>
+              <Doc:EndToEndId>E2E-B</Doc:EndToEndId>
+            </Doc:Refs>
+            <Doc:RltdPties>
+              <Doc:Cdtr>
+                <Doc:Nm>Vendor B</Doc:Nm>
+              </Doc:Cdtr>
+            </Doc:RltdPties>
+            <Doc:RmtInf>
+              <Doc:Ustrd>Second part</Doc:Ustrd>
+            </Doc:RmtInf>
+          </Doc:TxDtls>
+        </Doc:NtryDtls>
+      </Doc:Ntry>
+    </Doc:Stmt>
+  </Doc:BkToCstmrStmt>
+</Doc:Document>
