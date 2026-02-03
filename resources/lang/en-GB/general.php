@@ -48,6 +48,7 @@ return [
     'contacts'              => 'Contact|Contacts',
     'documents'             => 'Document|Documents',
     'reconciliations'       => 'Reconciliation|Reconciliations',
+    'statement_imports'     => 'Statement Import|Statement Imports',
     'developers'            => 'Developer|Developers',
     'schedules'             => 'Schedule|Schedules',
     'groups'                => 'Group|Groups',

@@ -162,6 +162,9 @@ Route::group(['prefix' => 'banking'], function () {
     Route::post('reconciliations/calculate', 'Banking\Reconciliations@calculate')->middleware(['money']);
     Route::patch('reconciliations/calculate', 'Banking\Reconciliations@calculate')->middleware(['money']);
     Route::resource('reconciliations', 'Banking\Reconciliations', ['middleware' => ['date.format', 'money', 'dropzone']]);
+
+    Route::post('statement-imports/import', 'Banking\StatementImports@import')->middleware('import')->name('statement-imports.import');
+    Route::resource('statement-imports', 'Banking\StatementImports', ['middleware' => ['date.format', 'money', 'dropzone']])->only(['index', 'create', 'show', 'edit', 'destroy']);
 });
 
 Route::group(['prefix' => 'settings'], function () {
