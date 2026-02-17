@@ -103,4 +103,14 @@ class BankStatementLine extends Model
     {
         return $query->where('status', self::STATUS_PENDING);
     }
+
+    /**
+     * Create a new factory instance for the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    protected static function newFactory()
+    {
+        return \Database\Factories\BankStatementLine::new();
+    }
 }
