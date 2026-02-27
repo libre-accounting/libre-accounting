@@ -41,6 +41,7 @@ return [
     'others'                => 'Diğer|Diğerleri',
     'contacts'              => 'Kişi|Kişiler',
     'reconciliations'       => 'Mutabakat|Mutabakatlar',
+    'statement_imports'     => 'Ekstre İçe Aktarma|Ekstre İçe Aktarmalar',
     'developers'            => 'Geliştirici|Geliştiriciler',
     'schedules'             => 'Planlama|Planlamalar',
     'groups'                => 'Grup|Gruplar',

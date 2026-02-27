@@ -41,6 +41,7 @@ return [
     'others'                => 'Tjetër|Të tjera',
     'contacts'              => 'Kontakti|Kontaktet',
     'reconciliations'       => 'Pajtimi|Pajtimet',
+    'statement_imports'     => 'Importimi i Pasqyrës|Importimet e Pasqyrave',
     'developers'            => 'Zhvillues|Zhvilluesit',
     'schedules'             => 'Planifikimi|Planifikimet',
     'groups'                => 'Grupi|Grupet',

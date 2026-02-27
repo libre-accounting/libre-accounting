@@ -48,6 +48,7 @@ return [
     'contacts'              => 'Contactpersoon|Contactpersonen',
     'documents'             => 'Document|Documenten',
     'reconciliations'       => 'Afstemming | Afstemmingen',
+    'statement_imports'     => 'Afschriftimport|Afschriftimporten',
     'developers'            => 'Ontwikkelaar | Ontwikkelaars',
     'schedules'             => 'Schema|Schema\'s',
     'groups'                => 'Groep|Groepen',

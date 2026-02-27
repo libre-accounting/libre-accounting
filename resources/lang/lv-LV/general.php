@@ -48,6 +48,7 @@ return [
     'contacts'              => 'Kontakts|Kontakti',
     'documents'             => 'Dokuments|Dokumenti',
     'reconciliations'       => 'Saskaņošana|Saskaņošanas',
+    'statement_imports'     => 'Izraksta imports|Izrakstu importi',
     'developers'            => 'Izstrādātājs|Izstrādātāji',
     'schedules'             => 'Grafiks|Grafiki',
     'groups'                => 'Grupa|Grupas',

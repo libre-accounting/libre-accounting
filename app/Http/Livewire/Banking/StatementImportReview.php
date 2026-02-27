@@ -9,10 +9,11 @@ use App\Models\Common\Contact;
 use App\Models\Setting\Category;
 use App\Traits\Jobs;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class StatementImportReview extends Component
 {
-    use Jobs;
+    use Jobs, WithPagination;
 
     public BankStatementImport $statementImport;
 
@@ -41,8 +42,11 @@ class StatementImportReview extends Component
 
     public function render()
     {
+        $per_page = (int) config('statement_imports.per_page', 50);
+
         return view('livewire.banking.statement-import-review', [
-            'lines'              => $this->statementImport->lines()->get(),
+            'lines'              => $this->statementImport->lines()->orderBy('id')->paginate($per_page),
+            'pending_count'      => $this->statementImport->lines()->pending()->count(),
             'income_categories'  => Category::enabled()->income()->orderBy('name')->pluck('name', 'id'),
             'expense_categories' => Category::enabled()->expense()->orderBy('name')->pluck('name', 'id'),
             'customers'          => Contact::enabled()->customer()->orderBy('name')->pluck('name', 'id'),

@@ -41,6 +41,7 @@ return [
     'others'                => 'Lain-lain|Lain-lain',
     'contacts'              => 'Hubungan|Hubungan',
     'reconciliations'       => 'Penyelarasan|Penyelarasan',
+    'statement_imports'     => 'Import Penyata|Import Penyata',
     'developers'            => 'Pemaju|Pemaju-pemaju',
     'schedules'             => 'Jadual|Jadual-jadual',
     'groups'                => 'Kumpulan|Kumpulan-kumpulan',

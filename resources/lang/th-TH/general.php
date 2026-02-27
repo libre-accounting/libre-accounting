@@ -40,6 +40,7 @@ return [
     'others'                => 'อื่น ๆ | อื่น ๆ',
     'contacts'              => 'ผู้ติดต่อ',
     'reconciliations'       => 'Reconciliation|Reconciliations',
+    'statement_imports'     => 'การนำเข้ารายการเดินบัญชี|การนำเข้ารายการเดินบัญชี',
     'developers'            => 'ผู้พัฒนา',
 
     'dashboard'             => 'แดชบอร์ด',

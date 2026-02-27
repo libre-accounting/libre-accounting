@@ -40,6 +40,7 @@ return [
     'others'                => 'Iný |Iné',
     'contacts'              => 'Kontakt | Kontakty',
     'reconciliations'       => 'Vyrovnanie | Vyrovnania',
+    'statement_imports'     => 'Import výpisu | Importy výpisov',
     'deposits'              => 'Vklad|vklady',
     'withdrawals'           => 'Výber | Výbery',
 

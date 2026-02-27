@@ -41,6 +41,7 @@ return [
     'others'                => 'Annen | Andre',
     'contacts'              => 'Kontakt|Kontakter',
     'reconciliations'       => 'Avstemming|Avstemminger',
+    'statement_imports'     => 'Kontoutskriftsimport|Kontoutskriftsimporter',
     'developers'            => 'Utvikler|Utviklere',
     'schedules'             => 'Tidsplan|Tidsplaner',
     'groups'                => 'Gruppe|Grupper',

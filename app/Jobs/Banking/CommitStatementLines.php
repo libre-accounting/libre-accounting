@@ -6,9 +6,9 @@ use App\Abstracts\Job;
 use App\Models\Banking\BankStatementImport;
 use App\Models\Banking\BankStatementLine;
 use App\Models\Banking\Transaction;
+use App\Models\Document\Document;
 use App\Models\Setting\Currency;
 use App\Traits\Transactions;
-use Illuminate\Support\Facades\DB;
 
 class CommitStatementLines extends Job
 {
@@ -49,6 +49,13 @@ class CommitStatementLines extends Job
 
             $transaction = $this->dispatch(new CreateTransaction($this->buildRequest($line)));
 
+            // If a document was matched, settle it (marks the invoice/bill
+            // paid/partial). Falls back to an unlinked transaction if the
+            // payment over-matches the document.
+            if (! empty($line->document_id)) {
+                $this->matchDocument($line, $transaction);
+            }
+
             $line->update([
                 'transaction_id' => $transaction->id,
                 'status'         => BankStatementLine::STATUS_IMPORTED,
@@ -76,7 +83,6 @@ class CommitStatementLines extends Job
             'amount'         => $line->amount,
             'currency_code'  => $line->currency_code,
             'currency_rate'  => $this->getCurrencyRate($line->currency_code),
-            'document_id'    => $line->document_id,
             'contact_id'     => $line->contact_id,
             'category_id'    => $line->category_id,
             'payment_method' => $line->payment_method ?: setting('default.payment_method'),
@@ -112,6 +118,28 @@ class CommitStatementLines extends Job
         }
 
         return $query->exists();
+    }
+
+    /**
+     * Settle the matched invoice/bill against the freshly created transaction,
+     * marking it paid/partial. If the document is gone or the payment exceeds
+     * the outstanding amount, leave the transaction unlinked rather than
+     * failing the whole commit.
+     */
+    protected function matchDocument(BankStatementLine $line, Transaction $transaction): void
+    {
+        $document = Document::find($line->document_id);
+
+        if (! $document) {
+            return;
+        }
+
+        try {
+            $this->dispatch(new MatchBankingDocumentTransaction($document, $transaction));
+        } catch (\Throwable $e) {
+            // Over-match or other settlement error: keep the transaction, drop
+            // the link. The line is still imported as a plain transaction.
+        }
     }
 
     /**

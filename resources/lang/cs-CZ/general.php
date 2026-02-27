@@ -48,6 +48,7 @@ return [
     'contacts'              => 'Kontakt|Kontakty',
     'documents'             => 'Dokument|Dokumenty',
     'reconciliations'       => 'Vyrovnání|Vyrovnání',
+    'statement_imports'     => 'Import výpisu|Importy výpisů',
     'developers'            => 'Vývojář | Vývojáři',
     'schedules'             => 'Rozvrh | Rozvrhy',
     'groups'                => 'Skupina|Skupiny',

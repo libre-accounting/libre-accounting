@@ -41,6 +41,7 @@ return [
     'others'                => 'Boshqa|Boshqalar',
     'contacts'              => 'Aloqa | Kontaktlar',
     'reconciliations'       => 'Solishtirish|Solishtirishlar',
+    'statement_imports'     => 'Koʻchirma importi|Koʻchirma importlari',
     'developers'            => 'Dasturchi|Dasturchilar',
     'schedules'             => 'Jadval | Jadvallar',
     'groups'                => 'Guruh | Guruhlar',

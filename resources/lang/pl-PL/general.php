@@ -41,6 +41,7 @@ return [
     'others'                => 'Inne|Inne',
     'contacts'              => 'Kontakt|Kontakty',
     'reconciliations'       => 'Uzgodnienie|Uzgodnienia',
+    'statement_imports'     => 'Import wyciągu|Importy wyciągów',
     'developers'            => 'Deweloper|Deweloperzy',
     'schedules'             => 'Harmonogram|Harmonogramy',
     'groups'                => 'Grupa|Grupy',

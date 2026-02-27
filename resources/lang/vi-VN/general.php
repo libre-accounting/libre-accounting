@@ -40,6 +40,7 @@ return [
     'others'                => 'Other|Others',
     'contacts'              => 'Contact|Contacts',
     'reconciliations'       => 'Reconciliation|Reconciliations',
+    'statement_imports'     => 'Nhập sao kê|Nhập sao kê',
     'deposits'              => 'Deposit|Deposits',
     'withdrawals'           => 'Withdrawal|Withdrawals',
 

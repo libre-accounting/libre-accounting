@@ -41,6 +41,7 @@ return [
     'others'                => 'Kiti',
     'contacts'              => 'Kontaktai',
     'reconciliations'       => 'Reconciliation|Reconciliations',
+    'statement_imports'     => 'Išrašo importas|Išrašų importai',
     'developers'            => 'Kūrėjas|Kūrėjai',
     'schedules'             => 'Kalendorius|Kalendoriai',
     'groups'                => 'Grupė|Grupės',

@@ -48,6 +48,7 @@ return [
     'contacts'              => 'Kontakt|Kontakte',
     'documents'             => 'Dokument|Dokumente',
     'reconciliations'       => 'Kontenabgleich|Kontenabgleiche',
+    'statement_imports'     => 'Kontoauszug-Import|Kontoauszug-Importe',
     'developers'            => 'Entwickler|Entwickler',
     'schedules'             => 'Zeitplan|Zeitpläne',
     'groups'                => 'Gruppe|Gruppen',

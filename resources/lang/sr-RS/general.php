@@ -40,6 +40,7 @@ return [
     'others'                => 'Остали|Остало',
     'contacts'              => 'Контакт|Контакти',
     'reconciliations'       => 'Сравњење|Сравњивања',
+    'statement_imports'     => 'Увоз извода|Увози извода',
 
     'dashboard'             => 'Контролна табла',
     'banking'               => 'Банкарство',

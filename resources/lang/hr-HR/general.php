@@ -41,6 +41,7 @@ return [
     'others'                => 'Ostalo|Ostali',
     'contacts'              => 'Contact|Contacts',
     'reconciliations'       => 'Pomirenje | pomirenja',
+    'statement_imports'     => 'Uvoz izvoda|Uvozi izvoda',
     'developers'            => 'Razvojni programer | Razvojni programeri',
     'schedules'             => 'Raspored | Rasporedi',
     'groups'                => 'Grupa | Grupe',

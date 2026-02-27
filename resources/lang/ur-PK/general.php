@@ -40,6 +40,7 @@ return [
     'others'                => 'دیگر | دیگر',
     'contacts'              => 'رابطہ | روابط',
     'reconciliations'       => 'مصالحت | اصلاحات',
+    'statement_imports'     => 'اسٹیٹمنٹ درآمد | اسٹیٹمنٹ درآمدات',
     'developers'            => 'ڈویلپر|ڈویلپرز',
 
     'dashboard'             => 'ڈیش بورڈ',

@@ -48,6 +48,7 @@ return [
     'contacts'              => 'Contato|Contatos',
     'documents'             => 'Documento|Documentos',
     'reconciliations'       => 'Reconciliação|Reconciliações',
+    'statement_imports'     => 'Importação de extrato|Importações de extrato',
     'developers'            => 'Desenvolvedor|Desenvolvedores',
     'schedules'             => 'Agendar|Agendamentos',
     'groups'                => 'Grupo|Grupos',

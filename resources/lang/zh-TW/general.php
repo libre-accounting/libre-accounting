@@ -41,6 +41,7 @@ return [
     'others'                => '其他 | 其他',
     'contacts'              => '連絡人|連絡人',
     'reconciliations'       => '核對|核對',
+    'statement_imports'     => '對帳單匯入|對帳單匯入',
     'developers'            => '開發者|開發者',
     'schedules'             => '時間表|時間表',
     'groups'                => '群組|群組',

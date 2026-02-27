@@ -1,8 +1,4 @@
 <div>
-    @php
-        $pending_count = $lines->where('status', \App\Models\Banking\BankStatementLine::STATUS_PENDING)->count();
-    @endphp
-
     @if ($pending_count)
         <div class="card mb-4">
             <div class="card-body flex flex-col sm:flex-row items-start sm:items-center gap-3">
@@ -103,6 +99,10 @@
                 @endforeach
             </x-table.tbody>
         </x-table>
+
+        <div class="mt-4">
+            {{ $lines->links() }}
+        </div>
     </x-index.container>
 
     @if ($pending_count)

@@ -41,6 +41,7 @@ return [
     'others'                => 'Muu|Muut',
     'contacts'              => 'Kontakti|Kontaktit',
     'reconciliations'       => 'Täsmäytys|Täsmäytykset',
+    'statement_imports'     => 'Tiliotteen tuonti|Tiliotteiden tuonnit',
     'developers'            => 'Kehittäjä|Kehittäjät',
     'schedules'             => 'Aikataulu|Aikataulut',
     'groups'                => 'Ryhmä|Ryhmät',

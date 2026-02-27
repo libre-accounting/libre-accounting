@@ -48,6 +48,7 @@ return [
     'contacts'              => 'Kontakta|kontakter',
     'documents'             => 'Dokument|Dokument',
     'reconciliations'       => 'Stämma av|avstämningar',
+    'statement_imports'     => 'Kontoutdragsimport|Kontoutdragsimporter',
     'developers'            => 'Utvecklare|Utvecklare',
     'schedules'             => 'Schema|Scheman',
     'groups'                => 'Grupp|grupper',

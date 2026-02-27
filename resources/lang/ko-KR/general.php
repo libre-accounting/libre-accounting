@@ -41,6 +41,7 @@ return [
     'others'                => '그 외|그 외',
     'contacts'              => '연락처|연락처',
     'reconciliations'       => '조정|조정',
+    'statement_imports'     => '명세서 가져오기|명세서 가져오기',
     'developers'            => '개발자|개발자',
 
     'dashboard'             => '대시보드',

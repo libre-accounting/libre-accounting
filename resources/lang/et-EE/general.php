@@ -41,6 +41,7 @@ return [
     'others'                => 'Muu|Muud',
     'contacts'              => 'Kontakt|Kontaktid',
     'reconciliations'       => 'Vastavusseviimine|Vastavusseviimised',
+    'statement_imports'     => 'Väljavõtte import|Väljavõtete impordid',
     'developers'            => 'Arendaja|Arendajad',
     'schedules'             => 'Graafik|Graafikud',
     'groups'                => 'Rühm|Rühmad',

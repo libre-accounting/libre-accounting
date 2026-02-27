@@ -48,6 +48,7 @@ return [
     'contacts'              => 'Kontak|Kontak',
     'documents'             => 'Dokumen|Dokumen',
     'reconciliations'       => 'Penyesuaian|Penyesuaian',
+    'statement_imports'     => 'Impor Rekening Koran|Impor Rekening Koran',
     'developers'            => 'Pengembang|Pengembang',
     'schedules'             => 'Jadwal|Jadwal',
     'groups'                => 'Grup|Grup',

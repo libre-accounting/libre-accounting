@@ -48,6 +48,7 @@ return [
     'contacts'              => 'Kontakt|Kontakti',
     'documents'             => 'Dokument|Dokumenti',
     'reconciliations'       => 'Podmirenje | Podmirenja',
+    'statement_imports'     => 'Uvoz izvoda|Uvozi izvoda',
     'developers'            => 'Razvojni programer | Razvojni programeri',
     'schedules'             => 'Raspored | Rasporedi',
     'groups'                => 'Grupa | Grupe',

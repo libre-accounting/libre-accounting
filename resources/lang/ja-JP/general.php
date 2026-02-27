@@ -41,6 +41,7 @@ return [
     'others'                => 'その他の|その他',
     'contacts'              => 'コンタクト|連絡先',
     'reconciliations'       => 'アジャスト|調整',
+    'statement_imports'     => '明細書インポート|明細書インポート',
     'developers'            => 'デベロッパー|開発者',
     'schedules'             => 'スケジュール|スケジュール',
     'groups'                => 'グループ|グループ',

@@ -41,6 +41,7 @@ return [
     'others'                => 'Annað|Annað',
     'contacts'              => 'Tengill|Tenglar',
     'reconciliations'       => 'Uppgjör|Uppgjör',
+    'statement_imports'     => 'Yfirlitsinnflutningur|Yfirlitsinnflutningar',
     'developers'            => 'Hönnuður|Hönnuðir',
     'schedules'             => 'Áætlun|Áætlanir',
     'groups'                => 'Hópur|Hópar',

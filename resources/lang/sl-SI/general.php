@@ -48,6 +48,7 @@ return [
     'contacts'              => 'Kontakt|Kontakti',
     'documents'             => 'Dokument|Dokumenti',
     'reconciliations'       => 'Uskladitev|Uskladitve',
+    'statement_imports'     => 'Uvoz izpiska|Uvozi izpiskov',
     'developers'            => 'Razvijalec|Razvijalci',
     'schedules'             => 'Urnik | Urniki',
     'groups'                => 'Skupina | Skupine',

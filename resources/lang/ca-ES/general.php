@@ -48,6 +48,7 @@ return [
     'contacts'              => 'Contacte|Contactes',
     'documents'             => 'Document|Documents',
     'reconciliations'       => 'Conciliació|Conciliacions',
+    'statement_imports'     => 'Importació d\'extracte|Importacions d\'extractes',
     'developers'            => 'Desenvolupador|Desenvolupadors',
     'schedules'             => 'Agenda|Agendes',
     'groups'                => 'Grup|Grups',

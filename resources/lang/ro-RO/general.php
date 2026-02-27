@@ -48,6 +48,7 @@ return [
     'contacts'              => 'Contact|Contacte',
     'documents'             => 'Document|Documente',
     'reconciliations'       => 'Reconsiliar bancar|Reconsilieri bancare',
+    'statement_imports'     => 'Import extras de cont|Importuri extrase de cont',
     'developers'            => 'Dezvoltator|Dezvoltatori',
     'schedules'             => 'Programări',
     'groups'                => 'Grup|Grupuri',

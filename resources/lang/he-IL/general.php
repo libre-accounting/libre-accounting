@@ -40,6 +40,7 @@ return [
     'others'                => 'אחר | אחרים',
     'contacts'              => 'Contact|Contacts',
     'reconciliations'       => 'Reconciliation|Reconciliations',
+    'statement_imports'     => 'ייבוא דף חשבון|ייבוא דפי חשבון',
     'deposits'              => 'Deposit|Deposits',
     'withdrawals'           => 'Withdrawal|Withdrawals',
 

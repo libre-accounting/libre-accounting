@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Banking;
 
 use App\Abstracts\Http\Controller;
 use App\Http\Requests\Banking\StatementImport as Request;
+use App\Jobs\Banking\DeleteBankStatementImport;
 use App\Jobs\Banking\ImportCamtStatement;
 use App\Models\Banking\Account;
 use App\Models\Banking\BankStatementImport;
@@ -55,17 +56,26 @@ class StatementImports extends Controller
      */
     public function import(Request $request)
     {
-        $response = $this->ajaxDispatch(new ImportCamtStatement(
+        $job = new ImportCamtStatement(
             $request->file('import'),
             (int) $request->get('account_id')
-        ));
+        );
+
+        $response = $this->ajaxDispatch($job);
 
         if ($response['success']) {
             $response['redirect'] = route('statement-imports.edit', $response['data']->id);
 
-            $message = trans('statement_imports.messages.staged', ['count' => $response['data']->total_lines]);
+            flash(trans('statement_imports.messages.staged', ['count' => $response['data']->total_lines]))->success();
 
-            flash($message)->success();
+            // Non-blocking warnings surfaced after a successful import.
+            if ($job->truncated > 0) {
+                flash(trans('statement_imports.messages.truncated', ['count' => $job->truncated]))->warning()->important();
+            }
+
+            if ($job->iban_mismatch) {
+                flash(trans('statement_imports.messages.iban_mismatch'))->warning()->important();
+            }
         } else {
             $response['redirect'] = route('statement-imports.create');
 
@@ -96,9 +106,7 @@ class StatementImports extends Controller
      */
     public function destroy(BankStatementImport $statement_import)
     {
-        // Soft-delete the run and its staged lines (committed transactions are kept).
-        $statement_import->lines()->delete();
-        $statement_import->delete();
+        $this->ajaxDispatch(new DeleteBankStatementImport($statement_import));
 
         $message = trans('messages.success.deleted', ['type' => trans_choice('general.statement_imports', 1)]);
 

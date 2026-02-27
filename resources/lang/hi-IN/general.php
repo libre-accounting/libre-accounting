@@ -48,6 +48,7 @@ return [
     'contacts'              => 'संपर्क|संपर्क',
     'documents'             => 'दस्तावेज़|दस्तावेज़',
     'reconciliations'       => 'मेल-मिलाप|मेल-मिलाप',
+    'statement_imports'     => 'स्टेटमेंट आयात|स्टेटमेंट आयात',
     'developers'            => 'डेवलपर|डेवलपर्स',
     'schedules'             => 'शिड्यूल|शिड्यूल',
     'groups'                => 'समूह|समूह',

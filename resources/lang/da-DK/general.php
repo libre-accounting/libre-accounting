@@ -41,6 +41,7 @@ return [
     'others'                => 'Andre | Andre',
     'contacts'              => 'Kontakt|Kontakter',
     'reconciliations'       => 'Afstemt|Afstemninger',
+    'statement_imports'     => 'Kontoudtogsimport|Kontoudtogsimporter',
     'developers'            => 'Udvikler|Udviklere',
     'schedules'             => 'Tidsplan|Tidsplaner',
     'groups'                => 'Gruppe|Grupper',
