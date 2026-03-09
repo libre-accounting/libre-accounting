@@ -1,4 +1,14 @@
-FROM php:8.1-fpm
+FROM node:24-alpine AS node
+
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm install
+COPY resources resources
+COPY public public
+COPY webpack.mix.js tailwind.config.js presets.js ./
+RUN npm run production
+
+FROM php:8.1-fpm AS php
 
 # Arguments defined in docker-compose.yml
 ARG LIBRE_ACCOUNTING_DOCKERFILE_VERSION=0.1
@@ -44,19 +54,23 @@ RUN docker-php-ext-configure gd \
    pcntl \
    pdo \
    pdo_mysql \
-   zip
+   zip \
+   && pecl install redis \
+   && docker-php-ext-enable redis
 
-# Download Libre Accounting application
-RUN mkdir -p /var/www/libre-accounting \
-   && curl -Lo /tmp/libre-accounting.zip 'https://libreaccounting.org/download.php?version=latest&utm_source=docker&utm_campaign=developers' \
-   && unzip /tmp/libre-accounting.zip -d /var/www/html \
-   && rm -f /tmp/libre-accounting.zip
-
-COPY files/libre-accounting-php-fpm.sh /usr/local/bin/libre-accounting-php-fpm.sh
-COPY files/html /var/www/html
-
-# Set working directory
 WORKDIR /var/www/html
+# Install PHP dependencies first so this layer is cached across source changes
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
+COPY composer.json composer.lock ./
+RUN composer install --no-scripts --no-autoloader --prefer-dist --no-interaction
+# Now copy the application source and finish the composer setup
+COPY . /var/www/html
+RUN composer dump-autoload --optimize
+# Copy node dependencies
+COPY --from=node /app/public/js /var/www/html/public/js
+
+COPY docker/files/libre-accounting-php-fpm.sh /usr/local/bin/libre-accounting-php-fpm.sh
+COPY docker/files/html /var/www/html
 
 EXPOSE 9000
 ENTRYPOINT ["/usr/local/bin/libre-accounting-php-fpm.sh"]

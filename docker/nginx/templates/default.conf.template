@@ -1,6 +1,5 @@
 upstream php {
-    server unix:/tmp/php-fpm.sock;
-    server akaunting:9000;
+    server libre-accounting:9000;
 }
 
 server {

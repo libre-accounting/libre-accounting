@@ -5,8 +5,8 @@ services:
   libre-accounting:
     container_name: libre-accounting
     build:
-      dockerfile: fpm.Dockerfile
-      context: .
+      dockerfile: docker/fpm.Dockerfile
+      context: ..
     volumes:
       - libre-accounting-data:/var/www/html
     restart: unless-stopped
