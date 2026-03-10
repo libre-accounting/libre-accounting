@@ -42,21 +42,19 @@ RUN rm -rf composer-setup.php
 RUN npm config rm proxy
 RUN npm config rm https-proxy
 
-# Download Libre Accounting application
-RUN mkdir -p /var/www/html
-
 # Setup Working Dir
 WORKDIR /var/www/html
 
-RUN git clone https://github.com/libre-accounting/libre-accounting.git .
+COPY . .
 RUN chown -R www-data:www-data /var/www/html
 USER www-data
 RUN composer prod
 RUN npm install
 RUN npm run prod
 
-COPY files/libre-accounting-php-fpm-nginx-supervisord.sh /usr/local/bin/libre-accounting-php-fpm-nginx-supervisord.sh
-COPY files/html /var/www/html
+COPY docker/files/libre-accounting-php-fpm-nginx-supervisord.sh /usr/local/bin/libre-accounting-php-fpm-nginx-supervisord.sh
+COPY docker/files/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY docker/files/html /var/www/html
 
 USER root
 

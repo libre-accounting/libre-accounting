@@ -42,7 +42,18 @@ php artisan install --db-name="libre_accounting" --db-username="root" --db-passw
 
 ## Docker
 
-A ready-to-run image is published to the GitHub Container Registry on every release. Pull the latest with:
+Every release publishes six images to the GitHub Container Registry, each built natively for `amd64` and `arm64`. Pick the one that fits your stack:
+
+| Image tag | Server | Notes |
+| --- | --- | --- |
+| `ghcr.io/libre-accounting/libre-accounting:latest` | Apache | The default image. Simplest option, one container. |
+| `...:latest-fpm` | PHP-FPM | Pairs with your own Nginx/reverse proxy. |
+| `...:latest-fpm-alpine` | PHP-FPM (Alpine) | Same as above, smaller base image. |
+| `...:latest-fpm-alpine-nginx` | PHP-FPM + Nginx | Nginx runs inside the same container. |
+| `...:latest-fpm-alpine-nginx-composer` | PHP-FPM + Nginx | Builds assets from source at image-build time rather than shipping pre-built ones. |
+| `...:latest-fpm-alpine-nginx-composer-supervisor` | PHP-FPM + Nginx | Same as above, but Supervisor manages both processes. |
+
+Swap `latest` for a version like `3.3.0` to pin a release. Pull one directly:
 
 ```shell
 docker pull ghcr.io/libre-accounting/libre-accounting:latest
@@ -74,6 +85,14 @@ docker compose up -d
 
 > Never set `LIBRE_ACCOUNTING_SETUP=true` again after the first run.
 
+By default, `docker compose up` pulls the Apache image. To run one of the other variants instead, pick the matching Compose file from `docker/` and run it from the repository root, not from inside `docker/`:
+
+```shell
+LIBRE_ACCOUNTING_SETUP=true docker compose -f docker/fpm-docker-compose.yml up -d
+```
+
+The other Compose files are named after the images in the table above: `docker/fpm-alpine-docker-compose.yml`, `docker/fpm-alpine-nginx-docker-compose.yml`, and so on. Each builds its matching Dockerfile from your local checkout, so add `--build` if you've made local changes you want reflected in the image.
+
 ### Database cluster
 
 If you have a database cluster, point reads and writes at different hosts:
@@ -94,29 +113,6 @@ REDIS_HOST: "example-redis"
 CACHE_DRIVER: "redis"
 SESSION_DRIVER: "redis"
 QUEUE_CONNECTION: "redis"
-```
-
-### Alternative setups
-
-The `docker/` directory ships extra Compose files and Dockerfiles for FPM/Nginx-based deployments. They use paths relative to `docker/`, so run them from there:
-
-```shell
-cd docker
-
-# FPM on Debian, with Nginx as an external proxy
-LIBRE_ACCOUNTING_SETUP=true docker compose -f fpm-docker-compose.yml up --build
-
-# FPM on Alpine, with Nginx as an external proxy
-LIBRE_ACCOUNTING_SETUP=true docker compose -f fpm-docker-compose.yml -f fpm-alpine-docker-compose.yml up --build
-
-# FPM on Alpine, with Nginx as an internal proxy
-LIBRE_ACCOUNTING_SETUP=true docker compose -f fpm-alpine-nginx-docker-compose.yml up --build
-
-# ...also build from source with Composer and Npm
-LIBRE_ACCOUNTING_SETUP=true docker compose -f fpm-alpine-nginx-docker-compose.yml -f fpm-alpine-nginx-composer-docker-compose.yml up --build
-
-# ...and add Supervisor to manage the queue workers
-LIBRE_ACCOUNTING_SETUP=true docker compose -f fpm-alpine-nginx-docker-compose.yml -f fpm-alpine-nginx-composer-supervisor-docker-compose.yml up --build
 ```
 
 ## Contributing

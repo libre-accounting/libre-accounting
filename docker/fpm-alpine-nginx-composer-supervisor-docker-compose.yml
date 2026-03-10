@@ -3,5 +3,5 @@ services:
 
   libre-accounting:
     build:
-      dockerfile: fpm-alpine-nginx-composer-supervisor.Dockerfile
-      context: .
+      dockerfile: docker/fpm-alpine-nginx-composer-supervisor.Dockerfile
+      context: ..

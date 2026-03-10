@@ -4,7 +4,7 @@ services:
 
   libre-accounting:
     build:
-      dockerfile: fpm-alpine.Dockerfile
-      context: .
+      dockerfile: docker/fpm-alpine.Dockerfile
+      context: ..
   libre-accounting-proxy:
     image: nginx:1.19.0-alpine
