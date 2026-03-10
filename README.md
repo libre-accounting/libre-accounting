@@ -131,6 +131,16 @@ If you'd like to contribute translations, please check out our [Crowdin](https:/
 
 Please see [Releases](../../releases) for more information on what has changed recently.
 
+## Releasing
+
+Maintainers cut a release with:
+
+```shell
+npm run release
+```
+
+This runs [release-it](https://github.com/release-it/release-it), which bumps the version in `package.json` and `config/version.php` (including the release date shown in the app footer), commits, tags `vX.Y.Z`, pushes, and opens a prefilled GitHub Release for review. Tagging is also what triggers the [Docker workflow](.github/workflows/docker.yml) to build and publish new images.
+
 ## Security
 
 Please review [our security policy](SECURITY.md) on how to report security vulnerabilities.
