@@ -52,8 +52,17 @@ else
     unset COMPANY_NAME COMPANY_EMAIL ADMIN_EMAIL ADMIN_PASSWORD
 fi
 
-chmod -R u=rwX,g=rX,o=rX /var/www/html
-chown -R www-data:root /var/www/html
+chmod -R u=rwX,g=rX,o=rX storage bootstrap/cache
+chown -R www-data:root storage bootstrap/cache
+
+# .env and robots.txt are (re)written by the installer as root; only touch
+# them if they exist so a first boot before install doesn't fail here.
+for f in .env robots.txt; do
+    if [ -e "$f" ]; then
+        chmod u=rw,g=r,o=r "$f"
+        chown www-data:root "$f"
+    fi
+done
 
 if [ "$do_start" ]; then
     php-fpm -D

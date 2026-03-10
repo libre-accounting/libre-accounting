@@ -66,6 +66,11 @@ COPY --from=node /app/public/js /var/www/html/public/js
 COPY docker/files/libre-accounting-php-fpm.sh /usr/local/bin/libre-accounting-php-fpm.sh
 COPY docker/files/html /var/www/html
 
+# Set ownership/permissions once at build time (cached layer) instead of on
+# every container start.
+RUN chown -R www-data:root /var/www/html \
+ && chmod -R u=rwX,g=rX,o=rX /var/www/html
+
 EXPOSE 9000
 ENTRYPOINT ["/usr/local/bin/libre-accounting-php-fpm.sh"]
 CMD ["--start"]

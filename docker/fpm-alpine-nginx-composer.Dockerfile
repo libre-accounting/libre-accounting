@@ -56,6 +56,12 @@ COPY docker/files/html /var/www/html
 
 USER root
 
+# Set ownership/permissions once at build time (cached layer) instead of on
+# every container start. The late COPYs above land as root, so this needs to
+# run after them.
+RUN chown -R www-data:root /var/www/html \
+ && chmod -R u=rwX,g=rX,o=rX /var/www/html
+
 EXPOSE 9000
 ENTRYPOINT ["/usr/local/bin/libre-accounting-php-fpm-nginx.sh"]
 CMD ["--start"]

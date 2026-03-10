@@ -71,5 +71,10 @@ COPY --from=node /app/public/js /var/www/html/public/js
 COPY docker/files/libre-accounting.sh /usr/local/bin/libre-accounting.sh
 COPY docker/files/html /var/www/html
 
+# Set ownership/permissions once at build time (cached layer) instead of on
+# every container start.
+RUN chown -R www-data:root /var/www/html \
+ && chmod -R u=rwX,g=rX,o=rX /var/www/html
+
 ENTRYPOINT ["/usr/local/bin/libre-accounting.sh"]
 CMD ["--start"]
