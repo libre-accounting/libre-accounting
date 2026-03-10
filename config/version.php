@@ -10,16 +10,16 @@ return [
 
     'minor'     =>  '2',
 
-    'patch'     =>  '0',
+    'patch'     =>  '2',
 
     'build'     =>  '',
 
     'status'    =>  'Stable',
 
-    'date'      =>  '17-January-2026',
+    'date'      =>  '10-March-2026',
 
-    'time'      =>  '13:00',
+    'time'      =>  '17:37',
 
-    'zone'      =>  'GMT +3',
+    'zone'      =>  'GMT +0',
 
 ];
