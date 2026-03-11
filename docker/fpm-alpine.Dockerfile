@@ -64,6 +64,7 @@ RUN composer dump-autoload --optimize
 COPY --from=node /app/public/js /var/www/html/public/js
 
 COPY docker/files/libre-accounting-php-fpm.sh /usr/local/bin/libre-accounting-php-fpm.sh
+COPY docker/files/php-fpm-tuning.conf /usr/local/etc/php-fpm.d/zz-tuning.conf
 COPY docker/files/html /var/www/html
 
 # Set ownership/permissions once at build time (cached layer) instead of on

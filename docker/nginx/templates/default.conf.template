@@ -45,6 +45,21 @@ server {
         fastcgi_index index.php;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         include fastcgi_params;
+
+        # Fail fast when the FPM pool is saturated instead of queueing
+        # connections indefinitely.
+        fastcgi_connect_timeout 10s;
+
+        # Must stay above request_terminate_timeout (120s) in the FPM pool
+        # so FPM kills stuck requests before nginx gives up on them.
+        fastcgi_read_timeout 180s;
+        fastcgi_send_timeout 60s;
+
+        # Larger buffers so big pages (debug mode responses can exceed
+        # 0.5 MB) stream without hitting temp-file buffering.
+        fastcgi_buffer_size 32k;
+        fastcgi_buffers 32 32k;
+        fastcgi_busy_buffers_size 64k;
     }
 
     location ~ /\.(?!well-known).* {

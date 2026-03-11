@@ -53,6 +53,7 @@ RUN npm install
 RUN npm run prod
 
 COPY docker/files/libre-accounting-php-fpm-nginx-supervisord.sh /usr/local/bin/libre-accounting-php-fpm-nginx-supervisord.sh
+COPY docker/files/php-fpm-tuning.conf /usr/local/etc/php-fpm.d/zz-tuning.conf
 COPY docker/files/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY docker/files/html /var/www/html
 
