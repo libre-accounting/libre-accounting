@@ -41,6 +41,14 @@
 
         @stack('connect_button_end')
 
+        @if (empty($transaction->document_id) && ! $transaction->reconciled && $transaction->isNotTransferTransaction())
+            @can($permissionCreate)
+                <x-dropdown.button id="show-more-actions-link-transfer-{{ $transaction->type }}" @click="onLinkTransfer('{{ route('transactions.transfer-dial', $transaction->id) }}')">
+                    {{ trans('transfers.link') }}
+                </x-dropdown.button>
+            @endcan
+        @endif
+
         @if (! $hideDivider1 && $transaction->isNotDocumentTransaction() && $transaction->isNotTransferTransaction())
             <x-dropdown.divider />
         @endif

@@ -142,6 +142,8 @@ Route::group(['prefix' => 'banking'], function () {
     Route::get('transactions/{transaction}/duplicate', 'Banking\Transactions@duplicate')->name('transactions.duplicate');
     Route::get('transactions/{transaction}/dial', 'Banking\Transactions@dial')->name('transactions.dial');
     Route::post('transactions/{transaction}/connect', 'Banking\Transactions@connect')->name('transactions.connect');
+    Route::get('transactions/{transaction}/transfer-dial', 'Banking\Transactions@transferDial')->name('transactions.transfer-dial');
+    Route::post('transactions/{transaction}/link-transfer', 'Banking\Transactions@linkTransfer')->middleware('money')->name('transactions.link-transfer');
     Route::post('transactions/import', 'Banking\Transactions@import')->middleware('import')->name('transactions.import');
     Route::get('transactions/export', 'Banking\Transactions@export')->name('transactions.export');
     Route::resource('transactions', 'Banking\Transactions', ['middleware' => ['date.format', 'money', 'dropzone']]);

@@ -6,6 +6,7 @@ use App\Abstracts\Http\Controller;
 use App\Events\Banking\TransactionPrinting;
 use App\Events\Banking\TransactionSent;
 use App\Exports\Banking\Transactions as Export;
+use App\Http\Requests\Banking\LinkTransfer;
 use App\Http\Requests\Banking\Transaction as Request;
 use App\Http\Requests\Banking\TransactionConnect;
 use App\Http\Requests\Common\Import as ImportRequest;
@@ -13,6 +14,7 @@ use App\Imports\Banking\Transactions as Import;
 use App\Jobs\Banking\CreateTransaction;
 use App\Jobs\Banking\DeleteTransaction;
 use App\Jobs\Banking\DuplicateTransaction;
+use App\Jobs\Banking\LinkTransactionsAsTransfer;
 use App\Jobs\Banking\MatchBankingDocumentTransaction;
 use App\Jobs\Banking\SplitTransaction;
 use App\Jobs\Banking\UpdateTransaction;
@@ -71,11 +73,34 @@ class Transactions extends Controller
 
         $translations = $this->getTranslationsForConnect('income');
 
+        $transfer_link_translations = $this->getTransferLinkTranslations();
+
         return $this->response('banking.transactions.index', compact(
             'transactions',
             'translations',
-            'summary_amounts'
+            'summary_amounts',
+            'transfer_link_translations'
         ));
+    }
+
+    /**
+     * Translations for the "link as transfer" modal.
+     */
+    private function getTransferLinkTranslations(): array
+    {
+        return [
+            'title'                => trans('transfers.link'),
+            'account'              => trans_choice('general.accounts', 1),
+            'date'                 => trans('general.date'),
+            'match_account'        => trans('transfers.link_match_account'),
+            'select_account'       => trans('general.form.select.field', ['field' => trans_choice('general.accounts', 1)]),
+            'select_account_hint'  => trans('transfers.link_select_account_hint'),
+            'all_dates'            => trans('transfers.link_all_dates'),
+            'no_candidates'        => trans('transfers.link_no_candidates'),
+            'loading'              => trans('general.loading'),
+            'cancel'               => trans('general.cancel'),
+            'save'                 => trans('general.save'),
+        ];
     }
 
     /**
@@ -88,7 +113,9 @@ class Transactions extends Controller
         $title = $transaction->isIncome() ? trans_choice('general.receipts', 1) : trans('transactions.payment_made');
         $real_type = $this->getRealTypeTransaction($transaction->type);
 
-        return view('banking.transactions.show', compact('transaction', 'title', 'real_type'));
+        $transfer_link_translations = $this->getTransferLinkTranslations();
+
+        return view('banking.transactions.show', compact('transaction', 'title', 'real_type', 'transfer_link_translations'));
     }
 
     /**
@@ -404,6 +431,99 @@ class Transactions extends Controller
 
             flash($message)->success();
         } else {
+            $message = $response['message'];
+
+            flash($message)->error()->important();
+        }
+
+        return response()->json($response);
+    }
+
+    /**
+     * Return the data for the "link as transfer" modal: the accounts the user
+     * can match against and, once an account is chosen, the candidate
+     * transactions on it that could be the opposite leg.
+     */
+    public function transferDial(Transaction $transaction)
+    {
+        // Only plain, unreconciled, non-document transactions can be linked.
+        $linkable = $transaction->isNotTransferTransaction()
+            && ! $transaction->reconciled
+            && empty($transaction->document_id);
+
+        if (! $linkable) {
+            return response()->json([
+                'error'   => true,
+                'message' => trans('transfers.errors.link_not_linkable'),
+            ]);
+        }
+
+        $accounts = Account::enabled()
+            ->where('id', '!=', $transaction->account_id)
+            ->orderBy('name')
+            ->get()
+            ->pluck('title', 'id');
+
+        $candidates = collect([]);
+
+        $account_id = (int) request('account_id');
+        $all_dates = request()->boolean('all_dates');
+
+        if ($account_id) {
+            $account = Account::find($account_id);
+
+            $query = Transaction::isNotTransfer()
+                ->isNotReconciled()
+                ->whereNull('document_id')
+                ->where('account_id', $account_id);
+
+            // Opposite direction: an expense pairs with an income and vice-versa.
+            $transaction->isExpense() ? $query->income() : $query->expense();
+
+            // Same-currency accounts: the matching leg has the identical amount.
+            // Cross-currency (FX) legs differ, so don't filter by amount then.
+            if ($account && $account->currency_code === $transaction->account->currency_code) {
+                $query->where('amount', $transaction->amount);
+            }
+
+            if (! $all_dates) {
+                $query->whereDate('paid_at', $transaction->paid_at->toDateString());
+            }
+
+            $candidates = $query->with(['account', 'category', 'contact'])
+                ->orderBy('paid_at', 'desc')
+                ->get()
+                ->toJson();
+        }
+
+        return response()->json([
+            'error'       => false,
+            'transaction' => $transaction->load(['account', 'category'])->toJson(),
+            'currency'    => $transaction->currency->toJson(),
+            'accounts'    => $accounts,
+            'candidates'  => $candidates,
+        ]);
+    }
+
+    /**
+     * Link the given transaction with a matching transaction from another
+     * account, converting the pair into a transfer.
+     */
+    public function linkTransfer(Transaction $transaction, LinkTransfer $request)
+    {
+        $response = $this->ajaxDispatch(
+            new LinkTransactionsAsTransfer($transaction, (int) $request->get('target_transaction_id'))
+        );
+
+        if ($response['success']) {
+            $response['redirect'] = route('transfers.show', $response['data']->id);
+
+            $message = trans('messages.success.added', ['type' => trans_choice('general.transfers', 1)]);
+
+            flash($message)->success();
+        } else {
+            $response['redirect'] = route('transactions.index');
+
             $message = $response['message'];
 
             flash($message)->error()->important();

@@ -21,6 +21,7 @@ import AkauntingHtmlEditor from './../components/AkauntingHtmlEditor';
 import AkauntingCountdown from './../components/AkauntingCountdown';
 import AkauntingCurrencyConversion from './../components/AkauntingCurrencyConversion';
 import AkauntingConnectTransactions from './../components/AkauntingConnectTransactions';
+import LibreAccountingLinkTransfer from './../components/LibreAccountingLinkTransfer';
 import AkauntingSwitch from './../components/AkauntingSwitch';
 import AkauntingSlider from './../components/AkauntingSlider';
 import AkauntingColor from './../components/AkauntingColor';
@@ -77,6 +78,7 @@ export default {
         AkauntingCountdown,
         AkauntingCurrencyConversion,
         AkauntingConnectTransactions,
+        LibreAccountingLinkTransfer,
         AkauntingSwitch,
         AkauntingSlider,
         AkauntingColor,
@@ -110,6 +112,14 @@ export default {
                 show: false,
                 currency: {},
                 documents: [],
+            },
+            link_transfer: {
+                show: false,
+                route: '',
+                transaction: {},
+                accounts: [],
+                candidates: [],
+                loading: false,
             },
 
             cardData: {
@@ -1204,6 +1214,73 @@ export default {
             })
             .finally(function () {
                 // always executed
+            });
+        },
+
+        // open the "link as transfer" modal for a transaction
+        onLinkTransfer(route) {
+            this.link_transfer.route = route;
+            this.link_transfer.candidates = [];
+
+            Promise.resolve(window.axios.get(route)).then(response => {
+                if (response.data.error) {
+                    return;
+                }
+
+                this.link_transfer.transaction = JSON.parse(response.data.transaction);
+                this.link_transfer.accounts = response.data.accounts;
+                this.link_transfer.show = true;
+            })
+            .catch(error => {
+            });
+        },
+
+        // re-fetch candidate transactions when the account or date toggle changes
+        onLinkTransferFilter(filter) {
+            if (! filter.account_id) {
+                this.link_transfer.candidates = [];
+
+                return;
+            }
+
+            this.link_transfer.loading = true;
+
+            Promise.resolve(window.axios.get(this.link_transfer.route, {
+                params: {
+                    account_id: filter.account_id,
+                    all_dates: filter.all_dates ? 1 : 0,
+                }
+            })).then(response => {
+                this.link_transfer.candidates = response.data.candidates ? JSON.parse(response.data.candidates) : [];
+            })
+            .catch(error => {
+                this.link_transfer.candidates = [];
+            })
+            .finally(() => {
+                this.link_transfer.loading = false;
+            });
+        },
+
+        // confirm the link and post it to the server
+        onLinkTransferConfirm(target_transaction_id) {
+            if (! target_transaction_id) {
+                return;
+            }
+
+            this.link_transfer.loading = true;
+
+            Promise.resolve(window.axios.post(this.link_transfer.route.replace('/transfer-dial', '/link-transfer'), {
+                target_transaction_id: target_transaction_id,
+            })).then(response => {
+                if (response.data.redirect) {
+                    window.location.href = response.data.redirect;
+                }
+            })
+            .catch(error => {
+            })
+            .finally(() => {
+                this.link_transfer.loading = false;
+                this.link_transfer.show = false;
             });
         },
 

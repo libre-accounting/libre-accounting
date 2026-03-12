@@ -211,6 +211,18 @@
                 modal-dialog-class="max-w-screen-lg"
                 v-on:close-modal="connect.show = false"
             ></akaunting-connect-transactions>
+
+            <libre-accounting-link-transfer
+                :show="link_transfer.show"
+                :transaction="link_transfer.transaction"
+                :accounts="link_transfer.accounts"
+                :candidates="link_transfer.candidates"
+                :loading="link_transfer.loading"
+                :translations="{{ json_encode($transfer_link_translations ?? []) }}"
+                v-on:filter-changed="onLinkTransferFilter"
+                v-on:confirm="onLinkTransferConfirm"
+                v-on:close-modal="link_transfer.show = false"
+            ></libre-accounting-link-transfer>
         @else
             <x-empty-page
                 group="banking"

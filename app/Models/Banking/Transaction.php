@@ -528,6 +528,29 @@ class Transaction extends Model
         } catch (\Exception $e) {}
 
         try {
+            if (
+                empty($this->document_id)
+                && ! $this->reconciled
+                && $this->isNotTransferTransaction()
+            ) {
+                $actions[] = [
+                    'type' => 'button',
+                    'title' => trans('transfers.link'),
+                    'icon' => 'sync_alt',
+                    'permission' => 'create-banking-transactions',
+                    'attributes' => [
+                        'id' => 'index-line-actions-link-transfer-' . $this->type . '-'  . $this->id,
+                        '@click' => 'onLinkTransfer(\'' . route('transactions.transfer-dial', $this->id) . '\')',
+                    ],
+                ];
+
+                $actions[] = [
+                    'type' => 'divider',
+                ];
+            }
+        } catch (\Exception $e) {}
+
+        try {
             $actions[] = [
                 'title' => trans('general.print'),
                 'icon' => 'print',

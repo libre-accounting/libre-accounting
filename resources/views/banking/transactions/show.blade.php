@@ -13,6 +13,18 @@
 
     <x-slot name="content">
         <x-transactions.show.content type="{{ $real_type }}" :transaction="$transaction" hide-schedule hide-children />
+
+        <libre-accounting-link-transfer
+            :show="link_transfer.show"
+            :transaction="link_transfer.transaction"
+            :accounts="link_transfer.accounts"
+            :candidates="link_transfer.candidates"
+            :loading="link_transfer.loading"
+            :translations="{{ json_encode($transfer_link_translations ?? []) }}"
+            v-on:filter-changed="onLinkTransferFilter"
+            v-on:confirm="onLinkTransferConfirm"
+            v-on:close-modal="link_transfer.show = false"
+        ></libre-accounting-link-transfer>
     </x-slot>
 
     @push('stylesheet')
