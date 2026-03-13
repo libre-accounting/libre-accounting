@@ -54,7 +54,7 @@
                         <x-table.td class="w-2/12">
                             <x-date date="{{ $line->booked_at }}" />
                             @if ($line->remittance_info)
-                                <div class="text-xs text-gray-500 truncate">{{ $line->remittance_info }}</div>
+                                <div class="text-xs text-gray-500 break-words">{{ $line->remittance_info }}</div>
                             @endif
                         </x-table.td>
 

@@ -160,7 +160,7 @@
                 </td>
 
                 <td valign="top" class="border-bottom-dashed-black" style="width:70%; margin: 0px; padding: 8px 0 0 0; font-size: 12px;">
-                    <p style="font-size:12px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; margin: 0;">
+                    <p style="font-size:12px; word-break: break-word; margin: 0;">
                         {!! nl2br($transaction->description) !!}
                     </p>
                 </td>

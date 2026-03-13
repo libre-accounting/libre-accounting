@@ -44,6 +44,7 @@ return [
     'updates'               => 'Update|Updates',
     'numbers'               => 'Number|Numbers',
     'statuses'              => 'Status|Statuses',
+    'status'                => 'Status',
     'others'                => 'Other|Others',
     'contacts'              => 'Contact|Contacts',
     'documents'             => 'Document|Documents',
