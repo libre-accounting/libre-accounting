@@ -96,4 +96,6 @@
             </x-index.container>
         @endif
     </x-slot>
+
+    <x-script folder="banking" file="statement-imports" />
 </x-layouts.admin>
