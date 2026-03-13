@@ -87,8 +87,10 @@ class BankStatementImport extends Model
         $actions[] = [
             'type' => 'delete',
             'icon' => 'delete',
+            'title' => trans_choice('general.statement_imports', 1),
             'route' => 'statement-imports.destroy',
             'permission' => 'delete-banking-statement-imports',
+            'model-name' => 'filename',
             'attributes' => [
                 'id' => 'index-line-actions-delete-statement-import-' . $this->id,
             ],

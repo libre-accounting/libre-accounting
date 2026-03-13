@@ -106,12 +106,20 @@ class StatementImports extends Controller
      */
     public function destroy(BankStatementImport $statement_import)
     {
-        $this->ajaxDispatch(new DeleteBankStatementImport($statement_import));
+        $response = $this->ajaxDispatch(new DeleteBankStatementImport($statement_import));
 
-        $message = trans('messages.success.deleted', ['type' => trans_choice('general.statement_imports', 1)]);
+        $response['redirect'] = route('statement-imports.index');
 
-        flash($message)->success();
+        if ($response['success']) {
+            $message = trans('messages.success.deleted', ['type' => trans_choice('general.statement_imports', 1)]);
 
-        return redirect()->route('statement-imports.index');
+            flash($message)->success();
+        } else {
+            $message = $response['message'];
+
+            flash($message)->error()->important();
+        }
+
+        return response()->json($response);
     }
 }
