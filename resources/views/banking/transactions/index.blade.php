@@ -146,6 +146,9 @@
                                                 </x-slot>
                                                 <x-slot name="second">
                                                     {{ $item->number }}
+                                                    @if ($item->description)
+                                                        <div class="text-xs text-gray-500 truncate max-w-[16rem]" title="{{ $item->description }}">{{ $item->description }}</div>
+                                                    @endif
                                                 </x-slot>
                                             </x-table.td>
 
