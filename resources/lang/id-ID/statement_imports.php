@@ -42,6 +42,7 @@ return [
         'not_xml'           => 'Rekening koran harus berupa berkas XML CAMT.053.',
         'unreadable'        => 'Berkas yang diunggah tidak dapat dibaca.',
         'already_imported'  => 'Berkas yang sama persis ini sudah pernah diimpor.',
+        'staging_failed'    => 'Rekening koran tidak dapat disiapkan untuk ditinjau. Silakan coba lagi.',
         'none_selected'     => 'Pilih setidaknya satu baris untuk diimpor.',
         'category_required' => 'Pilih kategori untuk setiap baris yang dipilih sebelum mengimpor.',
     ],

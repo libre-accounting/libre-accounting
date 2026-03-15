@@ -42,6 +42,7 @@ return [
         'not_xml'           => 'Tiliotteen on oltava CAMT.053 XML -tiedosto.',
         'unreadable'        => 'Ladattua tiedostoa ei voitu lukea.',
         'already_imported'  => 'Juuri tämä tiedosto on jo tuotu.',
+        'staging_failed'    => 'Tiliotetta ei voitu valmistella tarkistettavaksi. Yritä uudelleen.',
         'none_selected'     => 'Valitse vähintään yksi tuotava rivi.',
         'category_required' => 'Valitse kategoria jokaiselle valitulle riville ennen tuontia.',
     ],

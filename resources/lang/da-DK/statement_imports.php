@@ -42,6 +42,7 @@ return [
         'not_xml'           => 'Kontoudtoget skal være en CAMT.053 XML-fil.',
         'unreadable'        => 'Den uploadede fil kunne ikke læses.',
         'already_imported'  => 'Netop denne fil er allerede blevet importeret.',
+        'staging_failed'    => 'Kontoudtoget kunne ikke klargøres til gennemgang. Prøv igen.',
         'none_selected'     => 'Vælg mindst én linje at importere.',
         'category_required' => 'Vælg en kategori for hver valgt linje, før du importerer.',
     ],

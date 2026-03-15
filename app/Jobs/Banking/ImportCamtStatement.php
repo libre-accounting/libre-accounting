@@ -48,8 +48,11 @@ class ImportCamtStatement extends Job
 
         $file_hash = hash('sha256', $contents);
 
-        // Guard against re-uploading the exact same file.
-        $existing = BankStatementImport::where('file_hash', $file_hash)->first();
+        // Guard against re-uploading the exact same file. Bypass the model cache:
+        // this is a correctness-critical dedup check that must reflect live DB
+        // state (including rows soft-deleted since the last import), never a
+        // stale cached result from a persistent cache store.
+        $existing = BankStatementImport::disableCache()->where('file_hash', $file_hash)->first();
 
         if ($existing) {
             throw new Camt053ParseException(trans('statement_imports.errors.already_imported'));
@@ -149,7 +152,9 @@ class ImportCamtStatement extends Job
      */
     protected function isDuplicate(string $hash): bool
     {
-        return BankStatementLine::where('hash', $hash)->exists();
+        // Bypass the model cache: dedup must reflect live DB state, not a stale
+        // cached result (a soft-deleted line must not count as a duplicate).
+        return BankStatementLine::disableCache()->where('hash', $hash)->exists();
     }
 
     /**

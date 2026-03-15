@@ -42,6 +42,7 @@ return [
         'not_xml'           => 'Koʻchirma CAMT.053 XML fayli boʻlishi kerak.',
         'unreadable'        => 'Yuklangan faylni oʻqib boʻlmadi.',
         'already_imported'  => 'Aynan shu fayl allaqachon import qilingan.',
+        'staging_failed'    => 'Hisobvaraq ko‘chirmasini ko‘rib chiqish uchun tayyorlab bo‘lmadi. Iltimos, qayta urinib ko‘ring.',
         'none_selected'     => 'Import qilish uchun kamida bitta qatorni tanlang.',
         'category_required' => 'Import qilishdan oldin har bir tanlangan qator uchun kategoriyani tanlang.',
     ],

@@ -42,6 +42,7 @@ return [
         'not_xml'           => 'Taarifa lazima iwe faili la CAMT.053 XML.',
         'unreadable'        => 'Faili lililopakiwa halikuweza kusomwa.',
         'already_imported'  => 'Faili hili kamili limeshaingizwa awali.',
+        'staging_failed'    => 'Taarifa haikuweza kuandaliwa kwa ukaguzi. Tafadhali jaribu tena.',
         'none_selected'     => 'Chagua angalau mstari mmoja wa kuingiza.',
         'category_required' => 'Chagua kategoria kwa kila mstari uliochaguliwa kabla ya kuingiza.',
     ],

@@ -42,6 +42,7 @@ return [
         'not_xml'           => 'O extrato deve ser um arquivo XML CAMT.053.',
         'unreadable'        => 'O arquivo enviado não pôde ser lido.',
         'already_imported'  => 'Este exato arquivo já foi importado.',
+        'staging_failed'    => 'Não foi possível preparar o extrato para revisão. Tente novamente.',
         'none_selected'     => 'Selecione pelo menos uma linha para importar.',
         'category_required' => 'Escolha uma categoria para cada linha selecionada antes de importar.',
     ],

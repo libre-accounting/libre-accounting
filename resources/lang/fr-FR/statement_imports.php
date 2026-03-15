@@ -42,6 +42,7 @@ return [
         'not_xml'           => 'Le relevé doit être un fichier XML CAMT.053.',
         'unreadable'        => 'Le fichier importé n\'a pas pu être lu.',
         'already_imported'  => 'Ce fichier exact a déjà été importé.',
+        'staging_failed'    => 'Le relevé n\'a pas pu être préparé pour vérification. Veuillez réessayer.',
         'none_selected'     => 'Sélectionnez au moins une ligne à importer.',
         'category_required' => 'Choisissez une catégorie pour chaque ligne sélectionnée avant l\'importation.',
     ],

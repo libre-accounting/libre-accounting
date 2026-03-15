@@ -42,6 +42,7 @@ return [
         'not_xml'           => 'Izpisek mora biti datoteka CAMT.053 XML.',
         'unreadable'        => 'Naložene datoteke ni bilo mogoče prebrati.',
         'already_imported'  => 'Prav ta datoteka je bila že uvožena.',
+        'staging_failed'    => 'Izpiska ni bilo mogoče pripraviti za pregled. Poskusite znova.',
         'none_selected'     => 'Za uvoz izberite vsaj eno vrstico.',
         'category_required' => 'Pred uvozom izberite kategorijo za vsako izbrano vrstico.',
     ],

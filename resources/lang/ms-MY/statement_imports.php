@@ -42,6 +42,7 @@ return [
         'not_xml'           => 'Penyata mestilah fail XML CAMT.053.',
         'unreadable'        => 'Fail yang dimuat naik tidak dapat dibaca.',
         'already_imported'  => 'Fail yang sama ini telah pun diimport.',
+        'staging_failed'    => 'Penyata tidak dapat disediakan untuk semakan. Sila cuba lagi.',
         'none_selected'     => 'Pilih sekurang-kurangnya satu baris untuk diimport.',
         'category_required' => 'Pilih kategori untuk setiap baris yang dipilih sebelum mengimport.',
     ],

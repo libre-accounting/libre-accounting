@@ -42,6 +42,7 @@ return [
         'not_xml'           => 'Çıxarış CAMT.053 XML faylı olmalıdır.',
         'unreadable'        => 'Yüklənmiş fayl oxuna bilmədi.',
         'already_imported'  => 'Bu eyni fayl artıq idxal edilib.',
+        'staging_failed'    => 'Bank çıxarışı baxış üçün hazırlana bilmədi. Zəhmət olmasa yenidən cəhd edin.',
         'none_selected'     => 'İdxal etmək üçün ən azı bir sətir seçin.',
         'category_required' => 'İdxal etməzdən əvvəl hər seçilmiş sətir üçün kateqoriya seçin.',
     ],

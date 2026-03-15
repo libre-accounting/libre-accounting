@@ -42,6 +42,7 @@ return [
         'not_xml'           => 'Išrašas turi būti CAMT.053 XML failas.',
         'unreadable'        => 'Įkelto failo nepavyko nuskaityti.',
         'already_imported'  => 'Šis tikslus failas jau buvo importuotas.',
+        'staging_failed'    => 'Nepavyko paruošti išrašo peržiūrai. Bandykite dar kartą.',
         'none_selected'     => 'Pasirinkite bent vieną eilutę importavimui.',
         'category_required' => 'Prieš importuodami pasirinkite kategoriją kiekvienai pasirinktai eilutei.',
     ],

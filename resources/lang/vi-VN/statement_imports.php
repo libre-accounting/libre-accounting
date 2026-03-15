@@ -42,6 +42,7 @@ return [
         'not_xml'           => 'Sao kê phải là tệp XML CAMT.053.',
         'unreadable'        => 'Không thể đọc tệp đã tải lên.',
         'already_imported'  => 'Tệp này đã được nhập trước đó.',
+        'staging_failed'    => 'Không thể chuẩn bị sao kê để xem xét. Vui lòng thử lại.',
         'none_selected'     => 'Chọn ít nhất một dòng để nhập.',
         'category_required' => 'Chọn danh mục cho mọi dòng đã chọn trước khi nhập.',
     ],

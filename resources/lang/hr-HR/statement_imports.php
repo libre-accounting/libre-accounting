@@ -42,6 +42,7 @@ return [
         'not_xml'           => 'Izvod mora biti CAMT.053 XML datoteka.',
         'unreadable'        => 'Učitanu datoteku nije moguće pročitati.',
         'already_imported'  => 'Ova točna datoteka već je uvezena.',
+        'staging_failed'    => 'Izvod nije bilo moguće pripremiti za pregled. Pokušajte ponovno.',
         'none_selected'     => 'Odaberite barem jednu stavku za uvoz.',
         'category_required' => 'Prije uvoza odaberite kategoriju za svaku odabranu stavku.',
     ],

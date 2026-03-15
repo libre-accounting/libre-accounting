@@ -42,6 +42,7 @@ return [
         'not_xml'           => 'Extrasul de cont trebuie să fie un fișier XML CAMT.053.',
         'unreadable'        => 'Fișierul încărcat nu a putut fi citit.',
         'already_imported'  => 'Acest fișier exact a fost deja importat.',
+        'staging_failed'    => 'Extrasul nu a putut fi pregătit pentru revizuire. Vă rugăm să încercați din nou.',
         'none_selected'     => 'Selectați cel puțin o linie pentru import.',
         'category_required' => 'Alegeți o categorie pentru fiecare linie selectată înainte de import.',
     ],

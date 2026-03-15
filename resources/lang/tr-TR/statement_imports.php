@@ -42,6 +42,7 @@ return [
         'not_xml'           => 'Ekstre bir CAMT.053 XML dosyası olmalıdır.',
         'unreadable'        => 'Yüklenen dosya okunamadı.',
         'already_imported'  => 'Bu dosya zaten içe aktarılmış.',
+        'staging_failed'    => 'Ekstre inceleme için hazırlanamadı. Lütfen tekrar deneyin.',
         'none_selected'     => 'İçe aktarmak için en az bir satır seçin.',
         'category_required' => 'İçe aktarmadan önce seçilen her satır için bir kategori seçin.',
     ],

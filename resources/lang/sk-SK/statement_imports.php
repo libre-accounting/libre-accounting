@@ -42,6 +42,7 @@ return [
         'not_xml'           => 'Výpis musí byť súbor CAMT.053 XML.',
         'unreadable'        => 'Nahraný súbor sa nepodarilo prečítať.',
         'already_imported'  => 'Presne tento súbor už bol importovaný.',
+        'staging_failed'    => 'Výpis sa nepodarilo pripraviť na kontrolu. Skúste to znova.',
         'none_selected'     => 'Vyberte aspoň jeden riadok na import.',
         'category_required' => 'Pred importom vyberte kategóriu pre každý vybraný riadok.',
     ],

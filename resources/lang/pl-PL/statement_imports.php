@@ -42,6 +42,7 @@ return [
         'not_xml'           => 'Wyciąg musi być plikiem CAMT.053 XML.',
         'unreadable'        => 'Nie udało się odczytać przesłanego pliku.',
         'already_imported'  => 'Ten sam plik został już zaimportowany.',
+        'staging_failed'    => 'Nie udało się przygotować wyciągu do przeglądu. Spróbuj ponownie.',
         'none_selected'     => 'Zaznacz co najmniej jedną pozycję do zaimportowania.',
         'category_required' => 'Wybierz kategorię dla każdej zaznaczonej pozycji przed importem.',
     ],

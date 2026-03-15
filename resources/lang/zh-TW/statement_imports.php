@@ -42,6 +42,7 @@ return [
         'not_xml'           => '對帳單必須為 CAMT.053 XML 檔案。',
         'unreadable'        => '無法讀取上傳的檔案。',
         'already_imported'  => '此檔案已被匯入過。',
+        'staging_failed'    => '無法準備對帳單以供審核。請重試。',
         'none_selected'     => '請至少選擇一筆明細以匯入。',
         'category_required' => '匯入前請為每一筆所選明細選擇分類。',
     ],

@@ -42,6 +42,7 @@ return [
         'not_xml'           => 'Pasqyra duhet të jetë një skedar CAMT.053 XML.',
         'unreadable'        => 'Skedari i ngarkuar nuk mund të lexohej.',
         'already_imported'  => 'Pikërisht ky skedar është importuar tashmë.',
+        'staging_failed'    => 'Deklarata nuk mund të përgatitej për shqyrtim. Ju lutemi provoni përsëri.',
         'none_selected'     => 'Zgjidhni të paktën një rresht për të importuar.',
         'category_required' => 'Zgjidhni një kategori për çdo rresht të zgjedhur përpara importimit.',
     ],

@@ -42,6 +42,7 @@ return [
         'not_xml'           => 'Het afschrift moet een CAMT.053 XML-bestand zijn.',
         'unreadable'        => 'Het geüploade bestand kon niet worden gelezen.',
         'already_imported'  => 'Dit exacte bestand is al geïmporteerd.',
+        'staging_failed'    => 'Het afschrift kon niet worden voorbereid voor beoordeling. Probeer het opnieuw.',
         'none_selected'     => 'Selecteer ten minste één regel om te importeren.',
         'category_required' => 'Kies een categorie voor elke geselecteerde regel voordat u importeert.',
     ],

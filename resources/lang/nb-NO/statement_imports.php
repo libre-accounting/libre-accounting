@@ -42,6 +42,7 @@ return [
         'not_xml'           => 'Kontoutskriften må være en CAMT.053 XML-fil.',
         'unreadable'        => 'Den opplastede filen kunne ikke leses.',
         'already_imported'  => 'Akkurat denne filen er allerede importert.',
+        'staging_failed'    => 'Kontoutskriften kunne ikke klargjøres for gjennomgang. Prøv igjen.',
         'none_selected'     => 'Velg minst én linje å importere.',
         'category_required' => 'Velg en kategori for hver valgte linje før import.',
     ],

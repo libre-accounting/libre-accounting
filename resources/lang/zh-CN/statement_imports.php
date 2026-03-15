@@ -42,6 +42,7 @@ return [
         'not_xml'           => '对账单必须是 CAMT.053 XML 文件。',
         'unreadable'        => '无法读取上传的文件。',
         'already_imported'  => '该文件已被导入过。',
+        'staging_failed'    => '无法准备对账单以供审核。请重试。',
         'none_selected'     => '请至少选择一行进行导入。',
         'category_required' => '导入前请为每一个所选明细行选择分类。',
     ],

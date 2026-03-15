@@ -42,6 +42,7 @@ return [
         'not_xml'           => 'L\'extracte ha de ser un fitxer XML CAMT.053.',
         'unreadable'        => 'No s\'ha pogut llegir el fitxer carregat.',
         'already_imported'  => 'Aquest mateix fitxer ja s\'ha importat.',
+        'staging_failed'    => 'No s\'ha pogut preparar l\'extracte per a la revisió. Torneu-ho a provar.',
         'none_selected'     => 'Selecciona almenys una línia per importar.',
         'category_required' => 'Tria una categoria per a cada línia seleccionada abans d\'importar.',
     ],

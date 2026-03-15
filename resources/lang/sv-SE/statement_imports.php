@@ -42,6 +42,7 @@ return [
         'not_xml'           => 'Kontoutdraget måste vara en CAMT.053 XML-fil.',
         'unreadable'        => 'Den uppladdade filen kunde inte läsas.',
         'already_imported'  => 'Exakt denna fil har redan importerats.',
+        'staging_failed'    => 'Kontoutdraget kunde inte förberedas för granskning. Försök igen.',
         'none_selected'     => 'Markera minst en rad att importera.',
         'category_required' => 'Välj en kategori för varje markerad rad innan import.',
     ],

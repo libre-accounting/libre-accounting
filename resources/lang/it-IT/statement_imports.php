@@ -42,6 +42,7 @@ return [
         'not_xml'           => 'L\'estratto conto deve essere un file XML CAMT.053.',
         'unreadable'        => 'Impossibile leggere il file caricato.',
         'already_imported'  => 'Questo stesso file è già stato importato.',
+        'staging_failed'    => 'Non è stato possibile preparare l\'estratto conto per la revisione. Riprova.',
         'none_selected'     => 'Seleziona almeno una riga da importare.',
         'category_required' => 'Scegli una categoria per ogni riga selezionata prima di importare.',
     ],

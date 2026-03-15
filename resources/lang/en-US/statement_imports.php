@@ -42,6 +42,7 @@ return [
         'not_xml'           => 'The statement must be a CAMT.053 XML file.',
         'unreadable'        => 'The uploaded file could not be read.',
         'already_imported'  => 'This exact file has already been imported.',
+        'staging_failed'    => 'The statement could not be staged for review. Please try again.',
         'none_selected'     => 'Select at least one line to import.',
         'category_required' => 'Choose a category for every selected line before importing.',
     ],

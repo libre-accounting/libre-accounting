@@ -63,7 +63,7 @@ class StatementImports extends Controller
 
         $response = $this->ajaxDispatch($job);
 
-        if ($response['success']) {
+        if ($response['success'] && $response['data'] instanceof BankStatementImport) {
             $response['redirect'] = route('statement-imports.edit', $response['data']->id);
 
             flash(trans('statement_imports.messages.staged', ['count' => $response['data']->total_lines]))->success();
@@ -77,9 +77,17 @@ class StatementImports extends Controller
                 flash(trans('statement_imports.messages.iban_mismatch'))->warning()->important();
             }
         } else {
+            // Either the job reported failure, or it returned without a staged
+            // import (never expected for this synchronous job, but guarded so a
+            // missing result can never dereference null into a raw 500).
+            $response['success'] = false;
             $response['redirect'] = route('statement-imports.create');
 
-            flash($response['message'])->error()->important();
+            $message = !empty($response['message'])
+                ? $response['message']
+                : trans('statement_imports.errors.staging_failed');
+
+            flash($message)->error()->important();
         }
 
         return response()->json($response);

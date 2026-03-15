@@ -42,6 +42,7 @@ return [
         'not_xml'           => '명세서는 CAMT.053 XML 파일이어야 합니다.',
         'unreadable'        => '업로드한 파일을 읽을 수 없습니다.',
         'already_imported'  => '이 파일은 이미 가져왔습니다.',
+        'staging_failed'    => '명세서를 검토용으로 준비하지 못했습니다. 다시 시도해 주세요.',
         'none_selected'     => '가져올 항목을 하나 이상 선택하세요.',
         'category_required' => '가져오기 전에 선택한 모든 항목에 카테고리를 선택하세요.',
     ],

@@ -42,6 +42,7 @@ return [
         'not_xml'           => 'Väljavõte peab olema CAMT.053 XML-fail.',
         'unreadable'        => 'Üleslaaditud faili ei õnnestunud lugeda.',
         'already_imported'  => 'See sama fail on juba imporditud.',
+        'staging_failed'    => 'Väljavõtet ei õnnestunud ülevaatamiseks ette valmistada. Palun proovige uuesti.',
         'none_selected'     => 'Valige importimiseks vähemalt üks rida.',
         'category_required' => 'Valige enne importimist igale valitud reale kategooria.',
     ],

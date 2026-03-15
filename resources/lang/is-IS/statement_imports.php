@@ -42,6 +42,7 @@ return [
         'not_xml'           => 'Yfirlitið verður að vera CAMT.053 XML skrá.',
         'unreadable'        => 'Ekki tókst að lesa upphlöðnu skrána.',
         'already_imported'  => 'Þessi nákvæma skrá hefur þegar verið flutt inn.',
+        'staging_failed'    => 'Ekki tókst að undirbúa yfirlitið til yfirferðar. Vinsamlegast reyndu aftur.',
         'none_selected'     => 'Veldu að minnsta kosti eina línu til að flytja inn.',
         'category_required' => 'Veldu flokk fyrir hverja valda línu áður en þú flytur inn.',
     ],

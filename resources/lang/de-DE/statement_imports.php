@@ -42,6 +42,7 @@ return [
         'not_xml'           => 'Der Kontoauszug muss eine CAMT.053-XML-Datei sein.',
         'unreadable'        => 'Die hochgeladene Datei konnte nicht gelesen werden.',
         'already_imported'  => 'Genau diese Datei wurde bereits importiert.',
+        'staging_failed'    => 'Der Kontoauszug konnte nicht zur Überprüfung bereitgestellt werden. Bitte versuchen Sie es erneut.',
         'none_selected'     => 'Wählen Sie mindestens eine Zeile zum Importieren aus.',
         'category_required' => 'Wählen Sie vor dem Importieren für jede ausgewählte Zeile eine Kategorie.',
     ],

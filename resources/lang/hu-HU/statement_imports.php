@@ -42,6 +42,7 @@ return [
         'not_xml'           => 'A kivonatnak CAMT.053 XML-fájlnak kell lennie.',
         'unreadable'        => 'A feltöltött fájl nem volt olvasható.',
         'already_imported'  => 'Ezt a fájlt pontosan ugyanígy már importálták.',
+        'staging_failed'    => 'A kivonatot nem sikerült előkészíteni az ellenőrzéshez. Kérjük, próbálja újra.',
         'none_selected'     => 'Válasszon ki legalább egy sort az importáláshoz.',
         'category_required' => 'Az importálás előtt válasszon kategóriát minden kiválasztott sorhoz.',
     ],
