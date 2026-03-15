@@ -133,9 +133,14 @@ class StatementImportsTest extends FeatureTestCase
 
         $import = BankStatementImport::first();
 
+        // destroy() is an ajax action: it returns a JSON response (HTTP 200)
+        // with a redirect target, matching the other Banking destroy endpoints
+        // (see AccountsTest/TransfersTest), not a 302 redirect.
         $this->loginAs()
             ->delete(route('statement-imports.destroy', $import->id))
-            ->assertStatus(302);
+            ->assertStatus(200);
+
+        $this->assertFlashLevel('success');
 
         $this->assertSoftDeleted('bank_statement_imports', ['id' => $import->id]);
         $this->assertSoftDeleted('bank_statement_lines', ['bank_statement_import_id' => $import->id]);
