@@ -40,7 +40,10 @@ class StatementImports extends Controller
      */
     public function create()
     {
-        $accounts = Account::enabled()->orderBy('name')->get()->pluck('title', 'id');
+        // Eager-load currency: the title accessor reads it, and production runs
+        // with lazy-loading prevention on, so pluck('title') would otherwise
+        // trigger a lazy-load violation.
+        $accounts = Account::with('currency')->enabled()->orderBy('name')->get()->pluck('title', 'id');
 
         $account_id = request('account_id', setting('default.account'));
 

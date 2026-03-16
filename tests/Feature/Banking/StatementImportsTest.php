@@ -37,6 +37,25 @@ class StatementImportsTest extends FeatureTestCase
             ->assertSeeText(trans('statement_imports.account'));
     }
 
+    public function testCreatePageDoesNotLazyLoadWithPreventionOn()
+    {
+        // Production runs with lazy-loading prevention on (config app.eager_load).
+        // The account dropdown's title accessor reads the currency relation, so
+        // the create page must eager-load it or it 500s in production.
+        \Illuminate\Database\Eloquent\Model::preventLazyLoading(true);
+
+        Account::factory()->create();
+
+        try {
+            $this->loginAs()
+                ->get(route('statement-imports.create'))
+                ->assertStatus(200)
+                ->assertSeeText(trans('statement_imports.account'));
+        } finally {
+            \Illuminate\Database\Eloquent\Model::preventLazyLoading(false);
+        }
+    }
+
     public function testItShouldStageStatementLines()
     {
         $account = Account::factory()->create();

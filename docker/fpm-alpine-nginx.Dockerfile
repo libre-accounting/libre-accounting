@@ -50,6 +50,14 @@ COPY --from=node /app/public/js /var/www/html/public/js
 
 COPY docker/files/libre-accounting-php-fpm-nginx.sh /usr/local/bin/libre-accounting-php-fpm-nginx.sh
 COPY docker/files/php-fpm-tuning.conf /usr/local/etc/php-fpm.d/zz-tuning.conf
+COPY docker/files/php.ini /usr/local/etc/php/php.ini
+# Ship our nginx config: it runs the worker as www-data and buffers request
+# bodies under /tmp. The stock config's default client_body_temp_path
+# (/var/lib/nginx/tmp) is not writable by www-data, so file-upload POSTs failed
+# with "open() ... Permission denied" and nginx returned 500 before PHP ran.
+COPY docker/nginx/nginx.conf /etc/nginx/nginx.conf
+RUN mkdir -p /tmp/nginx_client_body /tmp/nginx_proxy /tmp/nginx_fastcgi \
+ && chown -R www-data:www-data /tmp/nginx_client_body /tmp/nginx_proxy /tmp/nginx_fastcgi
 COPY docker/files/html /var/www/html
 
 # Set ownership/permissions once at build time (cached layer) instead of on

@@ -57,6 +57,15 @@ COPY docker/files/html /var/www/html
 
 USER root
 
+COPY docker/files/php.ini /usr/local/etc/php/php.ini
+# Ship our nginx config (worker as www-data, request bodies buffered under /tmp).
+# The stock default client_body_temp_path (/var/lib/nginx/tmp) is not writable
+# by www-data, so file-upload POSTs failed with "Permission denied" and nginx
+# returned 500 before PHP ran.
+COPY docker/nginx/nginx.conf /etc/nginx/nginx.conf
+RUN mkdir -p /tmp/nginx_client_body /tmp/nginx_proxy /tmp/nginx_fastcgi \
+ && chown -R www-data:www-data /tmp/nginx_client_body /tmp/nginx_proxy /tmp/nginx_fastcgi
+
 # Set ownership/permissions once at build time (cached layer) instead of on
 # every container start. The late COPYs above land as root, so this needs to
 # run after them.
