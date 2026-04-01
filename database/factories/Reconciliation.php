@@ -27,13 +27,15 @@ class Reconciliation extends Factory
 
         return [
             'company_id' => $this->company->id,
-            'account_id' => '1',
-            'currency_code' => default_currency(),
-            'opening_balance' => '0',
+            // Use the seeded default account rather than a hardcoded id 1. Under
+            // PostgreSQL the id sequence is not reset by RefreshDatabase, so the
+            // seeded bank account may not be id 1, which left account->currency
+            // null and broke the reconciliation edit view.
+            'account_id' => setting('default.account'),
             'closing_balance' => '10',
             'started_at' => $started_at,
             'ended_at' => $ended_at,
-            'reconcile' => $this->faker->boolean ? 1 : 0,
+            'reconciled' => $this->faker->boolean,
             'created_from' => 'core::factory',
         ];
     }
@@ -46,7 +48,7 @@ class Reconciliation extends Factory
     public function reconciled()
     {
         return $this->state([
-            'reconcile' => 1,
+            'reconciled' => true,
         ]);
     }
 
@@ -58,7 +60,7 @@ class Reconciliation extends Factory
     public function notreconciled()
     {
         return $this->state([
-            'reconcile' => 0,
+            'reconciled' => false,
         ]);
     }
 }

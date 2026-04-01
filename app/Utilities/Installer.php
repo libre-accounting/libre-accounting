@@ -49,7 +49,7 @@ class Installer
         }
 
         if (!class_exists('PDO')) {
-            $requirements[] = trans('install.requirements.extension', ['extension' => 'MySQL PDO']);
+            $requirements[] = trans('install.requirements.extension', ['extension' => 'PDO']);
         }
 
         if (!extension_loaded('bcmath')) {
@@ -145,14 +145,18 @@ class Installer
         ]);
 	}
 
-    public static function createDbTables($host, $port, $database, $username, $password, $prefix = null)
+    public static function createDbTables($host, $port, $database, $username, $password, $prefix = null, $connection = 'mysql')
     {
-        if (!static::isDbValid($host, $port, $database, $username, $password)) {
+        if (!static::isDbValid($host, $port, $database, $username, $password, $connection)) {
             return false;
         }
 
+        // Pin the chosen driver as the default before migrating so driver-aware
+        // migrations (e.g. databaseDriverIs('sqlite')) branch correctly.
+        Config::set('database.default', $connection);
+
         // Set database details
-        static::saveDbVariables($host, $port, $database, $username, $password, $prefix);
+        static::saveDbVariables($host, $port, $database, $username, $password, $prefix, $connection);
 
         // Try to increase the maximum execution time
         set_time_limit(300); // 5 minutes
@@ -179,17 +183,44 @@ class Installer
      *
      * @return bool
      */
-    public static function isDbValid($host, $port, $database, $username, $password)
+    public static function isDbValid($host, $port, $database, $username, $password, $connection = 'mysql')
     {
-        Config::set('database.connections.install_test', [
-            'host'      => $host,
-            'port'      => $port,
-            'database'  => $database,
-            'username'  => $username,
-            'password'  => $password,
-            'driver'    => $connection = config('database.default', 'mysql'),
-            'charset'   => config("database.connections.$connection.charset", 'utf8mb4'),
-        ]);
+        // The PDO driver for the chosen engine must be available.
+        if (!extension_loaded("pdo_$connection")) {
+            return false;
+        }
+
+        if ($connection === 'sqlite') {
+            // SQLite needs the file (and its directory) to exist before we can connect.
+            $directory = dirname($database);
+
+            if (!File::isDirectory($directory)) {
+                File::makeDirectory($directory, 0755, true, true);
+            }
+
+            if (!File::exists($database)) {
+                File::put($database, '');
+            }
+
+            Config::set('database.connections.install_test', [
+                'driver'                  => 'sqlite',
+                'database'                => $database,
+                'prefix'                  => '',
+                'foreign_key_constraints' => true,
+            ]);
+        } else {
+            $default_charset = $connection === 'pgsql' ? 'utf8' : 'utf8mb4';
+
+            Config::set('database.connections.install_test', [
+                'driver'    => $connection,
+                'host'      => $host,
+                'port'      => $port,
+                'database'  => $database,
+                'username'  => $username,
+                'password'  => $password,
+                'charset'   => config("database.connections.$connection.charset", $default_charset),
+            ]);
+        }
 
         try {
             DB::connection('install_test')->getPdo();
@@ -203,12 +234,13 @@ class Installer
         return true;
     }
 
-    public static function saveDbVariables($host, $port, $database, $username, $password, $prefix = null)
+    public static function saveDbVariables($host, $port, $database, $username, $password, $prefix = null, $connection = 'mysql')
     {
         $prefix = !empty($prefix) ? $prefix : strtolower(Str::random(3) . '_');
 
         // Update .env file
         static::updateEnv([
+            'DB_CONNECTION' =>  $connection,
             'DB_HOST'       =>  $host,
             'DB_PORT'       =>  $port,
             'DB_DATABASE'   =>  $database,
@@ -217,16 +249,24 @@ class Installer
             'DB_PREFIX'     =>  $prefix,
         ]);
 
-        $con = config('database.default', 'mysql');
+        $con = $connection;
+
+        Config::set('database.default', $con);
 
         // Change current connection
         $db = Config::get('database.connections.' . $con);
 
-        $db['host'] = $host;
         $db['database'] = $database;
-        $db['username'] = $username;
-        $db['password'] = $password;
         $db['prefix'] = $prefix;
+
+        // Host/credentials only apply to server-backed engines; the sqlite
+        // connection array has no such keys.
+        if ($con !== 'sqlite') {
+            $db['host'] = $host;
+            $db['port'] = $port;
+            $db['username'] = $username;
+            $db['password'] = $password;
+        }
 
         Config::set('database.connections.' . $con, $db);
 

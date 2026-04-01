@@ -158,6 +158,34 @@
         "test": [
             "composer install --prefer-dist --no-interaction --no-scripts --no-progress --no-ansi",
             "composer dump-autoload"
+        ],
+        "test:sqlite": [
+            "@putenv DB_CONNECTION=sqlite",
+            "@putenv DB_DATABASE=:memory:",
+            "@php artisan test --parallel"
+        ],
+        "test:mysql": [
+            "@putenv DB_CONNECTION=mysql",
+            "@putenv DB_HOST=mysql-test",
+            "@putenv DB_PORT=3306",
+            "@putenv DB_DATABASE=libre_test",
+            "@putenv DB_USERNAME=root",
+            "@putenv DB_PASSWORD=root",
+            "@php artisan test --parallel --recreate-databases"
+        ],
+        "test:pgsql": [
+            "@putenv DB_CONNECTION=pgsql",
+            "@putenv DB_HOST=pgsql-test",
+            "@putenv DB_PORT=5432",
+            "@putenv DB_DATABASE=libre_test",
+            "@putenv DB_USERNAME=libre",
+            "@putenv DB_PASSWORD=secret",
+            "@php artisan test --parallel --recreate-databases"
+        ],
+        "test:all": [
+            "@test:sqlite",
+            "@test:mysql",
+            "@test:pgsql"
         ]
     },
     "config": {

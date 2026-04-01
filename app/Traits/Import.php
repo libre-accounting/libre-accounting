@@ -26,6 +26,7 @@ use App\Models\Setting\Tax;
 use App\Traits\Jobs;
 use App\Traits\Sources;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 trait Import
 {
@@ -305,7 +306,10 @@ trait Import
 
     public function getContactIdFromEmail($row, $type)
     {
-        $contact_id = Contact::type($type)->where('email', $row['contact_email'])->pluck('id')->first();
+        // Case-insensitive match so the same address doesn't create a duplicate
+        // contact on case-sensitive engines (e.g. PostgreSQL). LOWER() is portable
+        // across mysql/pgsql/sqlite.
+        $contact_id = Contact::type($type)->whereRaw('LOWER(email) = ?', [Str::lower($row['contact_email'])])->pluck('id')->first();
 
         if (!empty($contact_id)) {
             return $contact_id;
@@ -331,7 +335,9 @@ trait Import
 
     public function getContactIdFromName($row, $type)
     {
-        $contact_id = Contact::type($type)->where('name', $row['contact_name'])->pluck('id')->first();
+        // Case-insensitive match so the same payee under different casing doesn't
+        // create a duplicate contact on case-sensitive engines (e.g. PostgreSQL).
+        $contact_id = Contact::type($type)->whereRaw('LOWER(name) = ?', [Str::lower($row['contact_name'])])->pluck('id')->first();
 
         if (!empty($contact_id)) {
             return $contact_id;

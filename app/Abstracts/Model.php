@@ -174,7 +174,9 @@ abstract class Model extends Eloquent implements Ownable
      */
     public function scopeEnabled($query)
     {
-        return $query->where($this->qualifyColumn('enabled'), 1);
+        // Use a real boolean so the comparison is valid against native boolean
+        // columns (PostgreSQL) as well as tinyint(1) (MySQL/SQLite).
+        return $query->where($this->qualifyColumn('enabled'), true);
     }
 
     /**
@@ -185,7 +187,7 @@ abstract class Model extends Eloquent implements Ownable
      */
     public function scopeDisabled($query)
     {
-        return $query->where($this->qualifyColumn('enabled'), 0);
+        return $query->where($this->qualifyColumn('enabled'), false);
     }
 
     /**
@@ -197,7 +199,9 @@ abstract class Model extends Eloquent implements Ownable
      */
     public function scopeReconciled($query, $value = 1)
     {
-        return $query->where($this->qualifyColumn('reconciled'), $value);
+        // Normalize to a real boolean for portability against native boolean
+        // columns (PostgreSQL); callers still pass 1/0 or true/false.
+        return $query->where($this->qualifyColumn('reconciled'), (bool) $value);
     }
 
     public function scopeAccount($query, $accounts)

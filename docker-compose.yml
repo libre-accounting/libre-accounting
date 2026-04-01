@@ -27,6 +27,21 @@ services:
     env_file:
       - docker/env/db.env
 
+  # To run on PostgreSQL instead of MariaDB, comment out the service above and use
+  # this one instead, then set DB_CONNECTION=pgsql and DB_PORT=5432 in
+  # docker/env/run.env (POSTGRES_* env vars replace the MYSQL_* ones in db.env):
+  #
+  # libre-accounting-db:
+  #   container_name: libre-accounting-db
+  #   image: postgres:15
+  #   volumes:
+  #     - libre-accounting-db:/var/lib/postgresql/data
+  #   restart: unless-stopped
+  #   environment:
+  #     POSTGRES_DB: akaunting
+  #     POSTGRES_USER: admin
+  #     POSTGRES_PASSWORD: akaunting_password
+
 volumes:
   libre-accounting-uploads:
   libre-accounting-db:

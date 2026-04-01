@@ -81,7 +81,7 @@ class InvoicesTest extends FeatureTestCase
 
         $this->assertFlashLevel('success');
 
-        Storage::disk('uploads')->assertExists('2021/05/15/1/invoices/invoices.png');
+        Storage::disk('uploads')->assertExists('2021/05/15/' . company_id() . '/invoices/invoices.png');
 
         $this->assertDatabaseHas('documents', [
             'document_number' => $request['document_number']
@@ -94,7 +94,7 @@ class InvoicesTest extends FeatureTestCase
 
         $this->assertDatabaseHas('media', [
             'disk'           => 'uploads',
-            'directory'      => '2021/05/15/1/invoices',
+            'directory'      => '2021/05/15/' . company_id() . '/invoices',
             'filename'       => 'invoices',
             'extension'      => 'png',
             'mime_type'      => 'image/png',

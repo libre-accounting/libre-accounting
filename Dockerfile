@@ -26,6 +26,7 @@ RUN apt-get update \
     libonig-dev \
     libpng-dev \
     libpq-dev \
+    libsqlite3-dev \
     libssl-dev \
     libxml2-dev \
     libxrender1 \
@@ -53,6 +54,8 @@ RUN docker-php-ext-configure gd \
     pcntl \
     pdo \
     pdo_mysql \
+    pdo_pgsql \
+    pdo_sqlite \
     zip \
  && pecl install redis \
  && docker-php-ext-enable redis

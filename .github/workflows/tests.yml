@@ -6,15 +6,22 @@ on:
   workflow_dispatch:
 
 jobs:
-  tests:
+  # SQLite runs in-memory with no external service. Each parallel worker gets its
+  # own :memory: database for free, so this is the fast default path.
+  tests-sqlite:
 
-    name: PHP ${{ matrix.php }}
+    name: PHP ${{ matrix.php }} / sqlite
 
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
         php: ['8.1', '8.2']
+
+    env:
+      DB_CONNECTION: sqlite
+      DB_DATABASE: ':memory:'
 
     steps:
       - name: Checkout code
@@ -30,7 +37,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: bcmath, ctype, dom, fileinfo, intl, gd, json, mbstring, pdo, pdo_sqlite, openssl, sqlite, xml, zip
+          extensions: bcmath, ctype, dom, fileinfo, intl, gd, json, mbstring, pdo, pdo_sqlite, pdo_mysql, pdo_pgsql, openssl, sqlite, xml, zip
           coverage: none
 
       - name: Copy .env
@@ -42,8 +49,106 @@ jobs:
       - name: Compile assets
         run: npm run production
 
-      - name: Install Composer
+      - name: Install Composer dependencies
         run: composer test
 
       - name: Execute tests
         run: php artisan test --parallel
+
+  # MySQL and PostgreSQL run against real service containers. Parallel workers use
+  # per-token databases (see App\Providers\Testing), which requires the CI DB user
+  # to have privileges to create databases.
+  tests-server:
+
+    name: PHP 8.2 / ${{ matrix.database }}
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        database: [mysql, pgsql]
+        include:
+          - database: mysql
+            db_host: 127.0.0.1
+            db_port: '3306'
+            db_username: root
+            db_password: root
+          - database: pgsql
+            db_host: 127.0.0.1
+            db_port: '5432'
+            db_username: libre
+            db_password: secret
+
+    env:
+      DB_CONNECTION: ${{ matrix.database }}
+      DB_DATABASE: libre_test
+      DB_HOST: ${{ matrix.db_host }}
+      DB_PORT: ${{ matrix.db_port }}
+      DB_USERNAME: ${{ matrix.db_username }}
+      DB_PASSWORD: ${{ matrix.db_password }}
+      DB_PREFIX: ''
+
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_DATABASE: libre_test
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: libre_test
+          POSTGRES_USER: libre
+          POSTGRES_PASSWORD: secret
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U libre"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Cache Composer
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache/files
+          key: php-8.2-composer-${{ hashFiles('composer.json') }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: bcmath, ctype, dom, fileinfo, intl, gd, json, mbstring, pdo, pdo_sqlite, pdo_mysql, pdo_pgsql, openssl, sqlite, xml, zip
+          coverage: none
+
+      - name: Grant PostgreSQL create-database privilege
+        if: matrix.database == 'pgsql'
+        run: PGPASSWORD=secret psql -h 127.0.0.1 -U libre -d libre_test -c "ALTER USER libre CREATEDB;"
+
+      - name: Copy .env
+        run: cp .env.testing .env
+
+      - name: Install NPM
+        run: npm install
+
+      - name: Compile assets
+        run: npm run production
+
+      - name: Install Composer dependencies
+        run: composer test
+
+      - name: Execute tests
+        run: php artisan test --parallel --recreate-databases

@@ -14,9 +14,11 @@ class Database extends FormRequest
     public function rules()
     {
         return [
-            'hostname' => 'required',
-            'username' => 'required',
-            'database' => 'required'
+            'connection' => 'required|in:mysql,pgsql,sqlite',
+            'hostname'   => 'required_unless:connection,sqlite',
+            'username'   => 'required_unless:connection,sqlite',
+            'database'   => 'required',
+            'port'       => 'nullable|integer',
         ];
     }
 }

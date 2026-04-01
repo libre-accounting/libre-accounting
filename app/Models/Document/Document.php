@@ -175,7 +175,10 @@ class Document extends Model
 
     public function scopeNumber(Builder $query, string $number): Builder
     {
-        return $query->where('document_number', '=', $number);
+        // Case-insensitive match (portable LOWER()) so document lookups — e.g. the
+        // statement importer matching a remittance reference — behave the same on
+        // case-sensitive engines like PostgreSQL as on MySQL's ci collation.
+        return $query->whereRaw('LOWER(document_number) = ?', [\Illuminate\Support\Str::lower($number)]);
     }
 
     public function scopeDue(Builder $query, $date): Builder

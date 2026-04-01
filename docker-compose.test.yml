@@ -1,0 +1,42 @@
+# Throwaway database services for running the cross-engine test suite locally.
+#
+# These are RAM-backed (tmpfs) and hold no persistent volume, so they are safe to
+# start and tear down repeatedly and never touch the production `docker-compose.yml`
+# MariaDB data. They match the hostnames/credentials used by the `test:mysql` and
+# `test:pgsql` composer scripts.
+#
+# Usage (run the suite against each engine inside the app container):
+#   docker compose -f docker-compose.yml -f docker-compose.test.yml up -d mysql-test pgsql-test
+#   docker compose -f docker-compose.yml -f docker-compose.test.yml exec libre-accounting composer test:mysql
+#   docker compose -f docker-compose.yml -f docker-compose.test.yml exec libre-accounting composer test:pgsql
+#   docker compose -f docker-compose.yml -f docker-compose.test.yml down
+version: '3.7'
+
+services:
+  mysql-test:
+    image: mysql:8
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_DATABASE: libre_test
+      MYSQL_ROOT_PASSWORD: root
+    tmpfs:
+      - /var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pgsql-test:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: libre_test
+      POSTGRES_USER: libre
+      POSTGRES_PASSWORD: secret
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U libre"]
+      interval: 10s
+      timeout: 5s
+      retries: 5

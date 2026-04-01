@@ -54,7 +54,8 @@ class User extends FormRequest
             $roles = 'required|string';
         }
 
-        $email .= '|unique:users,email,' . $id . ',id,deleted_at,NULL';
+        // "NULL" = ignore nothing; an empty id builds `where id <> ''`, invalid on PostgreSQL.
+        $email .= '|unique:users,email,' . (empty($id) ? 'NULL' : $id) . ',id,deleted_at,NULL';
 
         $change_password = $this->request->get('change_password') == true || $this->request->get('change_password') != null;
 

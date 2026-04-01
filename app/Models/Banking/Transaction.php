@@ -290,12 +290,13 @@ class Transaction extends Model
 
     public function scopeIsReconciled(Builder $query): Builder
     {
-        return $query->where('reconciled', 1);
+        // Real boolean for portability against native boolean columns (PostgreSQL).
+        return $query->where('reconciled', true);
     }
 
     public function scopeIsNotReconciled(Builder $query): Builder
     {
-        return $query->where('reconciled', 0);
+        return $query->where('reconciled', false);
     }
 
     public function onCloning($src, $child = null)

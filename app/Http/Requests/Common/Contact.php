@@ -34,9 +34,12 @@ class Contact extends FormRequest
             $id = null;
         }
 
+        // "NULL" = ignore nothing; an empty id builds `where id <> ''`, invalid on PostgreSQL.
+        $ignore_id = empty($id) ? 'NULL' : $id;
+
         if (!empty($this->request->get('email'))) {
             $email .= 'email:rfc,dns|unique:contacts,NULL,'
-                      . $id . ',id'
+                      . $ignore_id . ',id'
                       . ',company_id,' . $company_id
                       . ',type,' . $type
                       . ',deleted_at,NULL';

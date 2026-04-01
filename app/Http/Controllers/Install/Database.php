@@ -16,10 +16,12 @@ class Database extends Controller
     public function create()
     {
         return view('install.database.create', [
-            'host'      => env('DB_HOST'    , 'localhost'),
-            'username'  => env('DB_USERNAME', ''),
-            'password'  => env('DB_PASSWORD', ''),
-            'database'  => env('DB_DATABASE', ''),
+            'connection' => env('DB_CONNECTION', 'mysql'),
+            'host'       => env('DB_HOST'    , 'localhost'),
+            'port'       => env('DB_PORT'    , '3306'),
+            'username'   => env('DB_USERNAME', ''),
+            'password'   => env('DB_PASSWORD', ''),
+            'database'   => env('DB_DATABASE', ''),
         ]);
     }
 
@@ -32,17 +34,30 @@ class Database extends Controller
      */
     public function store(Request $request)
     {
-        $connection = config('database.default','mysql');
+        $connection = $request->input('connection', 'mysql');
 
-        $host     = $request['hostname'];
-        $port     = config("database.connections.$connection.port", '3306');
+        // Make the chosen driver the active default so the config lookups below resolve.
+        config(['database.default' => $connection]);
+
         $database = $request['database'];
-        $username = $request['username'];
-        $password = $request['password'];
         $prefix   = config("database.connections.$connection.prefix", null);
 
+        if ($connection === 'sqlite') {
+            // SQLite only needs a file path; host/port/credentials are irrelevant.
+            $host = $port = $username = $password = null;
+
+            if (empty($database)) {
+                $database = database_path('database.sqlite');
+            }
+        } else {
+            $host     = $request['hostname'];
+            $port     = $request->input('port') ?: config("database.connections.$connection.port", '3306');
+            $username = $request['username'];
+            $password = $request['password'];
+        }
+
         // Check database connection
-        if (!Installer::createDbTables($host, $port, $database, $username, $password, $prefix)) {
+        if (!Installer::createDbTables($host, $port, $database, $username, $password, $prefix, $connection)) {
             $response = [
                 'status' => null,
                 'success' => false,

@@ -65,13 +65,19 @@ class TestCompany extends Seeder
 
     public function createUser()
     {
+        // Resolve the admin role by name rather than hardcoding id 1. Under
+        // PostgreSQL the id sequence is not reset by RefreshDatabase's per-test
+        // transaction rollback, so the admin role may have an id other than 1 —
+        // hardcoding it caused user_roles foreign-key violations there.
+        $admin_role_id = \App\Models\Auth\Role::where('name', 'admin')->value('id');
+
         $this->dispatch(new CreateUser([
             'name' => 'Test User',
             'email' => 'test@company.com',
             'password' => '123456',
             'locale' => 'en-GB',
             'companies' => [company_id()],
-            'roles' => ['1'],
+            'roles' => [$admin_role_id],
             'enabled' => '1',
         ]));
 

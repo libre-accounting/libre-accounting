@@ -31,6 +31,7 @@ if [ "$do_setup" -o "$LIBRE_ACCOUNTING_SETUP" == "true" ]; then
     retry_interval=5
     while sleep $retry_interval; do
         if php artisan install \
+            --db-connection=${DB_CONNECTION:-mysql} \
             --db-host=$DB_HOST \
             --db-port=$DB_PORT \
             --db-name=$DB_NAME \

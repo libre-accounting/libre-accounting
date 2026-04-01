@@ -28,6 +28,10 @@ class Transaction extends FormRequest
             $id = null;
         }
 
+        // See Document request: "NULL" means ignore nothing; an empty id would build
+        // `where id <> ''`, which PostgreSQL rejects as an invalid integer.
+        $ignore_id = empty($id) ? 'NULL' : $id;
+
         // Get company id
         $company_id = (int) $this->request->get('company_id', company_id());
 
@@ -39,7 +43,7 @@ class Transaction extends FormRequest
 
         $rules = [
             'type' => 'required|string',
-            'number' => 'required|string|unique:transactions,NULL,' . $id . ',id,company_id,' . $company_id . ',deleted_at,NULL',
+            'number' => 'required|string|unique:transactions,NULL,' . $ignore_id . ',id,company_id,' . $company_id . ',deleted_at,NULL',
             'account_id' => 'required|integer',
             'paid_at' => 'required|date_format:Y-m-d H:i:s',
             'amount' => 'required|amount:0',

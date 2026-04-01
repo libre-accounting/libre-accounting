@@ -24,6 +24,16 @@ class User extends Factory
     {
         $password = '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'; // password
 
+        // Resolve real ids rather than hardcoding 1. Under PostgreSQL the id
+        // sequence is not reset by RefreshDatabase's per-test rollback, so the
+        // admin role / seeded company may not be id 1 — hardcoding it caused
+        // user_roles foreign-key violations. Guard the lookup so the factory
+        // still works before the schema exists (e.g. guest auth flows).
+        $role_id = \Illuminate\Support\Facades\Schema::hasTable('roles')
+            ? (\App\Models\Auth\Role::where('name', 'admin')->value('id') ?? 1)
+            : 1;
+        $company_id = company_id() ?: 1;
+
         return [
             'name' => $this->faker->name,
             'email' => $this->faker->freeEmail,
@@ -31,8 +41,8 @@ class User extends Factory
             'password_confirmation' => $password,
             'remember_token' => Str::random(10),
             'locale' => 'en-GB',
-            'companies' => ['1'],
-            'roles' => '1',
+            'companies' => [(string) $company_id],
+            'roles' => (string) $role_id,
             'enabled' => $this->faker->boolean ? 1 : 0,
             'landing_page' => 'dashboard',
             'created_from' => 'core::factory',

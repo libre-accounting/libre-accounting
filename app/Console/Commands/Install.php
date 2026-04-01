@@ -11,6 +11,7 @@ class Install extends Command
 {
     const CMD_SUCCESS = 0;
     const CMD_ERROR = 1;
+    const OPT_DB_CONNECTION = 'db-connection';
     const OPT_DB_HOST = 'db-host';
     const OPT_DB_PORT = 'db-port';
     const OPT_DB_NAME = 'db-name';
@@ -30,9 +31,10 @@ class Install extends Command
      * @var string
      */
     protected $signature = 'install
+                            {--db-connection=mysql : Database driver (mysql, pgsql, sqlite)}
                             {--db-host=localhost : Database host}
                             {--db-port=3306 : Port of the database host}
-                            {--db-name= : Name of the database}
+                            {--db-name= : Name of the database (or file path for sqlite)}
                             {--db-username=root : Username to use to access the database}
                             {--db-password= : Password to use to access the database}
                             {--db-prefix= : Table name prefix}
@@ -102,6 +104,7 @@ class Install extends Command
 
         $constants = [
             'OPT_LOCALE',
+            'OPT_DB_CONNECTION',
             'OPT_DB_PORT',
             'OPT_DB_HOST',
             'OPT_DB_NAME',
@@ -115,6 +118,11 @@ class Install extends Command
         ];
 
         $allowed_empty = ['db_password', 'db_prefix'];
+
+        // SQLite only needs a database (file path); host/port/credentials are irrelevant.
+        if ($this->option(self::OPT_DB_CONNECTION) === 'sqlite') {
+            $allowed_empty = array_merge($allowed_empty, ['db_host', 'db_port', 'db_username']);
+        }
 
         foreach ($constants as $const) {
             $option = constant("self::$const");
@@ -142,24 +150,34 @@ class Install extends Command
      */
     private function prompt()
     {
-        if (empty($this->db_host)) {
-            $this->db_host = $this->ask('What is the database host?', 'localhost');
+        if (empty($this->db_connection)) {
+            $this->db_connection = $this->choice('Which database driver?', ['mysql', 'pgsql', 'sqlite'], 0);
         }
 
-        if (empty($this->db_port)) {
-            $this->db_port = $this->ask('What is the database port?', '3306');
-        }
+        if ($this->db_connection === 'sqlite') {
+            if (empty($this->db_name)) {
+                $this->db_name = $this->ask('What is the database file path?', database_path('database.sqlite'));
+            }
+        } else {
+            if (empty($this->db_host)) {
+                $this->db_host = $this->ask('What is the database host?', 'localhost');
+            }
 
-        if (empty($this->db_name)) {
-            $this->db_name = $this->ask('What is the database name?');
-        }
+            if (empty($this->db_port)) {
+                $this->db_port = $this->ask('What is the database port?', $this->db_connection === 'pgsql' ? '5432' : '3306');
+            }
 
-        if (empty($this->db_username)) {
-            $this->db_username = $this->ask('What is the database username?', 'root');
-        }
+            if (empty($this->db_name)) {
+                $this->db_name = $this->ask('What is the database name?');
+            }
 
-        if (!isset($this->db_password)) {
-            $this->db_password = $this->secret('What is the database password?', '');
+            if (empty($this->db_username)) {
+                $this->db_username = $this->ask('What is the database username?', 'root');
+            }
+
+            if (!isset($this->db_password)) {
+                $this->db_password = $this->secret('What is the database password?', '');
+            }
         }
 
         if (empty($this->company_name)) {
@@ -181,16 +199,17 @@ class Install extends Command
 
     private function createDatabaseTables()
     {
-        $this->db_host     = $this->option(self::OPT_DB_HOST);
-        $this->db_port     = $this->option(self::OPT_DB_PORT);
-        $this->db_name     = $this->option(self::OPT_DB_NAME);
-        $this->db_username = $this->option(self::OPT_DB_USERNAME);
-        $this->db_password = $this->option(self::OPT_DB_PASSWORD);
-        $this->db_prefix   = $this->option(self::OPT_DB_PREFIX);
+        // The db_* properties are populated by getMissingOptions() and prompt();
+        // re-reading options here would clobber any interactive answers.
+        $this->db_prefix = $this->db_prefix ?? $this->option(self::OPT_DB_PREFIX);
 
-        $this->line('Connecting to database ' . $this->db_name . '@' . $this->db_host . ':' . $this->db_port);
+        if ($this->db_connection === 'sqlite') {
+            $this->line('Connecting to sqlite database ' . $this->db_name);
+        } else {
+            $this->line('Connecting to database ' . $this->db_name . '@' . $this->db_host . ':' . $this->db_port);
+        }
 
-        if (!Installer::createDbTables($this->db_host, $this->db_port, $this->db_name, $this->db_username, $this->db_password, $this->db_prefix)) {
+        if (!Installer::createDbTables($this->db_host, $this->db_port, $this->db_name, $this->db_username, $this->db_password, $this->db_prefix, $this->db_connection)) {
             $this->error('Error: Could not connect to the database! Please, make sure the details are correct.');
 
             return false;

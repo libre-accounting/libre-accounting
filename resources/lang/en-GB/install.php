@@ -26,10 +26,13 @@ return [
     ],
 
     'database' => [
+        'connection'        => 'Database Driver',
         'hostname'          => 'Hostname',
+        'port'              => 'Port',
         'username'          => 'Username',
         'password'          => 'Password',
         'name'              => 'Database',
+        'file'              => 'Database File Path',
     ],
 
     'settings' => [
@@ -42,6 +45,7 @@ return [
     'error' => [
         'php_version'       => 'Error: Ask your hosting provider to use PHP :php_version or higher for both HTTP and CLI.',
         'connection'        => 'Error: Could not connect to the database! Please, make sure the details are correct.',
+        'driver'            => 'Error: The PDO driver for :driver is not installed or loaded on this server.',
     ],
 
     'update' => [

@@ -34,6 +34,11 @@ class Document extends FormRequest
             $id = null;
         }
 
+        // Laravel's unique rule treats the literal string "NULL" as "ignore nothing".
+        // An empty id would instead build `where id <> ''`, which PostgreSQL rejects
+        // because '' is not a valid integer (MySQL/SQLite silently coerce it).
+        $ignore_id = empty($id) ? 'NULL' : $id;
+
         if ($this->files->get('company_logo')) {
             $company_logo = 'mimes:' . config('filesystems.mimes') . '|between:0,' . config('filesystems.max_size') * 1024 . '|dimensions:max_width=1000,max_height=1000';
         }
@@ -47,7 +52,7 @@ class Document extends FormRequest
 
         $rules = [
             'type'                  => 'required|string',
-            'document_number'       => 'required|string|unique:documents,NULL,' . $id . ',id,type,' . $type . ',company_id,' . $company_id . ',deleted_at,NULL',
+            'document_number'       => 'required|string|unique:documents,NULL,' . $ignore_id . ',id,type,' . $type . ',company_id,' . $company_id . ',deleted_at,NULL',
             //'status'                => 'required|string|in:draft,paid,partial,sent,received,viewed,cancelled',
             'status'                => 'required|string',
             'issued_at'             => 'required|date_format:Y-m-d H:i:s|before_or_equal:due_at',

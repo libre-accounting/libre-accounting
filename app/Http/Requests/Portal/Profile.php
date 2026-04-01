@@ -24,7 +24,8 @@ class Profile extends FormRequest
                     . '|dimensions:max_width=' . config('filesystems.max_width') . ',max_height=' . config('filesystems.max_height');
         }
 
-        $email = 'required|email:rfc,dns|unique:users,email,' . $id . ',id,deleted_at,NULL';
+        // "NULL" = ignore nothing; an empty id builds `where id <> ''`, invalid on PostgreSQL.
+        $email = 'required|email:rfc,dns|unique:users,email,' . (empty($id) ? 'NULL' : $id) . ',id,deleted_at,NULL';
 
         if (user()->contact) {
             $email .= '|unique:contacts,NULL,'
