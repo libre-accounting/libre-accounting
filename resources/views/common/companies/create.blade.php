@@ -29,6 +29,34 @@
                 </x-form.section>
             </x-form>
         </x-form.container>
+
+        {{-- Restore from an existing Libre Accounting backup archive. --}}
+        <x-form.container class="mt-6">
+            <div class="card">
+                <div class="card-header border-b">
+                    <h3 class="font-semibold">{{ trans('company_backups.import_title') }}</h3>
+                    <p class="text-sm text-gray-500">{{ trans('company_backups.import_description') }}</p>
+                </div>
+
+                <div class="card-body">
+                    <form method="POST" action="{{ route('companies.import') }}" enctype="multipart/form-data">
+                        @csrf
+
+                        <input type="file" name="backup" accept=".zip" required
+                            class="block w-full text-sm border border-gray-300 rounded p-2" />
+
+                        @error('backup')
+                            <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                        @enderror
+
+                        <button type="submit" class="button-primary mt-4">
+                            <span class="material-icons">restore</span>
+                            {{ trans('company_backups.import_action') }}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </x-form.container>
     </x-slot>
 
     @push('scripts_end')

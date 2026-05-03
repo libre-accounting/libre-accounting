@@ -568,6 +568,16 @@ class Company extends Eloquent implements Ownable
         ];
 
         $actions[] = [
+            'title' => trans('company_backups.export'),
+            'icon' => 'archive',
+            'url' => route('companies.export', $this->id),
+            'permission' => 'read-common-companies',
+            'attributes' => [
+                'id' => 'index-line-actions-export-company-' . $this->id,
+            ],
+        ];
+
+        $actions[] = [
             'type' => 'delete',
             'icon' => 'delete',
             'route' => 'companies.destroy',

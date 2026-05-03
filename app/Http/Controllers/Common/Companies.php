@@ -6,11 +6,17 @@ use App\Abstracts\Http\Controller;
 use App\Http\Requests\Common\Company as Request;
 use App\Jobs\Common\CreateCompany;
 use App\Jobs\Common\DeleteCompany;
+use App\Jobs\Common\ExportCompany;
+use App\Jobs\Common\CreateMediableForCompanyBackup;
+use App\Jobs\Common\ImportCompany;
 use App\Jobs\Common\UpdateCompany;
 use App\Models\Common\Company;
+use App\Models\Common\CompanyBackup;
 use App\Traits\Uploads;
 use App\Traits\Users;
 use Akaunting\Money\Currency as MoneyCurrency;
+use Illuminate\Http\Request as HttpRequest;
+use Illuminate\Support\Facades\DB;
 
 class Companies extends Controller
 {
@@ -95,6 +101,126 @@ class Companies extends Controller
         company($current_company_id)->makeCurrent();
 
         return response()->json($response);
+    }
+
+    /**
+     * Export a full backup of the company (settings, all records and uploaded
+     * files) as a downloadable archive. The archive is built by a queued job
+     * and, on completion, delivered as a private download + notification.
+     *
+     * @param  Company  $company
+     *
+     * @return Response
+     */
+    public function export(Company $company)
+    {
+        if ($this->isNotUserCompany($company->id)) {
+            return redirect()->route('companies.index');
+        }
+
+        $backup = CompanyBackup::create([
+            'company_id' => $company->id,
+            'user_id'    => user_id(),
+            'type'       => CompanyBackup::TYPE_EXPORT,
+            'status'     => CompanyBackup::STATUS_PENDING,
+            'created_by' => user_id(),
+        ]);
+
+        // The Jobs trait dispatch() honours should_queue(): queued when a worker
+        // is configured, inline (sync) otherwise. The chain tail promotes the
+        // archive to a download and notifies the user in both modes.
+        $job = new ExportCompany($company->id, user_id(), $backup->id);
+        $job->chain([
+            new CreateMediableForCompanyBackup(user_id(), $backup->id),
+        ]);
+
+        $this->dispatch($job);
+
+        flash(trans('company_backups.messages.export_started'))->success();
+
+        return redirect()->route('company-backups.show', $backup->id);
+    }
+
+    /**
+     * Restore a company from an uploaded Libre Accounting backup archive into a
+     * brand-new company. Called from the "create company" / wizard flow.
+     *
+     * @param  HttpRequest  $request
+     *
+     * @return Response
+     */
+    public function import(HttpRequest $request)
+    {
+        $request->validate([
+            'backup' => ['required', 'file', 'mimes:zip'],
+        ]);
+
+        // Stage the upload on a dedicated disk (not swept by storage-temp:clear)
+        // and pass the PATH to the job — never the UploadedFile (unserializable).
+        $disk = config('company_backups.staging_disk', 'local');
+        $dir = config('company_backups.staging_path', 'backups/incoming');
+
+        $path = $request->file('backup')->store($dir, $disk);
+
+        // Create a bare shell company (no company:seed — the archive brings its
+        // own currencies/categories/accounts/settings, seeding would collide).
+        $company = $this->createShellCompany();
+
+        $backup = CompanyBackup::create([
+            'company_id' => $company->id,
+            'user_id'    => user_id(),
+            'type'       => CompanyBackup::TYPE_IMPORT,
+            'status'     => CompanyBackup::STATUS_PENDING,
+            'filename'   => basename($path),
+            'created_by' => user_id(),
+        ]);
+
+        $this->dispatch(new ImportCompany($disk, $path, $company->id, user_id(), $backup->id));
+
+        flash(trans('company_backups.messages.import_started'))->success();
+
+        return redirect()->route('company-backups.show', $backup->id);
+    }
+
+    /**
+     * Create an empty company row attached to the current user, with just the
+     * minimum settings needed for it to be listable/switchable before restore.
+     */
+    protected function createShellCompany(): Company
+    {
+        $current_company_id = company_id();
+
+        $company = DB::transaction(function () {
+            $company = Company::create([
+                'domain'       => '',
+                'enabled'      => 1,
+                'created_from' => source_name(),
+                'created_by'   => user_id(),
+            ]);
+
+            $company->makeCurrent();
+
+            // Minimal settings so the company appears/switches before the import
+            // job overwrites them with the archived values.
+            setting()->set([
+                'company.name'    => trans('company_backups.restoring'),
+                'default.currency' => 'USD',
+                'default.locale'  => app()->getLocale(),
+            ]);
+            setting()->save();
+
+            if ($user = user()) {
+                $user->companies()->attach($company->id);
+            }
+
+            return $company;
+        });
+
+        if (! empty($current_company_id)) {
+            company($current_company_id)->makeCurrent();
+        }
+
+        return $company;
     }
 
     /**

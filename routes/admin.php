@@ -19,6 +19,9 @@ Route::group(['prefix' => 'common'], function () {
     Route::get('companies/{company}/switch', 'Common\Companies@switch')->name('companies.switch');
     Route::get('companies/{company}/enable', 'Common\Companies@enable')->name('companies.enable');
     Route::get('companies/{company}/disable', 'Common\Companies@disable')->name('companies.disable');
+    Route::get('companies/{company}/export', 'Common\Companies@export')->name('companies.export');
+    Route::post('companies/import', 'Common\Companies@import')->middleware('import')->name('companies.import');
+    Route::get('company-backups/{company_backup}', 'Common\CompanyBackups@show')->name('company-backups.show');
     Route::resource('companies', 'Common\Companies', ['middleware' => ['dropzone']]);
 
     Route::get('dashboards/{dashboard}/switch', 'Common\Dashboards@switch')->name('dashboards.switch');
