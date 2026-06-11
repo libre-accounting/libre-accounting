@@ -10,6 +10,7 @@ use App\Models\Common\Media as MediaModel;
 use App\Notifications\Common\ExportCompleted;
 use App\Notifications\Common\ExportFailed;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use MediaUploader;
 use Throwable;
 
@@ -59,16 +60,28 @@ class CreateMediableForCompanyBackup extends JobShouldQueue
 
             $backup->update(['media_id' => $media->id]);
             $backup->markCompleted($backup->report);
-
-            $download_url = route('uploads.download', ['id' => $media->id, 'company_id' => company_id()]);
-
-            $user->notify(new ExportCompleted(trans_choice('general.companies', 1), $backup->filename, $download_url));
         } catch (Throwable $e) {
             $backup->markFailed($e->getMessage());
 
-            $user->notify(new ExportFailed($e->getMessage()));
+            $this->notifySafely($user, new ExportFailed($e->getMessage()));
 
             throw $e;
+        }
+
+        // The backup is complete and downloadable regardless of notification
+        // delivery, so a broken mail transport must NOT fail or unmark it. Send
+        // best-effort and only log delivery errors.
+        $download_url = route('uploads.download', ['id' => $backup->media_id, 'company_id' => company_id()]);
+
+        $this->notifySafely($user, new ExportCompleted(trans_choice('general.companies', 1), $backup->filename, $download_url));
+    }
+
+    protected function notifySafely(User $user, $notification): void
+    {
+        try {
+            $user->notify($notification);
+        } catch (Throwable $e) {
+            Log::warning('Company backup notification could not be delivered: ' . $e->getMessage());
         }
     }
 }

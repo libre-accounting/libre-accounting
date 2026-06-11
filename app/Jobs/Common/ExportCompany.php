@@ -10,6 +10,7 @@ use App\Utilities\CompanyArchive\CompanyExporter;
 use App\Notifications\Common\ExportFailed;
 use App\Models\Auth\User;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 /**
@@ -77,7 +78,12 @@ class ExportCompany extends JobShouldQueue
         } catch (Throwable $e) {
             $backup->markFailed($e->getMessage());
 
-            User::find($this->user_id)?->notify(new ExportFailed($e->getMessage()));
+            // Best-effort: a broken mail transport must not mask the real error.
+            try {
+                User::find($this->user_id)?->notify(new ExportFailed($e->getMessage()));
+            } catch (Throwable $notifyError) {
+                Log::warning('Company backup notification could not be delivered: ' . $notifyError->getMessage());
+            }
 
             throw $e;
         }

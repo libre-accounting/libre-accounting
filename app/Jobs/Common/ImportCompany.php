@@ -12,6 +12,7 @@ use App\Utilities\CompanyArchive\ArchiveReader;
 use App\Utilities\CompanyArchive\CompanyImporter;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use RuntimeException;
 use Throwable;
@@ -85,10 +86,6 @@ class ImportCompany extends JobShouldQueue
             $this->flushCompanyCache($company);
 
             $backup->markCompleted($importer->getReport());
-
-            $total = $backup->total;
-
-            $user->notify(new ImportCompleted(trans_choice('general.companies', 1), $total));
         } catch (Throwable $e) {
             $backup->markFailed($e->getMessage());
 
@@ -96,7 +93,7 @@ class ImportCompany extends JobShouldQueue
             // transaction; delete the shell row + any files already written).
             $this->rollbackCompany($company);
 
-            $user->notify(new ImportFailed($e->getMessage()));
+            $this->notifySafely($user, new ImportFailed($e->getMessage()));
 
             throw $e;
         } finally {
@@ -106,6 +103,21 @@ class ImportCompany extends JobShouldQueue
             if ($localZip && File::exists($localZip)) {
                 File::delete($localZip);
             }
+        }
+
+        // The company is fully restored regardless of notification delivery, so
+        // a broken mail transport must NOT throw here — a notify failure inside
+        // the try block above would trigger rollbackCompany() and destroy a
+        // perfectly good import. Best-effort only.
+        $this->notifySafely($user, new ImportCompleted(trans_choice('general.companies', 1), $backup->total));
+    }
+
+    protected function notifySafely(User $user, $notification): void
+    {
+        try {
+            $user->notify($notification);
+        } catch (Throwable $e) {
+            Log::warning('Company backup notification could not be delivered: ' . $e->getMessage());
         }
     }
 
