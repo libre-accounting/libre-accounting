@@ -1,7 +1,5 @@
 # libre-accounting
 
-![Version: 3.4.0](https://img.shields.io/badge/Version-3.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 3.4.0](https://img.shields.io/badge/AppVersion-3.4.0-informational?style=flat-square)
-
 Deploys [Libre Accounting](https://github.com/libre-accounting/libre-accounting) on Kubernetes:
 a web Deployment (apache image flavor), a queue worker Deployment, a scheduler
 Deployment, a PVC for uploads, and a Gateway API `HTTPRoute` (no Ingress).

@@ -1,6 +1,11 @@
 {{ template "chart.header" . }}
 
-{{ template "chart.badgesSection" . }}
+{{/*
+No chart.badgesSection here on purpose: the badges embed the chart version,
+which release-it bumps in Chart.yaml without regenerating this README — every
+release would trip the helm-docs freshness check in CI. Keep the README
+version-independent.
+*/}}
 
 Deploys [Libre Accounting](https://github.com/libre-accounting/libre-accounting) on Kubernetes:
 a web Deployment (apache image flavor), a queue worker Deployment, a scheduler
