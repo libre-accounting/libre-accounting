@@ -1,0 +1,179 @@
+{{ template "chart.header" . }}
+
+{{ template "chart.badgesSection" . }}
+
+Deploys [Libre Accounting](https://github.com/libre-accounting/libre-accounting) on Kubernetes:
+a web Deployment (apache image flavor), a queue worker Deployment, a scheduler
+Deployment, a PVC for uploads, and a Gateway API `HTTPRoute` (no Ingress).
+
+## Prerequisites
+
+- Kubernetes ≥ 1.26, Helm ≥ 3.8
+- [Gateway API CRDs](https://gateway-api.sigs.k8s.io/) (standard channel) and a
+  Gateway controller (Envoy Gateway, NGINX Gateway Fabric, Cilium, GKE, ...) —
+  the chart creates an `HTTPRoute` (and optionally a `Gateway`) but not the CRDs
+- An external **MySQL/MariaDB or PostgreSQL** database (the chart does not
+  bundle one; `sqlite` is supported for single-replica evaluation only)
+- Optional: external Redis for cache/session/queue
+
+## Quick start
+
+1. Create a secret with the encryption key and database password:
+
+   ```sh
+   kubectl create secret generic accounting-secrets \
+     --from-literal=app-key="base64:$(openssl rand -base64 32)" \
+     --from-literal=db-password='...'
+   ```
+
+   > **Back up the `app-key` value.** Losing it makes all encrypted data
+   > unreadable. The chart never generates a key for you.
+
+2. Write `my-values.yaml`:
+
+   ```yaml
+   app:
+     url: https://accounting.example.com
+     existingSecret: accounting-secrets
+   db:
+     host: mysql.database.svc
+     database: libre_accounting
+     username: libre_accounting
+     existingSecret: accounting-secrets
+     secretKeys:
+       password: db-password
+   httpRoute:
+     parentRefs:
+       - name: shared-gateway
+         namespace: infra
+         sectionName: https
+   setup:
+     adminEmail: admin@example.com
+     adminPassword: change-me     # or setup.existingSecret
+   ```
+
+3. First install (and only the first — see below):
+
+   ```sh
+   helm install libre-accounting \
+     oci://ghcr.io/libre-accounting/charts/libre-accounting \
+     -f my-values.yaml --set setup.enabled=true
+   ```
+
+4. Upgrades (database migrations run automatically as a pre-upgrade job):
+
+   ```sh
+   helm upgrade libre-accounting \
+     oci://ghcr.io/libre-accounting/charts/libre-accounting \
+     -f my-values.yaml
+   ```
+
+Installing from a source checkout instead: `helm install libre-accounting ./charts/libre-accounting -f my-values.yaml`.
+
+## The setup job (first install)
+
+`php artisan install` seeds the schema, the first company and the admin user.
+It is **not idempotent**, so the chart runs it as an opt-in `pre-install` hook:
+
+- `setup.enabled=true` **only on the very first `helm install`**. It has no
+  effect on `helm upgrade` (Helm never re-runs pre-install hooks), but keep it
+  `false` afterwards anyway — especially under ArgoCD, which maps pre-install
+  hooks to `PreSync` and re-runs them **on every sync**.
+- The web install wizard is not supported on Kubernetes (it writes `.env`
+  inside one pod, which is lost on restart). The chart always runs with
+  `APP_INSTALLED=true`.
+- If the setup job fails, fix the cause and re-run `helm install` (the failed
+  job is kept for `kubectl logs`).
+- Admin/company credentials live in a hook-scoped Secret that is deleted after
+  a successful install; they never reach the runtime pods.
+
+## Secrets
+
+Every credential supports two modes:
+
+| Value | Inline (dev) | Existing secret (recommended) | Default key |
+|---|---|---|---|
+| Laravel `APP_KEY` | `app.key` | `app.existingSecret` + `app.existingSecretKey` | `app-key` |
+| DB password | `db.password` | `db.existingSecret` + `db.secretKeys.password` | `db-password` |
+| Redis password | `redis.password` | `redis.existingSecret` + `redis.secretKeys.password` | `redis-password` |
+| Mail password | `mail.password` | `mail.existingSecret` + `mail.secretKeys.password` | `mail-password` |
+| Admin password (setup) | `setup.adminPassword` | `setup.existingSecret` + `setup.secretKeys.adminPassword` | `admin-password` |
+
+Inline values are stored in a chart-managed Secret annotated
+`helm.sh/resource-policy: keep` (it survives uninstall, protecting the
+APP_KEY). Pods roll automatically when chart-managed config/secrets change;
+rotations inside an `existingSecret` are invisible to the chart — restart with
+`kubectl rollout restart deploy -l app.kubernetes.io/instance=<release>`.
+
+Prefer `existingSecret` in production: it keeps credentials out of Helm
+values (which are stored in the release Secret), and the `checksum/secret`
+pod annotation — a hash of the chart-managed Secret used to roll pods on
+change — could otherwise be used by anyone with pod read access to
+offline-verify guesses of a *weak* inline password.
+
+## Persistence
+
+One PVC is mounted at `storage/app` in all app pods: user uploads
+(`storage/app/uploads`) and export/import staging (`storage/app/temp`, shared
+between web and worker). With the default `ReadWriteOnce` access mode, worker
+and scheduler pods are pinned to the web pod's node via podAffinity, and all
+three Deployments use the `Recreate` strategy so old pods release the volume
+before replacements start. On multi-node clusters an upgrade may still spend
+a short time in `ContainerCreating` while the volume detaches from the old
+node; use `ReadWriteMany` storage to avoid that entirely.
+
+`replicaCount > 1` is refused at render time unless:
+
+- `persistence.accessModes` includes `ReadWriteMany` (or persistence is
+  disabled in favor of S3: `extraEnv` with `FILESYSTEM_DISK=s3` + `AWS_*`), and
+- `session.driver` and `cache.driver` are `redis` or `database`.
+
+## Gateway API notes
+
+- TLS terminates at the Gateway; the chart sets `SESSION_SECURE_COOKIE=true`
+  automatically when `app.url` is `https://`.
+- Attaching to a Gateway in another namespace requires that Gateway's
+  `allowedRoutes.namespaces` to permit it (the Gateway owner's setting; no
+  `ReferenceGrant` is needed for the route's own backend).
+- Request body size limits are controller-specific. PHP-side limits are
+  chart-managed (`php.uploadMaxFilesize`, default 64M), but the data plane may
+  cut requests first:
+
+  | Controller | Default body limit |
+  |---|---|
+  | NGINX Gateway Fabric | 1m nginx default — raise via `NginxProxy`/snippets |
+  | Envoy Gateway / Istio / GKE | unlimited by default |
+
+## sqlite evaluation mode
+
+`db.connection=sqlite` stores the database on the persistence volume. The
+setup and migration jobs don't run for sqlite (the volume doesn't exist at
+pre-install time); initialize manually after the first deploy:
+
+```sh
+kubectl exec deploy/<release>-web -- php artisan install \
+  --db-connection=sqlite --db-name=/var/www/html/storage/app/database.sqlite \
+  --company-name=... --company-email=... --admin-email=... --admin-password=... \
+  --no-interaction
+```
+
+## Uninstall
+
+`helm uninstall` keeps the PVC and the chart-managed Secret (both are
+annotated `helm.sh/resource-policy: keep`) so data and the APP_KEY survive.
+Delete them explicitly if you really want everything gone.
+
+{{ template "chart.valuesSection" . }}
+
+## Chart docs
+
+This README is generated by [helm-docs](https://github.com/norwoodj/helm-docs)
+from `README.md.gotmpl` and the `# --` comments in `values.yaml` — edit those,
+then regenerate (CI fails if it is out of date):
+
+```sh
+docker run --rm -v "$PWD:/helm-docs" -u "$(id -u)" \
+  jnorwood/helm-docs:v1.14.2 --chart-search-root=charts
+```
+
+{{ template "helm-docs.versionFooter" . }}

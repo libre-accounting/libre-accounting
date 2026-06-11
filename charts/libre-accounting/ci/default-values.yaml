@@ -1,0 +1,11 @@
+# Minimal render fixture: external MySQL, attach to a pre-existing Gateway.
+app:
+  url: https://accounting.example.com
+  key: base64:vJ4GsxRJnJhCtBhAdcqQF6Q7dqCJ8t3bMS/M3vI5R3E=
+db:
+  host: mysql.example.svc
+  password: ci-only-password
+httpRoute:
+  parentRefs:
+    - name: shared-gateway
+      namespace: infra

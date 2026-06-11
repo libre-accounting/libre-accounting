@@ -1,0 +1,18 @@
+# Slimmest possible render: sync queue (no worker), no scheduler, no route,
+# no persistence, sqlite.
+app:
+  url: http://localhost:8080
+  key: base64:vJ4GsxRJnJhCtBhAdcqQF6Q7dqCJ8t3bMS/M3vI5R3E=
+db:
+  connection: sqlite
+  database: /var/www/html/storage/app/database.sqlite
+queue:
+  connection: sync
+worker:
+  enabled: false
+scheduler:
+  enabled: false
+persistence:
+  enabled: false
+httpRoute:
+  enabled: false

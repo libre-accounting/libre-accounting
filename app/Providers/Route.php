@@ -122,6 +122,8 @@ class Route extends Provider
     {
         $this->configureRateLimiting();
 
+        $this->mapHealthRoutes();
+
         $this->mapInstallRoutes();
 
         $this->mapApiRoutes();
@@ -139,6 +141,19 @@ class Route extends Provider
         $this->mapPortalRoutes();
 
         $this->mapSignedRoutes();
+    }
+
+    /**
+     * Define the "health" routes for the application.
+     *
+     * These routes receive no middleware so probes work before install.
+     *
+     * @return void
+     */
+    protected function mapHealthRoutes()
+    {
+        Facade::namespace($this->namespace)
+            ->group(base_path('routes/health.php'));
     }
 
     /**

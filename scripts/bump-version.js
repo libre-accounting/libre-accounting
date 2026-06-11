@@ -13,6 +13,7 @@ const fs = require('fs');
 const path = require('path');
 
 const versionFile = path.join(__dirname, '..', 'config', 'version.php');
+const chartFile = path.join(__dirname, '..', 'charts', 'libre-accounting', 'Chart.yaml');
 
 const newVersion = process.argv[2];
 
@@ -62,3 +63,24 @@ contents = setField(contents, 'zone', 'GMT +0');
 fs.writeFileSync(versionFile, contents);
 
 console.log(`Updated config/version.php to ${major}.${minor}.${patch} (${date} ${time} GMT +0)`);
+
+// Keep the Helm chart's version/appVersion in lock-step with the app release
+// (the chart release workflow refuses to publish when they diverge).
+let chart = fs.readFileSync(chartFile, 'utf8');
+
+function setChartField(source, key, value) {
+  const pattern = new RegExp(`^(${key}:\\s*).*$`, 'm');
+
+  if (!pattern.test(source)) {
+    throw new Error(`Could not find '${key}:' in ${chartFile}`);
+  }
+
+  return source.replace(pattern, `$1${value}`);
+}
+
+chart = setChartField(chart, 'version', newVersion);
+chart = setChartField(chart, 'appVersion', `"${newVersion}"`);
+
+fs.writeFileSync(chartFile, chart);
+
+console.log(`Updated charts/libre-accounting/Chart.yaml to ${newVersion}`);

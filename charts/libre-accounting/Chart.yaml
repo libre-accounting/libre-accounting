@@ -1,0 +1,22 @@
+apiVersion: v2
+name: libre-accounting
+description: Free and open source accounting software for small businesses
+type: application
+# version and appVersion are kept in lock-step with the application release by
+# npm run release
+version: 3.4.0
+appVersion: "3.4.0"
+kubeVersion: ">=1.26.0-0"
+home: https://github.com/libre-accounting/libre-accounting
+sources:
+  - https://github.com/libre-accounting/libre-accounting
+keywords:
+  - accounting
+  - invoicing
+  - finance
+  - laravel
+maintainers:
+  - name: Libre Accounting
+    url: https://github.com/libre-accounting
+annotations:
+  artifacthub.io/license: GPL-3.0

@@ -1,0 +1,99 @@
+{{- if and .Values.worker.enabled (ne .Values.queue.connection "sync") }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "libre-accounting.fullname" . }}-worker
+  labels:
+    {{- include "libre-accounting.labels" . | nindent 4 }}
+    app.kubernetes.io/component: worker
+spec:
+  replicas: {{ .Values.worker.replicaCount }}
+  {{- if and .Values.persistence.enabled (not (has "ReadWriteMany" .Values.persistence.accessModes)) }}
+  # With an RWO volume the old worker must release its attachment before any
+  # replacement pod (its own or web's) can mount it on another node.
+  strategy:
+    type: Recreate
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "libre-accounting.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: worker
+  template:
+    metadata:
+      labels:
+        {{- include "libre-accounting.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: worker
+        {{- with .Values.worker.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+        checksum/php-ini: {{ include (print $.Template.BasePath "/configmap-php.yaml") . | sha256sum }}
+        {{- with .Values.worker.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ include "libre-accounting.serviceAccountName" . }}
+      automountServiceAccountToken: false
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      terminationGracePeriodSeconds: {{ .Values.worker.terminationGracePeriodSeconds }}
+      securityContext:
+        fsGroup: 33
+        fsGroupChangePolicy: OnRootMismatch
+      containers:
+        - name: worker
+          image: {{ include "libre-accounting.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          # Bypasses the image entrypoint (which prepares apache), so this
+          # container runs as www-data from the start.
+          command:
+            - php
+            - artisan
+            - queue:work
+            - --queue={{ .Values.worker.queues }}
+            - --sleep={{ .Values.worker.sleep }}
+            - --tries={{ .Values.worker.tries }}
+            - --max-time={{ .Values.worker.maxTime }}
+          securityContext:
+            {{- include "libre-accounting.nonRootSecurityContext" . | nindent 12 }}
+          envFrom:
+            {{- include "libre-accounting.envFrom" . | nindent 12 }}
+          env:
+            {{- include "libre-accounting.secretEnv" . | nindent 12 }}
+          resources:
+            {{- toYaml .Values.worker.resources | nindent 12 }}
+          volumeMounts:
+            {{- include "libre-accounting.volumeMounts" . | nindent 12 }}
+      volumes:
+        {{- include "libre-accounting.volumes" . | nindent 8 }}
+      {{- with .Values.worker.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.worker.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.worker.affinity }}
+      affinity:
+        {{- toYaml .Values.worker.affinity | nindent 8 }}
+      {{- else if and .Values.persistence.enabled (not (has "ReadWriteMany" .Values.persistence.accessModes)) }}
+      # An RWO volume is attachable to one node only, so co-schedule with the
+      # web pod that holds it.
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchLabels:
+                  {{- include "libre-accounting.selectorLabels" . | nindent 18 }}
+                  app.kubernetes.io/component: web
+      {{- end }}
+      {{- with .Values.worker.priorityClassName }}
+      priorityClassName: {{ . }}
+      {{- end }}
+{{- end }}

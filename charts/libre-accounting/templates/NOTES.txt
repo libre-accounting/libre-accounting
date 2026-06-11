@@ -1,0 +1,60 @@
+Libre Accounting {{ .Chart.AppVersion }} has been deployed.
+
+  URL: {{ .Values.app.url }}
+
+{{- if .Values.setup.enabled }}
+
+First install: a pre-install Job created the database schema, the company
+"{{ .Values.setup.companyName }}" and the admin user {{ .Values.setup.adminEmail }}.
+IMPORTANT: set setup.enabled=false for all future upgrades — the installer is
+not idempotent and must never run twice (under ArgoCD it would re-run on
+every sync).
+{{- else if .Release.IsInstall }}
+
+NOTE: setup.enabled is false, so the database schema was NOT initialized by
+this release. If this is a brand-new installation, either reinstall with
+--set setup.enabled=true (plus setup.adminEmail / setup.adminPassword), or
+run the installer manually:
+
+  kubectl -n {{ .Release.Namespace }} exec deploy/{{ include "libre-accounting.fullname" . }}-web -- \
+    php artisan install --db-connection={{ .Values.db.connection }} ... --no-interaction
+{{- end }}
+
+{{- if .Values.httpRoute.enabled }}
+
+An HTTPRoute for {{ if .Values.httpRoute.hostnames }}{{ join ", " .Values.httpRoute.hostnames }}{{ else }}{{ include "libre-accounting.hostname" . }}{{ end }} was attached to:
+{{- if .Values.gateway.enabled }}
+  - Gateway {{ include "libre-accounting.fullname" . }} (created by this chart)
+{{- end }}
+{{- range .Values.httpRoute.parentRefs }}
+  - Gateway {{ .name }}{{ with .namespace }} (namespace {{ . }}){{ end }}
+{{- end }}
+Gateway API CRDs and a Gateway controller (Envoy Gateway, NGINX Gateway
+Fabric, Cilium, ...) must be installed in the cluster — this chart does not
+provide them. If the route does not attach, check the Gateway's
+allowedRoutes.namespaces setting.
+{{- end }}
+
+{{- if not .Values.app.existingSecret }}
+
+WARNING: APP_KEY is stored in a chart-managed Secret (kept on uninstall).
+Back it up — losing it makes all encrypted data unreadable:
+
+  kubectl -n {{ .Release.Namespace }} get secret {{ include "libre-accounting.fullname" . }} -o jsonpath='{.data.app-key}' | base64 -d
+{{- end }}
+
+{{- if gt (int .Values.replicaCount) 1 }}
+
+Multi-replica notes: uploads are served from the shared volume; consider
+S3-compatible object storage instead (extraEnv: FILESYSTEM_DISK=s3 + AWS_*).
+{{- end }}
+
+{{- if and .Values.persistence.enabled (not (has "ReadWriteMany" .Values.persistence.accessModes)) }}
+
+The data volume is ReadWriteOnce: worker and scheduler pods are pinned to the
+web pod's node via podAffinity.
+{{- end }}
+
+To roll pods after rotating an existingSecret (the chart cannot detect it):
+
+  kubectl -n {{ .Release.Namespace }} rollout restart deploy -l app.kubernetes.io/instance={{ .Release.Name }}

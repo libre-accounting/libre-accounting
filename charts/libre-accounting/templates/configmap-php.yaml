@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "libre-accounting.fullname" . }}-php
+  labels:
+    {{- include "libre-accounting.labels" . | nindent 4 }}
+data:
+  # Mounted (subPath) into /usr/local/etc/php/conf.d/ of every app container.
+  # The plain image ships PHP defaults (2M uploads) which are too small.
+  zz-libre-accounting.ini: |
+    upload_max_filesize = {{ .Values.php.uploadMaxFilesize }}
+    post_max_size = {{ .Values.php.postMaxSize }}
+    memory_limit = {{ .Values.php.memoryLimit }}
+    {{- with .Values.php.extraIni }}
+    {{- . | nindent 4 }}
+    {{- end }}

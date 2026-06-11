@@ -1,0 +1,51 @@
+# Full-feature render fixture: chart-created Gateway, existing secrets,
+# redis-backed multi-replica, first-install setup job.
+app:
+  url: https://accounting.example.com
+  existingSecret: my-app-secret
+  existingSecretKey: laravel-key
+db:
+  connection: pgsql
+  host: postgres.example.svc
+  port: 5432
+  existingSecret: my-db-secret
+  secretKeys:
+    password: pg-password
+queue:
+  connection: redis
+session:
+  driver: redis
+cache:
+  driver: redis
+redis:
+  host: redis.example.svc
+  existingSecret: my-redis-secret
+mail:
+  host: smtp.example.com
+  username: mailer
+  password: ci-only-password
+  fromAddress: accounting@example.com
+  fromName: Accounting
+replicaCount: 3
+persistence:
+  accessModes:
+    - ReadWriteMany
+  size: 50Gi
+gateway:
+  enabled: true
+  className: envoy
+  listeners:
+    - name: https
+      port: 443
+      protocol: HTTPS
+      tls:
+        certificateRefs:
+          - name: accounting-tls
+httpRoute:
+  timeouts:
+    request: 120s
+setup:
+  enabled: true
+  companyName: CI Company
+  adminEmail: admin@example.com
+  existingSecret: my-setup-secret

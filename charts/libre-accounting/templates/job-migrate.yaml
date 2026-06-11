@@ -1,0 +1,49 @@
+{{- if and .Values.migrations.enabled (ne .Values.db.connection "sqlite") }}
+{{- $dbPasswordSecret := default (printf "%s-migrate" (include "libre-accounting.fullname" .)) .Values.db.existingSecret }}
+{{- $dbPasswordKey := ternary .Values.db.secretKeys.password "db-password" (ne .Values.db.existingSecret "") }}
+{{- $dbEnv := include "libre-accounting.dbEnv" (dict "root" . "passwordSecret" $dbPasswordSecret "passwordKey" $dbPasswordKey) }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "libre-accounting.fullname" . }}-migrate
+  labels:
+    {{- include "libre-accounting.labels" . | nindent 4 }}
+    app.kubernetes.io/component: migrate
+  annotations:
+    # Migrates with the NEW image before the Deployments roll: if it fails,
+    # Helm aborts and the old pods keep serving the old schema.
+    helm.sh/hook: pre-upgrade
+    helm.sh/hook-weight: "0"
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+spec:
+  # migrate --force is idempotent — transient database blips may be retried.
+  backoffLimit: 3
+  activeDeadlineSeconds: 900
+  template:
+    metadata:
+      labels:
+        {{- include "libre-accounting.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: migrate
+    spec:
+      restartPolicy: Never
+      automountServiceAccountToken: false
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      initContainers:
+        {{- include "libre-accounting.waitForDb" (dict "root" . "env" $dbEnv) | nindent 8 }}
+      containers:
+        - name: migrate
+          image: {{ include "libre-accounting.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - php
+            - artisan
+            - migrate
+            - --force
+          securityContext:
+            {{- include "libre-accounting.nonRootSecurityContext" . | nindent 12 }}
+          env:
+            {{- $dbEnv | nindent 12 }}
+{{- end }}

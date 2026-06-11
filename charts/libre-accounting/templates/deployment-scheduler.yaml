@@ -1,0 +1,92 @@
+{{- if .Values.scheduler.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "libre-accounting.fullname" . }}-scheduler
+  labels:
+    {{- include "libre-accounting.labels" . | nindent 4 }}
+    app.kubernetes.io/component: scheduler
+spec:
+  # The Laravel scheduler must run as a single instance.
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "libre-accounting.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: scheduler
+  template:
+    metadata:
+      labels:
+        {{- include "libre-accounting.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: scheduler
+        {{- with .Values.scheduler.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+        checksum/php-ini: {{ include (print $.Template.BasePath "/configmap-php.yaml") . | sha256sum }}
+        {{- with .Values.scheduler.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ include "libre-accounting.serviceAccountName" . }}
+      automountServiceAccountToken: false
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        fsGroup: 33
+        fsGroupChangePolicy: OnRootMismatch
+      containers:
+        - name: scheduler
+          image: {{ include "libre-accounting.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          # schedule:work is Laravel's built-in run-every-minute loop — the
+          # same thing the supervisord image flavor runs, without per-minute
+          # CronJob pod churn.
+          command:
+            - php
+            - artisan
+            - schedule:work
+          securityContext:
+            {{- include "libre-accounting.nonRootSecurityContext" . | nindent 12 }}
+          envFrom:
+            {{- include "libre-accounting.envFrom" . | nindent 12 }}
+          env:
+            {{- include "libre-accounting.secretEnv" . | nindent 12 }}
+          resources:
+            {{- toYaml .Values.scheduler.resources | nindent 12 }}
+          volumeMounts:
+            {{- include "libre-accounting.volumeMounts" . | nindent 12 }}
+      volumes:
+        {{- include "libre-accounting.volumes" . | nindent 8 }}
+      {{- with .Values.scheduler.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.scheduler.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.scheduler.affinity }}
+      affinity:
+        {{- toYaml .Values.scheduler.affinity | nindent 8 }}
+      {{- else if and .Values.persistence.enabled (not (has "ReadWriteMany" .Values.persistence.accessModes)) }}
+      # An RWO volume is attachable to one node only, so co-schedule with the
+      # web pod that holds it.
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchLabels:
+                  {{- include "libre-accounting.selectorLabels" . | nindent 18 }}
+                  app.kubernetes.io/component: web
+      {{- end }}
+      {{- with .Values.scheduler.priorityClassName }}
+      priorityClassName: {{ . }}
+      {{- end }}
+{{- end }}

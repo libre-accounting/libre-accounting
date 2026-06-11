@@ -1,0 +1,85 @@
+{{- if and .Values.setup.enabled (ne .Values.db.connection "sqlite") }}
+{{- $dbPasswordSecret := default (printf "%s-setup" (include "libre-accounting.fullname" .)) .Values.db.existingSecret }}
+{{- $dbPasswordKey := ternary .Values.db.secretKeys.password "db-password" (ne .Values.db.existingSecret "") }}
+{{- $dbEnv := include "libre-accounting.dbEnv" (dict "root" . "passwordSecret" $dbPasswordSecret "passwordKey" $dbPasswordKey) }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "libre-accounting.fullname" . }}-install
+  labels:
+    {{- include "libre-accounting.labels" . | nindent 4 }}
+    app.kubernetes.io/component: install
+  annotations:
+    # Runs once, before any workload exists, so web pods only ever start
+    # against an installed database. Never re-runs on upgrades.
+    helm.sh/hook: pre-install
+    helm.sh/hook-weight: "0"
+    # Failed jobs are kept for kubectl logs and replaced on the next attempt.
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+spec:
+  # "php artisan install" is NOT idempotent (it seeds the first company and
+  # admin user) — never auto-retry a partial failure.
+  backoffLimit: 0
+  activeDeadlineSeconds: 600
+  template:
+    metadata:
+      labels:
+        {{- include "libre-accounting.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: install
+    spec:
+      restartPolicy: Never
+      automountServiceAccountToken: false
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      initContainers:
+        {{- include "libre-accounting.waitForDb" (dict "root" . "env" $dbEnv) | nindent 8 }}
+      containers:
+        - name: install
+          image: {{ include "libre-accounting.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          # Options are handed to Artisan in-process from env vars: passing
+          # them as CLI arguments would expose the passwords in the
+          # container's argv (ps, /proc) for the lifetime of the install.
+          command:
+            - php
+            - -r
+            - |
+              require '/var/www/html/vendor/autoload.php';
+              $app = require '/var/www/html/bootstrap/app.php';
+              $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
+              exit($kernel->call('install', [
+                  '--db-connection' => getenv('DB_CONNECTION'),
+                  '--db-host' => getenv('DB_HOST'),
+                  '--db-port' => getenv('DB_PORT'),
+                  '--db-name' => getenv('DB_DATABASE'),
+                  '--db-username' => getenv('DB_USERNAME'),
+                  '--db-password' => (string) getenv('DB_PASSWORD'),
+                  '--db-prefix' => (string) getenv('DB_PREFIX'),
+                  '--company-name' => getenv('COMPANY_NAME'),
+                  '--company-email' => getenv('COMPANY_EMAIL'),
+                  '--admin-email' => getenv('ADMIN_EMAIL'),
+                  '--admin-password' => (string) getenv('ADMIN_PASSWORD'),
+                  '--locale' => getenv('LOCALE'),
+                  '--no-interaction' => true,
+              ], new Symfony\Component\Console\Output\ConsoleOutput()));
+          workingDir: /var/www/html
+          securityContext:
+            {{- include "libre-accounting.nonRootSecurityContext" . | nindent 12 }}
+          env:
+            {{- $dbEnv | nindent 12 }}
+            - name: COMPANY_NAME
+              value: {{ .Values.setup.companyName | quote }}
+            - name: COMPANY_EMAIL
+              value: {{ default .Values.setup.adminEmail .Values.setup.companyEmail | quote }}
+            - name: ADMIN_EMAIL
+              value: {{ .Values.setup.adminEmail | quote }}
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (printf "%s-setup" (include "libre-accounting.fullname" .)) .Values.setup.existingSecret }}
+                  key: {{ ternary .Values.setup.secretKeys.adminPassword "admin-password" (ne .Values.setup.existingSecret "") }}
+            - name: LOCALE
+              value: {{ .Values.app.locale | quote }}
+{{- end }}

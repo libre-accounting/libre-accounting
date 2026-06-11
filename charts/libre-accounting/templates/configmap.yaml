@@ -1,0 +1,52 @@
+{{- include "libre-accounting.validate" . -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "libre-accounting.fullname" . }}
+  labels:
+    {{- include "libre-accounting.labels" . | nindent 4 }}
+data:
+  APP_URL: {{ .Values.app.url | quote }}
+  APP_LOCALE: {{ .Values.app.locale | quote }}
+  # The web install wizard writes .env inside a single pod and is lost on
+  # restart, so it is unusable here; installation happens via the setup Job
+  # and the app is always marked installed.
+  APP_INSTALLED: "true"
+  APP_DEBUG: {{ .Values.app.debug | quote }}
+  LOG_CHANNEL: stderr
+  LOG_LEVEL: {{ .Values.app.logLevel | quote }}
+  TZ: {{ .Values.app.timezone | quote }}
+  DB_CONNECTION: {{ .Values.db.connection | quote }}
+  DB_HOST: {{ .Values.db.host | quote }}
+  DB_PORT: {{ .Values.db.port | quote }}
+  DB_DATABASE: {{ .Values.db.database | quote }}
+  DB_USERNAME: {{ .Values.db.username | quote }}
+  DB_PREFIX: {{ .Values.db.prefix | quote }}
+  SESSION_DRIVER: {{ .Values.session.driver | quote }}
+  SESSION_LIFETIME: {{ .Values.session.lifetime | quote }}
+  SESSION_SECURE_COOKIE: {{ include "libre-accounting.secureCookie" . | quote }}
+  CACHE_DRIVER: {{ .Values.cache.driver | quote }}
+  QUEUE_CONNECTION: {{ .Values.queue.connection | quote }}
+  {{- if include "libre-accounting.usesRedis" . }}
+  REDIS_HOST: {{ .Values.redis.host | quote }}
+  REDIS_PORT: {{ .Values.redis.port | quote }}
+  {{- end }}
+  MAIL_MAILER: {{ .Values.mail.mailer | quote }}
+  {{- with .Values.mail.host }}
+  MAIL_HOST: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.mail.port }}
+  MAIL_PORT: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.mail.username }}
+  MAIL_USERNAME: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.mail.encryption }}
+  MAIL_ENCRYPTION: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.mail.fromAddress }}
+  MAIL_FROM_ADDRESS: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.mail.fromName }}
+  MAIL_FROM_NAME: {{ . | quote }}
+  {{- end }}

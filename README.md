@@ -115,6 +115,58 @@ SESSION_DRIVER: "redis"
 QUEUE_CONNECTION: "redis"
 ```
 
+## Kubernetes (Helm)
+
+A Helm chart lives in [charts/libre-accounting](charts/libre-accounting) and is
+published to ghcr.io on every release. It deploys the web app, a queue worker
+and the scheduler, persists uploads on a PVC, exposes the app through the
+[Gateway API](https://gateway-api.sigs.k8s.io/) (`HTTPRoute`, not Ingress), and
+reads all secrets from Kubernetes Secrets.
+
+Prerequisites: Kubernetes ≥ 1.26, Helm ≥ 3.8, Gateway API CRDs plus a Gateway
+controller (Envoy Gateway, NGINX Gateway Fabric, Cilium, ...), and an external
+MySQL/MariaDB or PostgreSQL database.
+
+```shell
+# 1. Encryption key + database password as a Secret. Back up the app-key:
+#    losing it makes all encrypted data unreadable.
+kubectl create secret generic accounting-secrets \
+  --from-literal=app-key="base64:$(openssl rand -base64 32)" \
+  --from-literal=db-password='...'
+
+# 2. my-values.yaml
+cat > my-values.yaml <<'EOF'
+app:
+  url: https://accounting.example.com
+  existingSecret: accounting-secrets
+db:
+  host: mysql.database.svc
+  database: libre_accounting
+  username: libre_accounting
+  existingSecret: accounting-secrets
+httpRoute:
+  parentRefs:
+    - name: shared-gateway
+      namespace: infra
+setup:
+  adminEmail: admin@example.com
+  adminPassword: change-me
+EOF
+
+# 3. First install only: setup.enabled runs the one-time installer
+helm install libre-accounting \
+  oci://ghcr.io/libre-accounting/charts/libre-accounting \
+  -f my-values.yaml --set setup.enabled=true
+
+# Upgrades run database migrations automatically — never re-enable setup
+helm upgrade libre-accounting \
+  oci://ghcr.io/libre-accounting/charts/libre-accounting \
+  -f my-values.yaml
+```
+
+See the [chart README](charts/libre-accounting/README.md) for the full values
+reference, Gateway/TLS notes, persistence and multi-replica guidance.
+
 ## Contributing
 
 Please, be very clear on your commit messages and pull requests, empty pull request messages may be rejected without reason.

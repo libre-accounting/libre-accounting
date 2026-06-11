@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "image": {
+      "type": "object",
+      "properties": {
+        "repository": { "type": "string", "minLength": 1 },
+        "tag": { "type": "string" },
+        "digest": { "type": "string", "pattern": "^$|^sha256:[a-f0-9]{64}$" },
+        "pullPolicy": { "enum": ["Always", "IfNotPresent", "Never"] }
+      }
+    },
+    "app": {
+      "type": "object",
+      "properties": {
+        "url": { "type": "string", "pattern": "^https?://" },
+        "locale": { "type": "string" },
+        "debug": { "type": "boolean" },
+        "logLevel": { "enum": ["debug", "info", "notice", "warning", "error", "critical", "alert", "emergency"] },
+        "timezone": { "type": "string" },
+        "key": { "type": "string" },
+        "existingSecret": { "type": "string" },
+        "existingSecretKey": { "type": "string" }
+      }
+    },
+    "db": {
+      "type": "object",
+      "properties": {
+        "connection": { "enum": ["mysql", "pgsql", "sqlite"] },
+        "host": { "type": "string" },
+        "port": { "type": ["integer", "string"] },
+        "database": { "type": "string" },
+        "username": { "type": "string" },
+        "password": { "type": "string" },
+        "prefix": { "type": "string" },
+        "existingSecret": { "type": "string" }
+      }
+    },
+    "queue": {
+      "type": "object",
+      "properties": {
+        "connection": { "enum": ["database", "redis", "sync"] }
+      }
+    },
+    "session": {
+      "type": "object",
+      "properties": {
+        "driver": { "enum": ["file", "database", "redis"] },
+        "lifetime": { "type": ["integer", "string"] },
+        "secureCookie": { "type": ["boolean", "string"] }
+      }
+    },
+    "cache": {
+      "type": "object",
+      "properties": {
+        "driver": { "enum": ["file", "database", "redis"] }
+      }
+    },
+    "persistence": {
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "existingClaim": { "type": "string" },
+        "storageClass": { "type": "string" },
+        "accessModes": {
+          "type": "array",
+          "items": { "enum": ["ReadWriteOnce", "ReadWriteMany", "ReadOnlyMany", "ReadWriteOncePod"] },
+          "minItems": 1
+        },
+        "size": { "type": "string" },
+        "mountPath": { "type": "string" }
+      }
+    },
+    "replicaCount": { "type": "integer", "minimum": 1 },
+    "service": {
+      "type": "object",
+      "properties": {
+        "type": { "enum": ["ClusterIP", "NodePort", "LoadBalancer"] },
+        "port": { "type": "integer" }
+      }
+    },
+    "gateway": {
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "className": { "type": "string" },
+        "listeners": { "type": "array" }
+      }
+    },
+    "httpRoute": {
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "parentRefs": { "type": "array" },
+        "hostnames": { "type": "array", "items": { "type": "string" } },
+        "timeouts": { "type": "object" },
+        "extraRules": { "type": "array" }
+      }
+    },
+    "setup": {
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "companyName": { "type": "string" },
+        "companyEmail": { "type": "string" },
+        "adminEmail": { "type": "string" },
+        "adminPassword": { "type": "string" },
+        "existingSecret": { "type": "string" },
+        "dbWaitTimeoutSeconds": { "type": "integer", "minimum": 5 }
+      }
+    },
+    "migrations": {
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean" }
+      }
+    }
+  }
+}

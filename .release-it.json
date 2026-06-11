@@ -12,6 +12,6 @@
     "publish": false
   },
   "hooks": {
-    "after:bump": "node scripts/bump-version.js ${version} && git add config/version.php"
+    "after:bump": "node scripts/bump-version.js ${version} && git add config/version.php charts/libre-accounting/Chart.yaml"
   }
 }

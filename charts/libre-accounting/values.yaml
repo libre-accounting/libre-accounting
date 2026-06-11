@@ -1,0 +1,371 @@
+# Default values for the libre-accounting chart.
+#
+# An external database (MySQL/MariaDB or PostgreSQL) is required — the chart
+# does not bundle one. See README.md for a quick-start walkthrough.
+#
+# Comments follow the norwoodj/helm-docs format; README.md is generated from
+# README.md.gotmpl + these comments (see the "Chart docs" section in
+# README.md).
+
+image:
+  # -- Image repository. Use the plain (apache) image flavor — the chart runs
+  # the queue worker and scheduler as separate workloads, so the
+  # fpm/supervisor flavors are neither needed nor supported here.
+  repository: ghcr.io/libre-accounting/libre-accounting
+  # -- Image tag.
+  # @default -- chart `appVersion`
+  tag: ""
+  # -- If set, takes precedence over tag (`image@digest`).
+  digest: ""
+  # -- Image pull policy.
+  pullPolicy: IfNotPresent
+# -- Pull secrets for the app image, applied to every pod.
+imagePullSecrets: []
+
+# -- Partially override the resource name prefix.
+nameOverride: ""
+# -- Fully override the resource name prefix.
+fullnameOverride: ""
+
+app:
+  # -- Public URL of the installation (`APP_URL`). Required. Its hostname is
+  # also the default HTTPRoute hostname, and an `https://` scheme makes
+  # session cookies secure-by-default.
+  url: ""
+  # -- Default language, also used by the installer.
+  locale: en-US
+  # -- Laravel debug mode (`APP_DEBUG`).
+  debug: false
+  # -- Log verbosity (`LOG_LEVEL`); logs go to stderr.
+  logLevel: info
+  # -- Container timezone (`TZ`).
+  timezone: UTC
+  # -- Laravel encryption key (`APP_KEY`). Required unless `app.existingSecret`
+  # is set. Generate with `echo "base64:$(openssl rand -base64 32)"`.
+  # WARNING: losing or changing this key makes all encrypted data unreadable.
+  key: ""
+  # -- Name of an existing Secret holding the APP_KEY (recommended for
+  # production/GitOps). Takes precedence over `app.key`.
+  existingSecret: ""
+  # -- Key inside `app.existingSecret` that holds the APP_KEY.
+  existingSecretKey: app-key
+
+db:
+  # -- Database driver: `mysql`, `pgsql` or `sqlite`. sqlite stores the
+  # database file on the persistence volume and is only suitable for
+  # single-replica evaluation.
+  connection: mysql
+  # -- Database host. Required for mysql/pgsql — the chart does not bundle a
+  # database.
+  host: ""
+  # -- Database port.
+  port: 3306
+  # -- Database name; for sqlite, an absolute file path on the persistence
+  # volume (e.g. `/var/www/html/storage/app/database.sqlite`).
+  database: libre_accounting
+  # -- Database user.
+  username: libre_accounting
+  # -- Database password. Ignored when `db.existingSecret` is set.
+  password: ""
+  # -- Table name prefix.
+  prefix: la_
+  # -- Name of an existing Secret holding the database password.
+  existingSecret: ""
+  secretKeys:
+    # -- Key inside `db.existingSecret` that holds the password.
+    password: db-password
+
+queue:
+  # -- Queue driver: `database`, `redis` or `sync`. `database` runs jobs
+  # (company exports/imports, notifications) in the worker Deployment;
+  # `sync` runs them inline in web requests and disables the worker.
+  connection: database
+
+session:
+  # -- Session driver: `file`, `database` or `redis`. `file` is fine for a
+  # single replica only.
+  driver: file
+  # -- Session lifetime in minutes.
+  lifetime: 30
+  # -- Send session cookies with the Secure flag (true/false).
+  # @default -- derived from the `app.url` scheme (https ⇒ true)
+  secureCookie: ""
+
+cache:
+  # -- Cache driver: `file`, `database` or `redis`. `file` is fine for a
+  # single replica only.
+  driver: file
+
+redis:
+  # -- External Redis host, used only when queue/session/cache select the
+  # `redis` driver.
+  host: ""
+  # -- Redis port.
+  port: 6379
+  # -- Redis password. Ignored when `redis.existingSecret` is set.
+  password: ""
+  # -- Name of an existing Secret holding the Redis password.
+  existingSecret: ""
+  secretKeys:
+    # -- Key inside `redis.existingSecret` that holds the password.
+    password: redis-password
+
+mail:
+  # -- Laravel mailer: `smtp` for real deployments (the image default,
+  # `mail`, does not work in containers).
+  mailer: smtp
+  # -- SMTP host.
+  host: ""
+  # -- SMTP port.
+  port: 587
+  # -- SMTP username.
+  username: ""
+  # -- SMTP password. Ignored when `mail.existingSecret` is set.
+  password: ""
+  # -- SMTP transport encryption (`tls` or empty).
+  encryption: tls
+  # -- From address for outgoing mail.
+  fromAddress: ""
+  # -- From name for outgoing mail.
+  fromName: ""
+  # -- Name of an existing Secret holding the SMTP password.
+  existingSecret: ""
+  secretKeys:
+    # -- Key inside `mail.existingSecret` that holds the password.
+    password: mail-password
+
+# -- Extra environment for the web, worker and scheduler containers (the
+# install/migrate hook Jobs use only the database settings above). Standard
+# EnvVar list, e.g. `[{name: FILESYSTEM_DISK, value: s3}]` to switch uploads
+# to S3.
+extraEnv: []
+# -- Extra EnvFromSource list for the web, worker and scheduler containers.
+extraEnvFrom: []
+
+persistence:
+  # -- Persist `storage/app` (user uploads and export/import staging, shared
+  # by web, worker and scheduler pods). Disabling it is only valid with
+  # `queue.connection=sync` and the worker disabled.
+  enabled: true
+  # -- Use an existing PVC instead of creating one.
+  existingClaim: ""
+  # -- StorageClass for the created PVC.
+  # @default -- cluster default
+  storageClass: ""
+  # -- PVC access modes. `replicaCount > 1` requires `ReadWriteMany`.
+  accessModes:
+    - ReadWriteOnce
+  # -- PVC size.
+  size: 10Gi
+  # -- Mount path of the data volume.
+  mountPath: /var/www/html/storage/app
+  # -- Extra annotations for the created PVC.
+  annotations: {}
+
+php:
+  # -- `upload_max_filesize` for all app containers, rendered into a php.ini
+  # drop-in (the stock image ships 2M, too small for real use).
+  uploadMaxFilesize: 64M
+  # -- `post_max_size`.
+  postMaxSize: 64M
+  # -- `memory_limit`.
+  memoryLimit: 512M
+  # -- Extra php.ini lines appended verbatim.
+  extraIni: ""
+
+# -- Web replicas. `> 1` requires ReadWriteMany persistence and non-file
+# session/cache drivers (enforced at render time).
+replicaCount: 1
+
+web:
+  # -- Resources for the web container.
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      memory: 1Gi
+  # -- Extra annotations for web pods.
+  podAnnotations: {}
+  # -- Extra labels for web pods.
+  podLabels: {}
+  # -- Node selector for web pods.
+  nodeSelector: {}
+  # -- Tolerations for web pods.
+  tolerations: []
+  # -- Affinity for web pods.
+  affinity: {}
+  # -- PriorityClass for web pods.
+  priorityClassName: ""
+  # -- Pod-level security context. The web entrypoint must start as root (it
+  # fixes ownership and starts apache, whose workers then drop to www-data).
+  podSecurityContext:
+    fsGroup: 33
+    fsGroupChangePolicy: OnRootMismatch
+  # -- Container-level security context for the web container.
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    seccompProfile:
+      type: RuntimeDefault
+    capabilities:
+      drop: [ALL]
+      add: [CHOWN, DAC_OVERRIDE, FOWNER, SETGID, SETUID, NET_BIND_SERVICE, KILL]
+  # -- Startup probe on `GET /health` (with the `app.url` Host header).
+  startupProbe:
+    enabled: true
+    failureThreshold: 60
+    periodSeconds: 5
+  # -- Liveness probe on `GET /health`.
+  livenessProbe:
+    enabled: true
+    periodSeconds: 30
+    timeoutSeconds: 5
+    failureThreshold: 3
+  # -- Readiness probe on `GET /health`.
+  readinessProbe:
+    enabled: true
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+
+worker:
+  # -- Run the queue worker Deployment (`php artisan queue:work`). Rendered
+  # only when `queue.connection` is not `sync`.
+  enabled: true
+  # -- Worker replicas.
+  replicaCount: 1
+  # -- Queues to process, in priority order.
+  queues: exports,jobs,notifications
+  # -- Seconds to sleep when no job is available.
+  sleep: 3
+  # -- Attempts per job before it is marked failed.
+  tries: 1
+  # -- Worker exits and restarts after this many seconds to avoid memory
+  # creep.
+  maxTime: 3600
+  # -- Grace period so in-flight jobs can finish on shutdown.
+  terminationGracePeriodSeconds: 90
+  # -- Resources for the worker container.
+  resources:
+    requests:
+      cpu: 50m
+      memory: 192Mi
+    limits:
+      memory: 768Mi
+  # -- Extra annotations for worker pods.
+  podAnnotations: {}
+  # -- Extra labels for worker pods.
+  podLabels: {}
+  # -- Node selector for worker pods.
+  nodeSelector: {}
+  # -- Tolerations for worker pods.
+  tolerations: []
+  # -- Affinity for worker pods.
+  # @default -- co-scheduled with the web pod when the volume is RWO
+  affinity: {}
+  # -- PriorityClass for worker pods.
+  priorityClassName: ""
+
+scheduler:
+  # -- Run the scheduler Deployment (`php artisan schedule:work` — reminders,
+  # recurring invoices, temp cleanup). Always a single replica.
+  enabled: true
+  # -- Resources for the scheduler container.
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      memory: 512Mi
+  # -- Extra annotations for scheduler pods.
+  podAnnotations: {}
+  # -- Extra labels for scheduler pods.
+  podLabels: {}
+  # -- Node selector for scheduler pods.
+  nodeSelector: {}
+  # -- Tolerations for scheduler pods.
+  tolerations: []
+  # -- Affinity for scheduler pods.
+  # @default -- co-scheduled with the web pod when the volume is RWO
+  affinity: {}
+  # -- PriorityClass for scheduler pods.
+  priorityClassName: ""
+
+service:
+  # -- Service type.
+  type: ClusterIP
+  # -- Service port.
+  port: 80
+  # -- Extra annotations for the Service.
+  annotations: {}
+
+gateway:
+  # -- Create an in-chart Gateway. Most clusters attach to a shared Gateway
+  # via `httpRoute.parentRefs` instead.
+  enabled: false
+  # -- GatewayClass name. Required when `gateway.enabled` is true.
+  className: ""
+  # -- Extra annotations for the Gateway.
+  annotations: {}
+  # -- Raw Gateway API listener list, e.g. an HTTPS listener with
+  # `tls.certificateRefs`.
+  listeners:
+    - name: http
+      port: 80
+      protocol: HTTP
+
+httpRoute:
+  # -- Create an HTTPRoute for the web Service.
+  enabled: true
+  # -- Extra annotations for the HTTPRoute.
+  annotations: {}
+  # -- Gateway(s) to attach to, e.g.
+  # `[{name: shared-gateway, namespace: infra, sectionName: https}]`. When
+  # `gateway.enabled` is true the chart's own Gateway is added automatically.
+  parentRefs: []
+  # -- Hostnames for the route.
+  # @default -- the hostname of `app.url`
+  hostnames: []
+  # -- Optional HTTPRoute rule timeouts (Gateway API v1.1+), e.g.
+  # `{request: 60s}`.
+  timeouts: {}
+  # -- Extra HTTPRoute rules appended verbatim after the default rule.
+  extraRules: []
+
+setup:
+  # -- One-time first install: creates the schema, the first company and the
+  # admin user via a pre-install hook Job. Enable ONLY on the very first
+  # `helm install` — the installer is not idempotent. Keep disabled under
+  # ArgoCD after the first sync (PreSync would re-run it).
+  enabled: false
+  # -- Name of the first company.
+  companyName: My Company
+  # -- Email of the first company.
+  # @default -- `setup.adminEmail`
+  companyEmail: ""
+  # -- Login email of the admin user. Required when `setup.enabled` is true.
+  adminEmail: ""
+  # -- Password of the admin user. Ignored when `setup.existingSecret` is
+  # set.
+  adminPassword: ""
+  # -- Name of an existing Secret holding the admin password.
+  existingSecret: ""
+  secretKeys:
+    # -- Key inside `setup.existingSecret` that holds the admin password.
+    adminPassword: admin-password
+  # -- How long the install/migrate jobs wait for the database.
+  dbWaitTimeoutSeconds: 120
+
+migrations:
+  # -- Run database migrations (`php artisan migrate` with `--force`) as a
+  # pre-upgrade hook Job.
+  enabled: true
+
+serviceAccount:
+  # -- Create a dedicated ServiceAccount (tokens are never mounted).
+  create: true
+  # -- Extra annotations for the ServiceAccount.
+  annotations: {}
+  # -- Use an existing ServiceAccount name instead.
+  # @default -- the release fullname
+  name: ""
