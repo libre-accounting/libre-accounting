@@ -161,6 +161,19 @@ class CompanyImporter
                 continue; // e.g. user_dashboards handled specially / dropped
             }
 
+            // The shell company carries placeholder settings (name, currency,
+            // locale) so it is listable before restore. Replace them instead of
+            // adding a second live row: the unique index includes deleted_at, so
+            // NULL lets the duplicate in and the companies list, which joins
+            // settings to sort by name, then shows the company twice.
+            if ($isSettings && empty($row['deleted_at'])) {
+                DB::table('settings')
+                    ->where('company_id', $this->companyId)
+                    ->where('key', $row['key'])
+                    ->whereNull('deleted_at')
+                    ->delete();
+            }
+
             if ($isPivot) {
                 DB::table($table)->insert($row);
             } else {

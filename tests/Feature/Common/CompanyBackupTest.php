@@ -147,6 +147,65 @@ class CompanyBackupTest extends FeatureTestCase
         File::delete($path);
     }
 
+    public function testRestoreReplacesShellPlaceholderSettingsSoTheCompanyIsListedOnce()
+    {
+        $this->seedSourceData();
+
+        $sourceName = setting('company.name');
+
+        $path = $this->archivePath();
+        $writer = new ArchiveWriter();
+        $writer->open($path);
+        $exporter = new CompanyExporter($this->company->id, $writer);
+        $result = $exporter->run();
+        $writer->writeManifest(CompanyExporter::buildManifest($this->company->id, $result));
+        $writer->close();
+
+        // Same shell the controller and company:import build: placeholder
+        // settings + the importing user attached.
+        $target = Company::create(['domain' => '', 'enabled' => 1, 'created_by' => $this->user->id]);
+        $target->makeCurrent();
+        setting()->set([
+            'company.name'     => trans('company_backups.restoring'),
+            'default.currency' => 'USD',
+            'default.locale'   => 'en-GB',
+        ]);
+        setting()->save();
+        $this->user->companies()->attach($target->id);
+
+        $reader = new ArchiveReader();
+        $reader->open($path);
+        $importer = new CompanyImporter($reader, $target->id, $this->user->id);
+        DB::transaction(fn () => $importer->importData());
+        $reader->close();
+
+        // Placeholders equal to the setting fallback (USD, en-GB) are never
+        // stored, so company.name is the one that collides in practice; assert
+        // no key at all ends up with two live rows.
+        $duplicates = DB::table('settings')
+            ->where('company_id', $target->id)
+            ->whereNull('deleted_at')
+            ->groupBy('key')
+            ->havingRaw('COUNT(*) > 1')
+            ->pluck('key')
+            ->all();
+        $this->assertSame([], $duplicates);
+
+        $this->assertSame($sourceName, DB::table('settings')
+            ->where('company_id', $target->id)
+            ->where('key', 'company.name')
+            ->whereNull('deleted_at')
+            ->value('value'));
+
+        // The companies list sorts by name via a settings join; a duplicate
+        // company.name row would list the restored company twice.
+        $this->loginAs(null, $this->company);
+        $ids = $this->user->companies()->collect()->pluck('id')->all();
+        $this->assertSame(1, count(array_keys($ids, $target->id)));
+
+        File::delete($path);
+    }
+
     public function testExportRouteDispatchesAndRedirectsToProgress()
     {
         $this->seedSourceData();
