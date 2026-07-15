@@ -101,6 +101,7 @@ return [
     'save'                  => 'Vista',
     'confirm'               => 'Staðfesta',
     'cancel'                => 'Hætta við',
+    'back'                  => 'Til baka',
     'loading'               => 'Hleð...',
     'from'                  => 'Form',
     'to'                    => 'Til',

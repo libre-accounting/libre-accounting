@@ -130,6 +130,7 @@ return [
     'save'                  => 'Speichern',
     'confirm'               => 'Bestätigen',
     'cancel'                => 'Abbrechen',
+    'back'                  => 'Zurück',
     'loading'               => 'Wird geladen...',
     'from'                  => 'Von',
     'to'                    => 'An',

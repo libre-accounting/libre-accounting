@@ -131,6 +131,7 @@ return [
     'save'                  => 'Saglabāt',
     'confirm'               => 'Apstiprināt',
     'cancel'                => 'Atcelt',
+    'back'                  => 'Atpakaļ',
     'loading'               => 'Ielādē...',
     'from'                  => 'No',
     'to'                    => 'Kam',

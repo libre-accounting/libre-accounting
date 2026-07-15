@@ -101,6 +101,7 @@ return [
     'save'                  => 'Ruaj',
     'confirm'               => 'Konfirmo',
     'cancel'                => 'Anulo',
+    'back'                  => 'Mbrapa',
     'loading'               => 'Në ngarkim…',
     'from'                  => 'Nga',
     'to'                    => 'Te',

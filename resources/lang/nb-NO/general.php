@@ -105,6 +105,7 @@ return [
     'save'                  => 'Lagre',
     'confirm'               => 'Bekreft',
     'cancel'                => 'Avbryt',
+    'back'                  => 'Tilbake',
     'loading'               => 'Laster...',
     'from'                  => 'Fra',
     'to'                    => 'Til',

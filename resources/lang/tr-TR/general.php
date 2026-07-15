@@ -101,6 +101,7 @@ return [
     'save'                  => 'Kaydet',
     'confirm'               => 'Onay',
     'cancel'                => 'İptal',
+    'back'                  => 'Geri',
     'loading'               => 'Yükleniyor...',
     'from'                  => 'Tarafından',
     'to'                    => 'Tarafına',

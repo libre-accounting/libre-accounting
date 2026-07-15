@@ -101,6 +101,7 @@ return [
     'save'                  => 'Spremi',
     'confirm'               => 'Potvrdi',
     'cancel'                => 'Otkaži',
+    'back'                  => 'Natrag',
     'loading'               => 'Učitavanje...',
     'from'                  => 'Od',
     'to'                    => 'Za',

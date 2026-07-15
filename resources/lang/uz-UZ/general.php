@@ -96,6 +96,7 @@ return [
     'save'                  => 'Saqlash',
     'confirm'               => 'Tasdiqlang',
     'cancel'                => 'Bekor qilish',
+    'back'                  => 'Orqaga',
     'loading'               => 'Yuklanmoqda...',
     'from'                  => 'Kimdan',
     'to'                    => 'Kimga',

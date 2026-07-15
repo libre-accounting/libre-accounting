@@ -132,6 +132,7 @@ return [
     'save'                  => 'Opslaan',
     'confirm'               => 'Bevestigen',
     'cancel'                => 'Annuleren',
+    'back'                  => 'Terug',
     'loading'               => 'Bezig met laden...',
     'from'                  => 'Van',
     'to'                    => 'Aan',

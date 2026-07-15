@@ -86,6 +86,7 @@ return [
     'color'                 => '색상',
     'save'                  => '저장',
     'cancel'                => '취소',
+    'back'                  => '뒤로',
     'loading'               => '로딩중...',
     'from'                  => 'From',
     'to'                    => 'To',

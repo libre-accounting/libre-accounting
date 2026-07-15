@@ -132,6 +132,7 @@ return [
     'save'                  => 'Desa',
     'confirm'               => 'Confirma',
     'cancel'                => 'Cancel·la',
+    'back'                  => 'Enrera',
     'loading'               => 'Es carrega...',
     'from'                  => 'Des de',
     'to'                    => 'A',

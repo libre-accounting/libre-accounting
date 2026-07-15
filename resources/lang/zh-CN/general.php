@@ -101,6 +101,7 @@ return [
     'save'                  => '保存',
     'confirm'               => '确认',
     'cancel'                => '取消',
+    'back'                  => '返回',
     'loading'               => '载入中...',
     'from'                  => '來自',
     'to'                    => '收件人',

@@ -101,6 +101,7 @@ return [
     'save'                  => 'Tallenna',
     'confirm'               => 'Vahvista',
     'cancel'                => 'Peruuta',
+    'back'                  => 'Takaisin',
     'loading'               => 'Ladataan...',
     'from'                  => 'Lähettäjä',
     'to'                    => 'Vastaanottaja',

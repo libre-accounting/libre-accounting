@@ -131,6 +131,7 @@ return [
     'save'                  => 'Salvar',
     'confirm'               => 'Confirmar',
     'cancel'                => 'Cancelar',
+    'back'                  => 'Voltar',
     'loading'               => 'Carregando...',
     'from'                  => 'De',
     'to'                    => 'Para',

@@ -133,6 +133,7 @@ return [
     'save'                  => 'Save',
     'confirm'               => 'Confirm',
     'cancel'                => 'Cancel',
+    'back'                  => 'Back',
     'loading'               => 'Loading...',
     'from'                  => 'From',
     'to'                    => 'To',

@@ -101,6 +101,7 @@ return [
     'save'                  => 'Zapisz',
     'confirm'               => 'Potwierdź',
     'cancel'                => 'Anuluj',
+    'back'                  => 'Wstecz',
     'loading'               => 'Ładowanie ...',
     'from'                  => 'Od',
     'to'                    => 'Do',

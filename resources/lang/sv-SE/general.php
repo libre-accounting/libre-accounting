@@ -131,6 +131,7 @@ return [
     'save'                  => 'Spara',
     'confirm'               => 'Bekräfta',
     'cancel'                => 'Avbryt',
+    'back'                  => 'Tillbaka',
     'loading'               => 'Laddar...',
     'from'                  => 'Från',
     'to'                    => 'Till',

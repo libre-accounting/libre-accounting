@@ -101,6 +101,7 @@ return [
     'save'                  => 'Įrašyti',
     'confirm'               => 'Patvirtinti',
     'cancel'                => 'Atšaukti',
+    'back'                  => 'Atgal',
     'loading'               => 'Kraunama...',
     'from'                  => 'Nuo',
     'to'                    => 'Iki',

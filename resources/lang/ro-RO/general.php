@@ -130,6 +130,7 @@ return [
     'save'                  => 'Salveaza',
     'confirm'               => 'Confirmaţi',
     'cancel'                => 'Anulează',
+    'back'                  => 'Înapoi',
     'loading'               => 'Se încarcă ...',
     'from'                  => 'Expeditor',
     'to'                    => 'Destinatar',

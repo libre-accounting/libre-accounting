@@ -105,6 +105,7 @@ return [
     'save'                  => 'Gem',
     'confirm'               => 'Bekræft',
     'cancel'                => 'Annullér',
+    'back'                  => 'Tilbage',
     'loading'               => 'Indlæser...',
     'from'                  => 'Fra:',
     'to'                    => 'Til',

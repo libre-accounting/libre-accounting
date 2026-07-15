@@ -101,6 +101,7 @@ return [
     'save'                  => 'Salvesta',
     'confirm'               => 'Kinnita',
     'cancel'                => 'Tühista',
+    'back'                  => 'Tagasi',
     'loading'               => 'Laadimine...',
     'from'                  => 'Alates',
     'to'                    => 'Kuni',

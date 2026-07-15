@@ -86,6 +86,7 @@ return [
     'color'                 => 'צבע',
     'save'                  => 'שמור',
     'cancel'                => 'ביטול',
+    'back'                  => 'חזרה',
     'loading'               => 'Loading...',
     'from'                  => 'מאת',
     'to'                    => 'אל',

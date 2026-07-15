@@ -86,6 +86,7 @@ return [
     'color'                 => 'Màu',
     'save'                  => 'Lưu',
     'cancel'                => 'Huỷ',
+    'back'                  => 'Quay lại',
     'loading'               => 'Loading...',
     'from'                  => 'Từ',
     'to'                    => 'Đến',

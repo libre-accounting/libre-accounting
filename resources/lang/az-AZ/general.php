@@ -101,6 +101,7 @@ return [
     'save'                  => 'Yadda Saxla',
     'confirm'               => 'Təsdiq',
     'cancel'                => 'Ləğv',
+    'back'                  => 'Geri',
     'loading'               => 'Yüklənir...',
     'from'                  => 'Tərəfindən',
     'to'                    => 'Tərəfinə',

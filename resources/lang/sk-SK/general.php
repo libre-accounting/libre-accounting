@@ -86,6 +86,7 @@ return [
     'color'                 => 'Farba',
     'save'                  => 'Uložiť',
     'cancel'                => 'Zrušiť',
+    'back'                  => 'Späť',
     'loading'               => 'Načítávanie...',
     'from'                  => 'Od',
     'to'                    => 'Pre',

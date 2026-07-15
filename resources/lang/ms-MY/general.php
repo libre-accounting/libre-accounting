@@ -101,6 +101,7 @@ return [
     'save'                  => 'Simpan',
     'confirm'               => 'Sahkan',
     'cancel'                => 'Batal',
+    'back'                  => 'Kembali',
     'loading'               => 'Sedang memuat...',
     'from'                  => 'Dari',
     'to'                    => 'Kepada',

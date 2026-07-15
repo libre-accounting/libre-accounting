@@ -101,6 +101,7 @@ return [
     'save'                  => 'Guardar',
     'confirm'               => 'Confirmar',
     'cancel'                => 'Cancelar',
+    'back'                  => 'Voltar',
     'loading'               => 'A Executar...',
     'from'                  => 'De',
     'to'                    => 'Para',

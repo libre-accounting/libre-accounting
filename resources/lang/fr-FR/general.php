@@ -132,6 +132,7 @@ return [
     'save'                  => 'Enregistrer',
     'confirm'               => 'Confirmer',
     'cancel'                => 'Annuler',
+    'back'                  => 'Retour',
     'loading'               => 'Chargement...',
     'from'                  => 'De',
     'to'                    => 'Vers',

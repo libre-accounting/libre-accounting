@@ -132,6 +132,7 @@ return [
     'save'                  => 'Shrani',
     'confirm'               => 'Potrdi',
     'cancel'                => 'Prekliči',
+    'back'                  => 'Nazaj',
     'loading'               => 'Nalaganje...',
     'from'                  => 'Od',
     'to'                    => 'Za',

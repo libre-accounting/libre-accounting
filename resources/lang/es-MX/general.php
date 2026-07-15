@@ -101,6 +101,7 @@ return [
     'save'                  => 'Guardar',
     'confirm'               => 'Confirmar',
     'cancel'                => 'Cancelar',
+    'back'                  => 'Atrás',
     'loading'               => 'Cargando...',
     'from'                  => 'De 	',
     'to'                    => 'Para',

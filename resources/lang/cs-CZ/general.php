@@ -132,6 +132,7 @@ return [
     'save'                  => 'Uložit',
     'confirm'               => 'Potvrdit',
     'cancel'                => 'Storno',
+    'back'                  => 'Zpět',
     'loading'               => 'Načítání...',
     'from'                  => 'Od',
     'to'                    => 'Komu',
