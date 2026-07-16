@@ -206,6 +206,50 @@ class CompanyBackupTest extends FeatureTestCase
         File::delete($path);
     }
 
+    public function testRestoreLinksSubcategoriesWhenTheSourceIdsDoNotExistOnTheTarget()
+    {
+        $this->loginAs(null, $this->company);
+
+        $parent = Category::factory()->expense()->create(['name' => 'Backup parent category']);
+        $child = Category::factory()->expense()->create(['name' => 'Backup child category', 'parent_id' => $parent->id]);
+
+        $path = $this->archivePath();
+        $writer = new ArchiveWriter();
+        $writer->open($path);
+        $exporter = new CompanyExporter($this->company->id, $writer);
+        $result = $exporter->run();
+        $writer->writeManifest(CompanyExporter::buildManifest($this->company->id, $result));
+        $writer->close();
+
+        // On another instance the source ids don't exist, so inserting the
+        // child with its old parent_id trips the categories.parent_id foreign
+        // key (mysql/pgsql). Drop the source rows to reproduce that here.
+        DB::table('categories')->where('id', $child->id)->delete();
+        DB::table('categories')->where('id', $parent->id)->delete();
+
+        $target = Company::create(['domain' => '', 'enabled' => 1, 'created_by' => $this->user->id]);
+        $target->makeCurrent();
+
+        $reader = new ArchiveReader();
+        $reader->open($path);
+        $importer = new CompanyImporter($reader, $target->id, $this->user->id);
+        DB::transaction(fn () => $importer->importData());
+        $reader->close();
+
+        $restored = Category::withoutGlobalScopes()
+            ->where('company_id', $target->id)
+            ->whereIn('name', [$parent->name, $child->name])
+            ->pluck('id', 'name');
+
+        $this->assertCount(2, $restored);
+        $this->assertEquals(
+            $restored[$parent->name],
+            Category::withoutGlobalScopes()->find($restored[$child->name])->parent_id
+        );
+
+        File::delete($path);
+    }
+
     public function testExportRouteDispatchesAndRedirectsToProgress()
     {
         $this->seedSourceData();

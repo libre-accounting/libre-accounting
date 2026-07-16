@@ -201,7 +201,7 @@ class CompanyImporter
     /**
      * Normalize a row for insert: strip id, force company/owner, remap simple
      * FKs + morphs, null out foreign-user refs, drop columns the table lacks.
-     * Self-refs / json ids are left at OLD values for the phase-2 patch.
+     * Self-refs are blanked and json ids left at OLD values for the phase-2 patch.
      */
     protected function prepareRow(string $table, array $spec, array $row, bool $noCompany, bool $isSettings): ?array
     {
@@ -231,6 +231,17 @@ class CompanyImporter
         // Foreign users that are NOT created_by (contacts.user_id): null them.
         foreach ($spec['user_refs'] ?? [] as $col) {
             $row[$col] = null;
+        }
+
+        // Self-refs hold OLD ids that may not exist here (or not yet), which a
+        // FK such as categories.parent_id rejects on insert. Insert them empty;
+        // phase 2 writes the remapped id from the archive row.
+        $zeroIsNull = array_flip($spec['zero_is_null'] ?? []);
+
+        foreach ($spec['self_refs'] ?? [] as $col => $refTable) {
+            if (array_key_exists($col, $row)) {
+                $row[$col] = isset($zeroIsNull[$col]) ? 0 : null;
+            }
         }
 
         // Simple FKs to already-inserted rows.
