@@ -29,7 +29,7 @@ class Sentry
             return 0.0;
         }
 
-        return config('sentry.traces_sample_rate');
+        return (float) config('sentry.traces_sample_rate');
     }
 
     public static function shouldFilterAgent(): bool
