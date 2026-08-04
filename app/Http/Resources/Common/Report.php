@@ -36,7 +36,7 @@ class Report extends JsonResource
             return [];
         }
 
-        $report = Utility::getClassInstance($this);
+        $report = Utility::getClassInstance($this->resource);
 
         if (empty($report)) {
             return [];

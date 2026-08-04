@@ -27,7 +27,8 @@ class AddSearchString extends Listener
             return;
         }
 
-        $old = old();
+        // API requests have no session, so old() returns null there
+        $old = old() ?: [];
         $request = request()->all();
 
         if ($old || $request) {
