@@ -22,6 +22,7 @@ class Transaction extends JsonResource
             'id' => $this->id,
             'company_id' => $this->company_id,
             'type' => $this->type,
+            'number' => $this->number,
             'account_id' => $this->account_id,
             'paid_at' => $this->paid_at->toIso8601String(),
             'amount' => $this->amount,
