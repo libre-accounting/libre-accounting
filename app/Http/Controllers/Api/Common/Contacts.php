@@ -44,7 +44,7 @@ class Contacts extends ApiController
 
         if (! $contact instanceof Contact) {
             //return $this->noContent();
-            return $this->errorInternal('No query results for model [' . Contact::class . '] ' . $id);
+            return $this->errorNotFound('No query results for model [' . Contact::class . '] ' . $id);
         }
 
         return new Resource($contact);

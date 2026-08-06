@@ -40,7 +40,7 @@ class Documents extends ApiController
         }
 
         if (! $document instanceof Document) {
-            return $this->errorInternal('No query results for model [' . Document::class . '] ' . $id);
+            return $this->errorNotFound('No query results for model [' . Document::class . '] ' . $id);
         }
 
         return new Resource($document);

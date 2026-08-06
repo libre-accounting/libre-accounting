@@ -358,6 +358,9 @@ class Handler extends ExceptionHandler
             $code = $exception->status;
         } elseif ($exception instanceof HttpExceptionInterface) {
             $code = $exception->getStatusCode();
+        } elseif ($exception instanceof ModelNotFoundException) {
+            // Route model binding with an unknown id
+            $code = 404;
         } else {
             // By default throw 500
             $code = 500;

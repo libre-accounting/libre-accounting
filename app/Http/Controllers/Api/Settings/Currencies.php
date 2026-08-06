@@ -40,7 +40,7 @@ class Currencies extends ApiController
         }
 
         if (! $currency instanceof Currency) {
-            return $this->errorInternal('No query results for model [' . Currency::class . '] ' . $id);
+            return $this->errorNotFound('No query results for model [' . Currency::class . '] ' . $id);
         }
 
         return new Resource($currency);

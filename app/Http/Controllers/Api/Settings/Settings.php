@@ -51,7 +51,7 @@ class Settings extends ApiController
         }
 
         if (! $setting instanceof Setting) {
-            return $this->errorInternal('No query results for model [' . Setting::class . '] ' . $id);
+            return $this->errorNotFound('No query results for model [' . Setting::class . '] ' . $id);
         }
 
         return new Resource($setting);

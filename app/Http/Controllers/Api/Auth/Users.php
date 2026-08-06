@@ -41,7 +41,7 @@ class Users extends ApiController
         }
 
         if (! $user instanceof User) {
-            return $this->errorInternal('No query results for model [' . User::class . '] ' . $id);
+            return $this->errorNotFound('No query results for model [' . User::class . '] ' . $id);
         }
 
         return new Resource($user);

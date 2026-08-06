@@ -40,7 +40,7 @@ class Accounts extends ApiController
         }
 
         if (! $account instanceof Account) {
-            return $this->errorInternal('No query results for model [' . Account::class . '] ' . $id);
+            return $this->errorNotFound('No query results for model [' . Account::class . '] ' . $id);
         }
 
         return new Resource($account);
