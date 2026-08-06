@@ -26,7 +26,7 @@ class Document extends FormRequest
         $type = config('type.document.' . $type . '.route.parameter');
 
         // Check if store or update
-        if ($this->getMethod() == 'PATCH') {
+        if (in_array($this->getMethod(), ['PATCH', 'PUT'])) {
             $model = $this->isApi() ? 'document' : $type;
 
             $id = is_numeric($this->$model) ? $this->$model : $this->{$model}->getAttribute('id');

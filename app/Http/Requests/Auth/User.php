@@ -34,7 +34,7 @@ class User extends FormRequest
 
         $email = 'required|email:rfc,dns';
 
-        if ($this->getMethod() == 'PATCH') {
+        if (in_array($this->getMethod(), ['PATCH', 'PUT'])) {
             // Updating user
             $id = is_numeric($this->user) ? $this->user : $this->user->getAttribute('id');
             $companies = $this->user->can('read-common-companies') ? 'required' : '';
