@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Document;
 
 use App\Abstracts\Http\ApiController;
+use App\Events\Document\DocumentReceived;
 use App\Http\Requests\Document\Document as Request;
 use App\Http\Resources\Document\Document as Resource;
 use App\Jobs\Document\CreateDocument;
@@ -12,6 +13,17 @@ use App\Models\Document\Document;
 
 class Documents extends ApiController
 {
+    /**
+     * Instantiate a new controller instance.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Marking as received changes the bill, so it needs more than read access
+        $this->middleware('permission:update-purchases-bills')->only('received');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -71,6 +83,25 @@ class Documents extends ApiController
     public function update(Document $document, Request $request)
     {
         $document = $this->dispatch(new UpdateDocument($document, $request));
+
+        return new Resource($document->fresh(Resource::relations()));
+    }
+
+    /**
+     * Mark the bill as received.
+     *
+     * @param  Document $document
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function received(Document $document)
+    {
+        // Same rule as the web UI, which only offers this on draft bills
+        if (($document->type !== Document::BILL_TYPE) || ($document->status !== 'draft')) {
+            return $this->errorBadRequest('Only draft bills can be marked as received.');
+        }
+
+        event(new DocumentReceived($document));
 
         return new Resource($document->fresh(Resource::relations()));
     }
