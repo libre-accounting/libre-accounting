@@ -120,12 +120,37 @@ class Account extends Model
         $total = $this->opening_balance;
 
         // Sum Incomes
-        $total += $this->income_transactions->sum('amount');
+        $total += $this->sumTransactionAmounts('income_transactions');
 
         // Subtract Expenses
-        $total -= $this->expense_transactions->sum('amount');
+        $total -= $this->sumTransactionAmounts('expense_transactions');
 
         return $total;
+    }
+
+    /**
+     * Load the sums the balance needs without loading every transaction.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithBalance($query)
+    {
+        return $query->withSum(['income_transactions', 'expense_transactions'], 'amount');
+    }
+
+    /**
+     * Sum a transactions relation, preferring a withSum() aggregate when loaded.
+     */
+    protected function sumTransactionAmounts(string $relation): float
+    {
+        $aggregate = $relation . '_sum_amount';
+
+        if (array_key_exists($aggregate, $this->attributes)) {
+            return (float) $this->attributes[$aggregate];
+        }
+
+        return (float) $this->$relation->sum('amount');
     }
 
     /**

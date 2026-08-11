@@ -15,6 +15,41 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class Document extends JsonResource
 {
     /**
+     * Relations toArray() reads, for controllers to eager-load.
+     *
+     * Items, taxes and totals format money with their document's currency,
+     * so they need the document back-reference loaded too.
+     *
+     * @return array
+     */
+    public static function relations(): array
+    {
+        $relations = [
+            'category',
+            'contact',
+            'currency',
+            'histories',
+            'media',
+            'items.document',
+            'items.taxes.document',
+            'items.taxes.tax',
+            'item_taxes.document',
+            'item_taxes.tax',
+            'totals.document',
+        ];
+
+        foreach (Transaction::relations() as $key => $value) {
+            if (is_int($key)) {
+                $relations[] = 'transactions.' . $value;
+            } else {
+                $relations['transactions.' . $key] = $value;
+            }
+        }
+
+        return $relations;
+    }
+
+    /**
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request  $request

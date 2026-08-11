@@ -19,7 +19,7 @@ class Accounts extends ApiController
      */
     public function index()
     {
-        $accounts = Account::collect();
+        $accounts = Account::withBalance()->collect();
 
         return Resource::collection($accounts);
     }
@@ -34,9 +34,9 @@ class Accounts extends ApiController
     {
         // Check if we're querying by id or number
         if (is_numeric($id)) {
-            $account = Account::find($id);
+            $account = Account::withBalance()->find($id);
         } else {
-            $account = Account::where('number', $id)->first();
+            $account = Account::withBalance()->where('number', $id)->first();
         }
 
         if (! $account instanceof Account) {

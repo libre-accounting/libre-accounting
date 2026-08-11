@@ -32,7 +32,7 @@ class DocumentTransactions extends ApiController
      */
     public function index($document_id)
     {
-        $transactions = Transaction::documentId($document_id)->get();
+        $transactions = Transaction::with(Resource::relations())->documentId($document_id)->get();
 
         return Resource::collection($transactions);
     }
@@ -46,7 +46,7 @@ class DocumentTransactions extends ApiController
      */
     public function show($document_id, $id)
     {
-        $transaction = Transaction::documentId($document_id)->find($id);
+        $transaction = Transaction::with(Resource::relations())->documentId($document_id)->find($id);
 
         if (! $transaction instanceof Transaction) {
             return $this->errorNotFound('No query results for model [' . Transaction::class . '] ' . $id);

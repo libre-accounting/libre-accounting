@@ -19,7 +19,7 @@ class Transactions extends ApiController
      */
     public function index()
     {
-        $transactions = Transaction::with('account', 'category', 'contact')->collect(['paid_at'=> 'desc']);
+        $transactions = Transaction::with(Resource::relations())->collect(['paid_at'=> 'desc']);
 
         return Resource::collection($transactions);
     }
@@ -32,7 +32,7 @@ class Transactions extends ApiController
      */
     public function show(Transaction $transaction)
     {
-        return new Resource($transaction);
+        return new Resource($transaction->load(Resource::relations()));
     }
 
     /**

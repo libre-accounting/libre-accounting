@@ -19,7 +19,7 @@ class Items extends ApiController
      */
     public function index()
     {
-        $items = Item::with('category', 'taxes')->collect();
+        $items = Item::with('category', 'media', 'taxes.tax')->collect();
 
         return Resource::collection($items);
     }
@@ -32,7 +32,7 @@ class Items extends ApiController
      */
     public function show($id)
     {
-        $item = Item::with('category', 'taxes')->find($id);
+        $item = Item::with('category', 'media', 'taxes.tax')->find($id);
 
         if (! $item instanceof Item) {
             return $this->errorNotFound('No query results for model [' . Item::class . '] ' . $id);

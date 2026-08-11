@@ -19,7 +19,7 @@ class Documents extends ApiController
      */
     public function index()
     {
-        $documents = Document::with('contact', 'histories', 'items', 'transactions')->collect(['issued_at'=> 'desc']);
+        $documents = Document::with(Resource::relations())->collect(['issued_at'=> 'desc']);
 
         return Resource::collection($documents);
     }
@@ -43,7 +43,7 @@ class Documents extends ApiController
             return $this->errorNotFound('No query results for model [' . Document::class . '] ' . $id);
         }
 
-        return new Resource($document);
+        return new Resource($document->load(Resource::relations()));
     }
 
     /**
@@ -57,7 +57,7 @@ class Documents extends ApiController
     {
         $document = $this->dispatch(new CreateDocument($request));
 
-        return $this->created(route('api.documents.show', $document->id), new Resource($document));
+        return $this->created(route('api.documents.show', $document->id), new Resource($document->fresh(Resource::relations())));
     }
 
     /**
@@ -72,7 +72,7 @@ class Documents extends ApiController
     {
         $document = $this->dispatch(new UpdateDocument($document, $request));
 
-        return new Resource($document->fresh());
+        return new Resource($document->fresh(Resource::relations()));
     }
 
     /**

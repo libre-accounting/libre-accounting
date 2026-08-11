@@ -19,7 +19,7 @@ class Reconciliations extends ApiController
      */
     public function index()
     {
-        $reconciliations = Reconciliation::with('account')->collect();
+        $reconciliations = Reconciliation::with(['account' => fn ($query) => $query->withBalance()])->collect();
 
         return Resource::collection($reconciliations);
     }
@@ -32,7 +32,7 @@ class Reconciliations extends ApiController
      */
     public function show(Reconciliation $reconciliation)
     {
-        return new Resource($reconciliation);
+        return new Resource($reconciliation->load(['account' => fn ($query) => $query->withBalance()]));
     }
 
     /**

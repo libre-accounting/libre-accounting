@@ -11,6 +11,22 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class Transaction extends JsonResource
 {
     /**
+     * Relations toArray() reads, for controllers to eager-load.
+     *
+     * @return array
+     */
+    public static function relations(): array
+    {
+        return [
+            'account' => fn ($query) => $query->withBalance(),
+            'category',
+            'contact',
+            'currency',
+            'media',
+        ];
+    }
+
+    /**
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request  $request
