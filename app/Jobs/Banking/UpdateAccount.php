@@ -38,7 +38,7 @@ class UpdateAccount extends Job implements ShouldUpdate
     {
         $relationships = $this->getRelationships();
 
-        if (!$this->request->get('enabled') && ($this->model->id == setting('default.account'))) {
+        if ($this->request->has('enabled') && ! $this->request->get('enabled') && ($this->model->id == setting('default.account'))) {
             $relationships[] = strtolower(trans_choice('general.companies', 1));
 
             $message = trans('messages.warning.disabled', ['name' => $this->model->name, 'text' => implode(', ', $relationships)]);
@@ -50,7 +50,7 @@ class UpdateAccount extends Job implements ShouldUpdate
             return;
         }
 
-        if ($this->model->currency_code != $this->request->get('currency_code')) {
+        if ($this->request->has('currency_code') && ($this->model->currency_code != $this->request->get('currency_code'))) {
             $message = trans('messages.warning.disable_code', ['name' => $this->model->name, 'text' => implode(', ', $relationships)]);
 
             throw new \Exception($message);
