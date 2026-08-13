@@ -1,0 +1,101 @@
+#!/usr/bin/env bash
+#
+# Print the next document or transaction number, the way the web UI
+# generates it from the company's numbering settings.
+#
+# Usage:
+#   la-next-number [-c COMPANY_ID] KIND
+#
+#   KIND   invoice, bill or transaction
+#
+# The API never generates numbers itself, but it does advance
+# "<kind>.number_next" after each create. Numbers already in use are
+# skipped. If a create still fails with "has already been taken" (a
+# transaction number this script could not see), bump the number by one and
+# retry; don't call this again expecting a different answer.
+
+set -euo pipefail
+
+here="$(cd "$(dirname "$0")" && pwd)"
+
+die() {
+    echo "la-next-number: $*" >&2
+    exit 2
+}
+
+usage() {
+    sed -n '3,15p' "$0" | sed 's/^# \{0,1\}//'
+}
+
+[[ ${1:-} == --help ]] && { usage; exit 0; }
+
+company_args=()
+
+while getopts ':c:h' opt; do
+    case $opt in
+        c) company_args=(-c "$OPTARG") ;;
+        h) usage; exit 0 ;;
+        :) die "option -$OPTARG needs a value" ;;
+        *) die "unknown option -$OPTARG" ;;
+    esac
+done
+shift $((OPTIND - 1))
+
+(($# == 1)) || die "usage: la-next-number [-c COMPANY_ID] invoice|bill|transaction"
+
+kind="$1"
+
+# Fallbacks from config/setting.php, used when the company never saved its own.
+case $kind in
+    invoice) prefix_default="INV-" ;;
+    bill) prefix_default="BILL-" ;;
+    transaction) prefix_default="TRA-" ;;
+    *) die "KIND must be invoice, bill or transaction" ;;
+esac
+
+settings=$("$here/la-api" -r ${company_args[@]+"${company_args[@]}"} GET settings)
+
+read -r prefix digits next < <(jq -r --arg kind "$kind" --arg prefix "$prefix_default" '
+    (.data | map({key: .key, value: .value}) | from_entries) as $s
+    | [($s[$kind + ".number_prefix"] // $prefix), ($s[$kind + ".number_digit"] // "5"), ($s[$kind + ".number_next"] // "1")]
+    | @tsv' <<< "$settings")
+
+[[ $next =~ ^[0-9]+$ && $digits =~ ^[0-9]+$ ]] || die "unexpected numbering settings: next=$next digits=$digits"
+next=$((10#$next))
+
+format() {
+    printf '%s%0*d\n' "$prefix" "$digits" "$1"
+}
+
+# Documents can be searched by number, so skip numbers already in use (for
+# example ones typed by hand in the web UI). Transactions can't be searched by
+# number, but they can be sorted by it: start past the highest number with the
+# same prefix. Transfers number themselves and don't advance the setting, so
+# this matters there.
+if [[ $kind == transaction ]]; then
+    highest=$("$here/la-api" -r ${company_args[@]+"${company_args[@]}"} \
+        -q sort=number -q direction=desc -q limit=200 GET transactions \
+        | jq -r --arg prefix "$prefix" '
+            [.data[].number // empty
+             | select(startswith($prefix))
+             | ltrimstr($prefix)
+             | select(test("^[0-9]+$"))
+             | tonumber]
+            | max // 0')
+
+    if ((highest >= next)); then
+        next=$((highest + 1))
+    fi
+else
+    for ((i = 0; i < 20; i++)); do
+        candidate=$(format "$next")
+        found=$("$here/la-api" -r ${company_args[@]+"${company_args[@]}"} \
+            -q "search=type:$kind document_number:$candidate" -q limit=1 GET documents \
+            | jq '.meta.total // (.data | length)')
+
+        [[ $found == 0 ]] && break
+        next=$((next + 1))
+    done
+fi
+
+format "$next"

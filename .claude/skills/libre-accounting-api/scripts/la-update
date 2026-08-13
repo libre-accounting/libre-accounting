@@ -1,0 +1,217 @@
+#!/usr/bin/env bash
+#
+# Safely update one Libre Accounting record.
+#
+# The API has no partial updates: PATCH re-validates every required field,
+# and omitted fields are wiped (attachments, logos, recurring schedules,
+# taxes, disabled flags). This script GETs the record, rebuilds the complete
+# PATCH body from it, keeps existing attachments, applies your changes on
+# top, and sends it.
+#
+# Usage:
+#   la-update [-n] [-c COMPANY_ID] RESOURCE ID CHANGES_JSON
+#
+#   RESOURCE      transactions, invoices, bills, customers, vendors,
+#                 categories or items
+#   CHANGES_JSON  fields to change, e.g. '{"category_id": 6}';
+#                 "@file.json" reads a file, "-" reads stdin
+#
+# Options:
+#   -n        dry run: print the PATCH body and send nothing
+#   -c ID     company id (passed through to la-api)
+#   -A FILE   attach a file (receipt, PDF) next to the existing ones;
+#             transactions, invoices and bills only (repeatable)
+#
+# For invoices and bills, "items" in CHANGES_JSON replaces the whole list.
+# Each item: {item_id?, name, description, quantity, price, tax_ids?,
+# discount?, discount_type?}.
+
+set -euo pipefail
+
+here="$(cd "$(dirname "$0")" && pwd)"
+la_api="$here/la-api"
+
+usage() {
+    sed -n '3,27p' "$0" | sed 's/^# \{0,1\}//'
+}
+
+die() {
+    echo "la-update: $*" >&2
+    exit 2
+}
+
+[[ ${1:-} == --help ]] && { usage; exit 0; }
+
+dry_run=0
+company_args=()
+files=()
+
+while getopts ':nc:A:h' opt; do
+    case $opt in
+        n) dry_run=1 ;;
+        c) company_args=(-c "$OPTARG") ;;
+        A)
+            [[ -f $OPTARG ]] || die "no such file: $OPTARG"
+            files+=("$OPTARG")
+            ;;
+        h) usage; exit 0 ;;
+        :) die "option -$OPTARG needs a value" ;;
+        *) die "unknown option -$OPTARG (see -h)" ;;
+    esac
+done
+shift $((OPTIND - 1))
+
+(($# == 3)) || { usage >&2; exit 2; }
+
+resource="$1"
+id="$2"
+changes="$3"
+
+case $changes in
+    -) changes=$(cat) ;;
+    @*) changes=$(cat "${changes#@}") ;;
+esac
+
+jq -e 'type == "object"' <<< "$changes" > /dev/null 2>&1 || die "CHANGES_JSON must be a JSON object"
+[[ $id =~ ^[0-9]+$ ]] || die "ID must be numeric"
+
+if ((${#files[@]})) && [[ ! $resource =~ ^(transactions|invoices|bills)$ ]]; then
+    die "-A only works for transactions, invoices and bills"
+fi
+
+# "2026-10-15T12:11:51+01:00" -> "2026-10-15 12:11:51", keeping the stored
+# local date and time.
+jq_lib='def local_dt: if . == null or . == "" then . else .[0:10] + " " + .[11:19] end;
+def flag: if . == true or . == 1 or . == "1" then 1 else 0 end;
+def media_ids: [(. // []) | if type == "array" then .[] else empty end | {id}];'
+
+case $resource in
+    transactions)
+        path="transactions/$id"
+        search=""
+        template='
+            if (.type | test("transfer|recurring|split")) then
+                error("refusing to update a \(.type) transaction; edit it in the web UI")
+            else . end
+            | {
+                type, number, account_id,
+                paid_at: (.paid_at | local_dt),
+                amount, currency_code, currency_rate, category_id, payment_method,
+                contact_id, document_id, description, reference,
+                uploaded_attachment: (.attachment | media_ids)
+            }'
+        ;;
+    invoices | bills)
+        path="documents/$id"
+        search="type:${resource%s}"
+        template='
+            (.totals.data // [] | map(.code) - ["sub_total", "item_discount", "discount", "tax", "total"]) as $extra
+            | if ($extra | length) > 0 then
+                error("document has custom totals \($extra); edit it in the web UI")
+            else . end
+            | (.totals.data // [] | map(select(.code == "discount")) | first | .amount // 0) as $discount
+            | {
+                type, document_number, order_number, status,
+                issued_at: (.issued_at | local_dt),
+                due_at: (.due_at | local_dt),
+                amount: 0,
+                currency_code, currency_rate, category_id,
+                contact_id, contact_name, contact_email, contact_tax_number, contact_phone,
+                contact_address, contact_city, contact_zip_code, contact_state, contact_country,
+                title, subheading, notes, footer,
+                items: [.items.data[] | {
+                    item_id, name,
+                    description: (.description // ""),
+                    quantity, price,
+                    tax_ids: [.taxes.data[]?.tax_id],
+                    discount: .discount_rate,
+                    discount_type
+                }],
+                uploaded_attachment: (.attachment | media_ids)
+            }
+            | if $discount > 0 then . + {discount: $discount, discount_type: "fixed"} else . end'
+        ;;
+    customers | vendors)
+        path="contacts/$id"
+        search="type:${resource%s}"
+        template='
+            {
+                type, name, email, currency_code, tax_number, phone, address,
+                city, zip_code, state, country, website, reference,
+                enabled: (.enabled | flag)
+            }
+            + (if (.logo | type) == "object" then {uploaded_logo: {id: .logo.id}} else {} end)'
+        ;;
+    categories)
+        path="categories/$id"
+        search=""
+        template='{name, type, color, parent_id, enabled: (.enabled | flag)}'
+        ;;
+    items)
+        path="items/$id"
+        search=""
+        template='
+            {
+                type, name, description, sale_price, purchase_price, category_id,
+                tax_ids: [.taxes.data[]?.tax_id],
+                enabled: (.enabled | flag)
+            }'
+        ;;
+    *)
+        die "unsupported resource: $resource"
+        ;;
+esac
+
+query_args=()
+[[ -n $search ]] && query_args=(-q "search=$search")
+
+current=$("$la_api" -r ${company_args[@]+"${company_args[@]}"} ${query_args[@]+"${query_args[@]}"} GET "$path")
+
+body=$(jq -e "$jq_lib .data | $template" <<< "$current") || die "could not build the update body for $resource $id"
+
+# Older servers leave fields out of GET responses, and resending the record
+# without them would blank them. Refuse instead of losing data.
+case $resource in
+    transactions) required='.data | has("number")' ;;
+    invoices | bills) required='.data.items.data | all(has("quantity"))' ;;
+    customers | vendors) required='.data | has("city")' ;;
+    *) required='true' ;;
+esac
+
+if ! jq -e "$required" <<< "$current" > /dev/null; then
+    die "this server's API predates the fields needed to update $resource safely; edit it in the web UI or upgrade the server"
+fi
+
+body=$(jq --argjson changes "$changes" '. + $changes' <<< "$body")
+
+if [[ $dry_run == 1 ]]; then
+    echo "PATCH /api/$path${search:+?search=$search}"
+    jq . <<< "$body"
+    for file in ${files[@]+"${files[@]}"}; do
+        echo "+ new attachment: $file"
+    done
+    exit 0
+fi
+
+if ((${#files[@]} == 0)); then
+    "$la_api" ${company_args[@]+"${company_args[@]}"} ${query_args[@]+"${query_args[@]}"} -j - PATCH "$path" <<< "$body"
+    exit
+fi
+
+# Files need multipart, so flatten the JSON body into form fields:
+# {"items":[{"name":"x"}]} -> items[0][name]=x. Nulls are left out.
+multipart_args=()
+
+while IFS= read -r -d '' field; do
+    multipart_args+=(-S "$field")
+done < <(jq -j '
+    paths(scalars) as $p
+    | ($p | to_entries | map(if .key == 0 then .value else "[\(.value)]" end) | join("")) as $key
+    | getpath($p) as $v
+    | "\($key)=\(if $v == true then 1 elif $v == false then 0 else $v end)\u0000"' <<< "$body")
+
+for file in "${files[@]}"; do
+    multipart_args+=(-F "attachment[]=@$file")
+done
+
+"$la_api" ${company_args[@]+"${company_args[@]}"} ${query_args[@]+"${query_args[@]}"} "${multipart_args[@]}" PATCH "$path"

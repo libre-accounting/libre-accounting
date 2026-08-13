@@ -1,0 +1,254 @@
+#!/usr/bin/env bash
+#
+# Call the Libre Accounting REST API with HTTP Basic auth.
+#
+# Usage:
+#   la-api [options] METHOD PATH
+#
+#   METHOD   GET, POST, PUT, PATCH or DELETE
+#   PATH     endpoint below /api, e.g. "contacts", "documents/12", "/api/ping"
+#
+# Options:
+#   -q KEY=VALUE   query parameter, URL-encoded for you (repeatable)
+#   -f KEY=VALUE   form field for the request body (repeatable)
+#   -F KEY=VALUE   multipart field, "KEY=@path" uploads a file (repeatable);
+#                  PATCH/PUT are sent as POST with _method so uploads work
+#   -S KEY=VALUE   multipart text field, taken literally even if it starts
+#                  with @ or < (repeatable)
+#   -j JSON        JSON request body; "@file.json" reads a file, "-" reads stdin
+#   -c ID          company id (overrides LIBRE_ACCOUNTING_COMPANY_ID)
+#   -a             GET every page of a list and print one merged {"data": [...]}
+#   -r             print the raw response body (no jq formatting)
+#   -h             show this help
+#
+# Configuration comes from the environment, or from KEY=VALUE lines in
+# ${XDG_CONFIG_HOME:-~/.config}/libre-accounting/credentials (environment wins):
+#   LIBRE_ACCOUNTING_URL         base URL, e.g. https://accounting.example.com
+#   LIBRE_ACCOUNTING_EMAIL       user email
+#   LIBRE_ACCOUNTING_PASSWORD    user password
+#   LIBRE_ACCOUNTING_COMPANY_ID  optional; defaults to the user's first company
+#   LIBRE_ACCOUNTING_READ_ONLY   optional; 1 refuses anything but GET
+#
+# The response body goes to stdout. On HTTP >= 400 the status goes to stderr
+# and the exit code is 1.
+
+set -euo pipefail
+
+usage() {
+    sed -n '3,34p' "$0" | sed 's/^# \{0,1\}//'
+}
+
+die() {
+    echo "la-api: $*" >&2
+    exit 2
+}
+
+load_config() {
+    local file="${LIBRE_ACCOUNTING_CONFIG:-${XDG_CONFIG_HOME:-$HOME/.config}/libre-accounting/credentials}"
+    local line key value
+
+    [[ -f $file ]] || return 0
+
+    # Parse KEY=VALUE lines instead of sourcing, so the file can't run code.
+    while IFS= read -r line || [[ -n $line ]]; do
+        [[ $line =~ ^[[:space:]]*(export[[:space:]]+)?(LIBRE_ACCOUNTING_[A-Z_]+)=(.*)$ ]] || continue
+        key="${BASH_REMATCH[2]}"
+        value="${BASH_REMATCH[3]}"
+
+        if [[ $value =~ ^\"(.*)\"$ || $value =~ ^\'(.*)\'$ ]]; then
+            value="${BASH_REMATCH[1]}"
+        fi
+
+        if [[ -z ${!key:-} ]]; then
+            printf -v "$key" '%s' "$value"
+        fi
+    done < "$file"
+}
+
+urlencode() {
+    jq -rn --arg v "$1" '$v | @uri'
+}
+
+# curl reads the credentials from a config file descriptor, so the password
+# never shows up in the process list.
+curl_auth_config() {
+    local user="$LIBRE_ACCOUNTING_EMAIL:$LIBRE_ACCOUNTING_PASSWORD"
+
+    user="${user//\\/\\\\}"
+    user="${user//\"/\\\"}"
+
+    printf 'user = "%s"\n' "$user"
+}
+
+print_body() {
+    local file="$1"
+
+    if [[ $raw == 1 ]] || ! jq -e . "$file" > /dev/null 2>&1; then
+        cat "$file"
+
+        if [[ -s $file && $(tail -c1 "$file") != "" ]]; then
+            echo
+        fi
+    else
+        jq . "$file"
+    fi
+}
+
+# Sends one request. Sets $status and writes the body to $body_file.
+send() {
+    local url="$1"
+    local wire_method="$method"
+
+    # PHP only parses multipart bodies on POST, so spoof the method instead.
+    if ((${#multipart_fields[@]})) && [[ $method != POST ]]; then
+        wire_method=POST
+    fi
+
+    local args=(
+        --silent --show-error
+        --request "$wire_method"
+        --header 'Accept: application/json'
+        --output "$body_file"
+        --write-out '%{http_code}'
+    )
+
+    if [[ -n $company_id ]]; then
+        args+=(--header "X-Company: $company_id")
+    fi
+
+    if [[ -n $json_body ]]; then
+        args+=(--header 'Content-Type: application/json' --data-binary "$json_body")
+    elif ((${#form_fields[@]})); then
+        for field in "${form_fields[@]}"; do
+            args+=(--data-urlencode "$field")
+        done
+    elif ((${#multipart_fields[@]})); then
+        # Entries are "F:key=value" (curl --form) or "S:key=value" (--form-string).
+        for field in "${multipart_fields[@]}"; do
+            if [[ $field == S:* ]]; then
+                args+=(--form-string "${field#S:}")
+            else
+                args+=(--form "${field#F:}")
+            fi
+        done
+
+        if [[ $wire_method != "$method" ]]; then
+            args+=(--form-string "_method=$method")
+        fi
+    fi
+
+    status=$(curl --config <(curl_auth_config) "${args[@]}" "$url")
+}
+
+[[ ${1:-} == --help ]] && { usage; exit 0; }
+
+load_config
+
+query=()
+form_fields=()
+multipart_fields=()
+json_body=""
+company_id="${LIBRE_ACCOUNTING_COMPANY_ID:-}"
+all_pages=0
+raw=0
+
+while getopts ':q:f:F:S:j:c:arh' opt; do
+    case $opt in
+        q) query+=("$OPTARG") ;;
+        f) form_fields+=("$OPTARG") ;;
+        F) multipart_fields+=("F:$OPTARG") ;;
+        S) multipart_fields+=("S:$OPTARG") ;;
+        j)
+            case $OPTARG in
+                -) json_body=$(cat) ;;
+                @*) json_body=$(cat "${OPTARG#@}") ;;
+                *) json_body="$OPTARG" ;;
+            esac
+            ;;
+        c) company_id="$OPTARG" ;;
+        a) all_pages=1 ;;
+        r) raw=1 ;;
+        h) usage; exit 0 ;;
+        :) die "option -$OPTARG needs a value" ;;
+        *) die "unknown option -$OPTARG (see -h)" ;;
+    esac
+done
+shift $((OPTIND - 1))
+
+(($# == 2)) || { usage >&2; exit 2; }
+
+method=$(printf '%s' "$1" | tr '[:lower:]' '[:upper:]')
+path="${2#/}"
+path="${path#api/}"
+
+case $method in
+    GET | POST | PUT | PATCH | DELETE) ;;
+    *) die "unsupported method $method" ;;
+esac
+
+[[ -n ${LIBRE_ACCOUNTING_URL:-} ]] || die "LIBRE_ACCOUNTING_URL is not set"
+[[ -n ${LIBRE_ACCOUNTING_EMAIL:-} ]] || die "LIBRE_ACCOUNTING_EMAIL is not set"
+[[ -n ${LIBRE_ACCOUNTING_PASSWORD:-} ]] || die "LIBRE_ACCOUNTING_PASSWORD is not set"
+command -v jq > /dev/null || die "jq is required"
+
+if [[ ${LIBRE_ACCOUNTING_READ_ONLY:-0} == 1 && $method != GET ]]; then
+    die "LIBRE_ACCOUNTING_READ_ONLY=1 blocks $method requests"
+fi
+
+body_kinds=0
+[[ -n $json_body ]] && body_kinds=$((body_kinds + 1))
+((${#form_fields[@]})) && body_kinds=$((body_kinds + 1))
+((${#multipart_fields[@]})) && body_kinds=$((body_kinds + 1))
+
+if ((body_kinds > 1)); then
+    die "use only one of -j, -f or -F/-S"
+fi
+
+if [[ $all_pages == 1 && $method != GET ]]; then
+    die "-a only works with GET"
+fi
+
+url="${LIBRE_ACCOUNTING_URL%/}/api/$path"
+
+for pair in ${query[@]+"${query[@]}"}; do
+    [[ $pair == *=* ]] || die "-q expects KEY=VALUE, got: $pair"
+    url+=$([[ $url == *\?* ]] && echo '&' || echo '?')
+    url+="$(urlencode "${pair%%=*}")=$(urlencode "${pair#*=}")"
+done
+
+body_file=$(mktemp)
+pages_file=$(mktemp)
+trap 'rm -f "$body_file" "$pages_file"' EXIT
+
+if [[ $all_pages == 0 ]]; then
+    send "$url"
+    print_body "$body_file"
+else
+    page=1
+
+    while :; do
+        page_url="$url$([[ $url == *\?* ]] && echo '&' || echo '?')page=$page"
+        send "$page_url"
+
+        if ((status >= 400)); then
+            print_body "$body_file"
+            break
+        fi
+
+        jq -c '.data // []' "$body_file" >> "$pages_file"
+
+        last_page=$(jq -r '.meta.last_page // 1' "$body_file")
+        ((page < last_page)) || break
+        page=$((page + 1))
+    done
+
+    if ((status < 400)); then
+        jq -s '{data: add}' "$pages_file" > "$body_file"
+        print_body "$body_file"
+    fi
+fi
+
+if ((status == 0 || status >= 400)); then
+    echo "la-api: HTTP $status from $method /api/$path" >&2
+    exit 1
+fi
