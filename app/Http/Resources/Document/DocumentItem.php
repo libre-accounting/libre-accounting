@@ -23,7 +23,8 @@ class DocumentItem extends JsonResource
             'item_id' => $this->item_id,
             'name' => $this->name,
             'description' => $this->description,
-            'quantity' => $this->quantity,
+            // Not cast on the model; PostgreSQL returns decimals as strings
+            'quantity' => (float) $this->quantity,
             'price' => $this->price,
             'price_formatted' => money($this->price, $this->document->currency_code)->format(),
             'total' => $this->total,
