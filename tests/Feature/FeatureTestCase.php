@@ -22,7 +22,9 @@ abstract class FeatureTestCase extends TestCase
         $this->withoutExceptionHandling();
 
         $this->faker = Faker::create();
-        $this->user = User::first();
+        // The seed also creates a customer portal user, and PostgreSQL may
+        // return that row first from an unordered query
+        $this->user = User::where('email', 'test@company.com')->first();
         $this->company = $this->user->companies()->first();
 
         // Disable debugbar
