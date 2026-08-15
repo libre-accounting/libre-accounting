@@ -38,6 +38,8 @@ class Item extends FormRequest
             'tax_ids'           => 'nullable|array',
             'category_id'       => 'nullable|integer',
             'enabled'           => 'integer|boolean',
+            'track_stock'       => 'nullable|boolean',
+            'stock_quantity'    => 'nullable|numeric',
             'picture'           => $picture,
         ];
     }

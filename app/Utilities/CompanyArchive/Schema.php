@@ -92,6 +92,10 @@ class Schema
                 'model' => 'App\Models\Common\ItemTax',
                 'fks' => ['item_id' => 'items', 'tax_id' => 'taxes'],
             ],
+            'item_components' => [
+                'model' => 'App\Models\Common\ItemComponent',
+                'fks' => ['item_id' => 'items', 'component_id' => 'items'],
+            ],
             'documents' => [
                 'model' => 'App\Models\Document\Document',
                 'fks' => ['category_id' => 'categories', 'contact_id' => 'contacts'],
@@ -101,6 +105,11 @@ class Schema
             'document_items' => [
                 'model' => 'App\Models\Document\DocumentItem',
                 'fks' => ['document_id' => 'documents', 'item_id' => 'items'],
+            ],
+            // Restored as data: the ledger is not re-derived on import
+            'item_stock_movements' => [
+                'model' => 'App\Models\Common\ItemStockMovement',
+                'fks' => ['item_id' => 'items', 'via_item_id' => 'items', 'document_id' => 'documents', 'document_item_id' => 'document_items'],
             ],
             'document_item_taxes' => [
                 'model' => 'App\Models\Document\DocumentItemTax',

@@ -2,11 +2,14 @@
 
 namespace Tests\Feature\Common;
 
+use App\Jobs\Document\CreateDocument;
 use App\Models\Banking\Account;
 use App\Models\Banking\Transaction;
 use App\Models\Common\Company;
 use App\Models\Common\Contact;
 use App\Models\Common\Item;
+use App\Models\Common\ItemComponent;
+use App\Models\Common\ItemStockMovement;
 use App\Models\Document\Document;
 use App\Models\Setting\Category;
 use App\Utilities\CompanyArchive\ArchiveReader;
@@ -143,6 +146,57 @@ class CompanyBackupTest extends FeatureTestCase
 
         // Ownership reassigned to the importing user.
         $this->assertEquals($this->user->id, $txn->created_by);
+
+        File::delete($path);
+    }
+
+    public function testRestoreKeepsStockMovementsAndRecipes()
+    {
+        $kit = Item::factory()->enabled()->create(['type' => 'product', 'track_stock' => false]);
+        $part = Item::factory()->enabled()->create(['type' => 'product', 'track_stock' => true]);
+
+        ItemComponent::factory()->forItem($kit)->component($part)->quantity(2)->create();
+        ItemStockMovement::factory()->forItem($part)->quantity(10)->create();
+
+        $request = Document::factory()->invoice()->sent()->items()->raw();
+        $request['items'][0]['item_id'] = $kit->id;
+        $request['items'][0]['quantity'] = 1;
+        $this->dispatch(new CreateDocument($request));
+
+        $sourceMovements = DB::table('item_stock_movements')->where('company_id', $this->company->id)->count();
+        $this->assertEquals(2, $sourceMovements, 'One adjustment and one movement derived through the kit.');
+
+        // Export.
+        $path = $this->archivePath();
+        $writer = new ArchiveWriter();
+        $writer->open($path);
+        $exporter = new CompanyExporter($this->company->id, $writer);
+        $result = $exporter->run();
+        $writer->writeManifest(CompanyExporter::buildManifest($this->company->id, $result));
+        $writer->close();
+
+        // Restore into a bare shell.
+        $target = Company::create(['domain' => '', 'enabled' => 1, 'created_by' => $this->user->id]);
+        $target->makeCurrent();
+
+        $reader = new ArchiveReader();
+        $reader->open($path);
+
+        $importer = new CompanyImporter($reader, $target->id, $this->user->id);
+        DB::transaction(fn () => $importer->importData());
+        $reader->close();
+
+        $this->assertEquals($sourceMovements, DB::table('item_stock_movements')->where('company_id', $target->id)->count());
+        $this->assertEquals(1, DB::table('item_components')->where('company_id', $target->id)->count());
+
+        // The ledger is restored as data, with every item reference pointing into the new company.
+        $restored = DB::table('item_stock_movements')->where('company_id', $target->id)->whereNotNull('via_item_id')->first();
+
+        $this->assertNotNull($restored);
+        $this->assertEquals($target->id, DB::table('items')->where('id', $restored->item_id)->value('company_id'));
+        $this->assertEquals($target->id, DB::table('items')->where('id', $restored->via_item_id)->value('company_id'));
+        $this->assertEquals($target->id, DB::table('documents')->where('id', $restored->document_id)->value('company_id'));
+        $this->assertEquals(8, Item::withoutGlobalScopes()->find($restored->item_id)->stock_quantity);
 
         File::delete($path);
     }

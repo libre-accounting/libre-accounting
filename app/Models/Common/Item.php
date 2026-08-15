@@ -35,7 +35,7 @@ class Item extends Model
      *
      * @var array
      */
-    protected $fillable = ['company_id', 'type', 'name', 'description', 'sale_price', 'purchase_price', 'category_id', 'enabled', 'created_from', 'created_by'];
+    protected $fillable = ['company_id', 'type', 'name', 'description', 'sale_price', 'purchase_price', 'category_id', 'enabled', 'track_stock', 'created_from', 'created_by'];
 
     /**
      * The attributes that should be cast.
@@ -46,6 +46,7 @@ class Item extends Model
         'sale_price'        => 'double',
         'purchase_price'    => 'double',
         'enabled'           => 'boolean',
+        'track_stock'       => 'boolean',
         'deleted_at'        => 'datetime',
     ];
 
@@ -57,9 +58,16 @@ class Item extends Model
     protected $sortable = ['name', 'category.name', 'sale_price', 'purchase_price', 'enabled'];
 
     /**
+     * Sortable aliases, loaded by scopes such as withStock().
+     *
      * @var array
      */
-    public $cloneable_relations = ['taxes'];
+    public $sortableAs = ['stock'];
+
+    /**
+     * @var array
+     */
+    public $cloneable_relations = ['taxes', 'components'];
 
     public function category()
     {
@@ -84,6 +92,54 @@ class Item extends Model
     public function invoice_items()
     {
         return $this->document_items()->where('type', Document::INVOICE_TYPE);
+    }
+
+    /**
+     * What this item is built from.
+     */
+    public function components()
+    {
+        return $this->hasMany('App\Models\Common\ItemComponent');
+    }
+
+    /**
+     * The items this one is a part of.
+     */
+    public function component_of()
+    {
+        return $this->hasMany('App\Models\Common\ItemComponent', 'component_id');
+    }
+
+    public function stock_movements()
+    {
+        return $this->hasMany('App\Models\Common\ItemStockMovement');
+    }
+
+    /**
+     * Load the stock on hand as a `stock` aggregate, sortable through $sortableAs.
+     */
+    public function scopeWithStock($query)
+    {
+        return $query->withSum('stock_movements as stock', 'quantity');
+    }
+
+    /**
+     * Units on hand, or null when the item does not track stock.
+     *
+     * Reads the withStock() aggregate when it was loaded; otherwise runs one
+     * sum query. That is a relation method call, so it never counts as lazy loading.
+     */
+    public function getStockQuantityAttribute(): ?float
+    {
+        if (! $this->track_stock) {
+            return null;
+        }
+
+        if (array_key_exists('stock', $this->attributes)) {
+            return (float) $this->attributes['stock'];
+        }
+
+        return (float) $this->stock_movements()->sum('quantity');
     }
 
     public function scopeName($query, $name)

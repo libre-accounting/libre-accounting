@@ -6,6 +6,8 @@ use App\Abstracts\Job;
 use App\Events\Common\CompanyDeleted;
 use App\Events\Common\CompanyDeleting;
 use App\Interfaces\Job\ShouldDelete;
+use App\Observers\Document as DocumentObserver;
+use App\Observers\DocumentItem as DocumentItemObserver;
 use App\Traits\Users;
 
 class DeleteCompany extends Job implements ShouldDelete
@@ -27,15 +29,25 @@ class DeleteCompany extends Job implements ShouldDelete
 
         event(new CompanyDeleting($this->model, $this->current_company_id));
 
-        \DB::transaction(function () {
-            $this->deleteRelationships($this->model, [
-                'accounts', 'document_histories', 'document_item_taxes', 'document_items', 'document_totals', 'documents', 'categories',
-                'contacts', 'currencies', 'dashboards', 'email_templates', 'items', 'module_histories', 'modules', 'reconciliations',
-                'recurring', 'reports', 'settings', 'taxes', 'transactions', 'transfers', 'widgets',
-            ]);
+        // The ledger goes first and the whole company follows, so the stock observers have nothing to keep in step
+        DocumentObserver::mute();
+        DocumentItemObserver::mute();
 
-            $this->model->delete();
-        });
+        try {
+            \DB::transaction(function () {
+                $this->deleteRelationships($this->model, [
+                    'item_stock_movements', 'item_components',
+                    'accounts', 'document_histories', 'document_item_taxes', 'document_items', 'document_totals', 'documents', 'categories',
+                    'contacts', 'currencies', 'dashboards', 'email_templates', 'items', 'module_histories', 'modules', 'reconciliations',
+                    'recurring', 'reports', 'settings', 'taxes', 'transactions', 'transfers', 'widgets',
+                ]);
+
+                $this->model->delete();
+            });
+        } finally {
+            DocumentObserver::unmute();
+            DocumentItemObserver::unmute();
+        }
 
         event(new CompanyDeleted($this->model, $this->current_company_id));
 

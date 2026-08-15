@@ -210,6 +210,16 @@ class Company extends Eloquent implements Ownable
         return $this->hasMany('App\Models\Common\Item');
     }
 
+    public function item_components()
+    {
+        return $this->hasMany('App\Models\Common\ItemComponent');
+    }
+
+    public function item_stock_movements()
+    {
+        return $this->hasMany('App\Models\Common\ItemStockMovement');
+    }
+
     public function modules()
     {
         return $this->hasMany('App\Models\Module\Module');

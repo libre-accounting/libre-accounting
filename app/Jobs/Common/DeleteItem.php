@@ -12,7 +12,8 @@ class DeleteItem extends Job implements ShouldDelete
         $this->authorize();
 
         \DB::transaction(function () {
-            $this->deleteRelationships($this->model, ['taxes']);
+            // Only manual movements can be left here: authorize() blocks an item that is still on documents
+            $this->deleteRelationships($this->model, ['taxes', 'components', 'stock_movements']);
 
             $this->model->delete();
         });
@@ -37,6 +38,7 @@ class DeleteItem extends Job implements ShouldDelete
         $rels = [
             'invoice_items' => 'invoices',
             'bill_items' => 'bills',
+            'component_of' => 'items',
         ];
 
         return $this->countRelationships($this->model, $rels);
