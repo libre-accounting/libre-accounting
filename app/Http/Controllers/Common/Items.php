@@ -25,7 +25,7 @@ class Items extends Controller
      */
     public function index()
     {
-        $items = Item::with('category', 'media', 'taxes')->collect();
+        $items = Item::with('category', 'media', 'taxes')->withStock()->collect();
 
         return $this->response('common.items.index', compact('items'));
     }
@@ -132,7 +132,19 @@ class Items extends Controller
     {
         $taxes = Tax::enabled()->orderBy('name')->get()->pluck('title', 'id');
 
-        return view('common.items.edit', compact('item', 'taxes'));
+        $components = $item->components()->with('component')->get();
+
+        $movements = $item->stock_movements()
+            ->with(['document', 'via_item'])
+            ->orderByDesc('moved_at')
+            ->orderByDesc('id')
+            ->limit(25)
+            ->get();
+
+        // A part of another item cannot have a recipe of its own
+        $is_part = $item->component_of()->exists();
+
+        return view('common.items.edit', compact('item', 'taxes', 'components', 'movements', 'is_part'));
     }
 
     /**

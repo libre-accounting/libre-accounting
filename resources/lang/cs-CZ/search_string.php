@@ -16,6 +16,7 @@ return [
         'expense_account'   => 'Z účtu',
         'income_account'    => 'Na účet',
         'recurring'         => 'Opakující se',
+        'track_stock'       => 'Sledování skladu',
     ],
 
 ];

@@ -16,6 +16,7 @@ return [
         'expense_account'   => 'Gönderen Hesap',
         'income_account'    => 'Alan Hesap',
         'recurring'         => 'Tekrarlanan',
+        'track_stock'       => 'Stok Takibi',
     ],
 
 ];

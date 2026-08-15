@@ -15,6 +15,7 @@ return [
         'reconciled'        => 'Vyrovanané',
         'expense_account'   => 'Z účtu',
         'income_account'    => 'Na účet',
+        'track_stock'       => 'Sledovať zásoby',
     ],
 
 ];

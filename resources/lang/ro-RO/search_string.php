@@ -16,6 +16,7 @@ return [
         'expense_account'   => 'Din contul',
         'income_account'    => 'În contul',
         'recurring'         => 'Recurente',
+        'track_stock'       => 'Urmărește stocul',
     ],
 
 ];

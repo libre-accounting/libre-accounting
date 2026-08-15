@@ -16,6 +16,7 @@ return [
         'expense_account'   => 'De cuenta',
         'income_account'    => 'A cuenta',
         'recurring'         => 'Recurrente',
+        'track_stock'       => 'Control de stock',
     ],
 
 ];

@@ -16,6 +16,7 @@ return [
         'expense_account'   => 'Iz računa',
         'income_account'    => 'Na račun',
         'recurring'         => 'Ponavljajoče',
+        'track_stock'       => 'Spremljaj zalogo',
     ],
 
 ];

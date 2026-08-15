@@ -15,6 +15,7 @@ return [
         'reconciled'        => 'Сверено',
         'expense_account'   => 'Со счета',
         'income_account'    => 'На счет',
+        'track_stock'       => 'Вести учёт запасов',
     ],
 
 ];

@@ -44,6 +44,14 @@ class ItemComponent extends Model
     }
 
     /**
+     * The delete confirmation names the part.
+     */
+    public function getNameAttribute()
+    {
+        return $this->component->name;
+    }
+
+    /**
      * Create a new factory instance for the model.
      *
      * @return \Illuminate\Database\Eloquent\Factories\Factory

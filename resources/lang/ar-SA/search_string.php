@@ -16,6 +16,7 @@ return [
         'expense_account'   => 'من حساب',
         'income_account'    => 'إلى حساب',
         'recurring'         => 'متكرر',
+        'track_stock'       => 'تتبع المخزون',
     ],
 
 ];

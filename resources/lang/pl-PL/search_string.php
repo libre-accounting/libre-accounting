@@ -16,6 +16,7 @@ return [
         'expense_account'   => 'Z rachunku',
         'income_account'    => 'Na rachunek',
         'recurring'         => 'Cyklicznie',
+        'track_stock'       => 'Śledź stan magazynowy',
     ],
 
 ];

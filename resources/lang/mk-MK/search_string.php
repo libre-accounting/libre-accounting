@@ -16,6 +16,7 @@ return [
         'expense_account'   => 'Од Сметка',
         'income_account'    => 'На сметка',
         'recurring'         => 'Повторувачки',
+        'track_stock'       => 'Следи залиха',
     ],
 
 ];

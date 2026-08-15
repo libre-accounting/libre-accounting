@@ -40,6 +40,7 @@ Route::group(['prefix' => 'common'], function () {
     Route::get('items/{item}/duplicate', 'Common\Items@duplicate')->name('items.duplicate');
     Route::post('items/import', 'Common\Items@import')->middleware('import')->name('items.import');
     Route::get('items/export', 'Common\Items@export')->name('items.export');
+    Route::delete('items/components/{component}', 'Common\ItemComponents@destroy')->name('items.components.destroy');
     Route::resource('items', 'Common\Items', ['middleware' => ['money', 'dropzone']]);
 
     Route::post('bulk-actions/{group}/{type}', 'Common\BulkActions@action')->name('bulk-actions.action');
@@ -241,6 +242,12 @@ Route::group(['as' => 'modals.', 'prefix' => 'modals'], function () {
     Route::resource('customers', 'Modals\Customers');
     Route::resource('companies', 'Modals\Companies');
     Route::resource('vendors', 'Modals\Vendors');
+    Route::get('items/{item}/stock/create', 'Modals\ItemStock@create')->name('items.stock.create');
+    Route::post('items/{item}/stock', 'Modals\ItemStock@store')->name('items.stock.store');
+    Route::get('items/{item}/stock/build/create', 'Modals\ItemStock@createBuild')->name('items.stock.build.create');
+    Route::post('items/{item}/stock/build', 'Modals\ItemStock@storeBuild')->name('items.stock.build.store');
+    Route::get('items/{item}/components/create', 'Modals\ItemComponents@create')->name('items.components.create');
+    Route::post('items/{item}/components', 'Modals\ItemComponents@store')->name('items.components.store');
     Route::resource('items', 'Modals\Items');
     Route::patch('invoice-templates', 'Modals\InvoiceTemplates@update')->name('invoice-templates.update');
     Route::patch('transfer-templates', 'Modals\TransferTemplates@update')->name('transfer-templates.update');

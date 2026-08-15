@@ -185,6 +185,7 @@ return [
             'name' => ['searchable' => true],
             'description' => ['searchable' => true],
             'enabled' => ['boolean' => true],
+            'track_stock' => ['boolean' => true],
             'category_id' => [
                 'route' => ['categories.index', 'search=type:item enabled:1']
             ],

@@ -16,6 +16,7 @@ return [
         'expense_account'   => 'Från konto',
         'income_account'    => 'Till konto',
         'recurring'         => 'Återkommande',
+        'track_stock'       => 'Lagerförd',
     ],
 
 ];

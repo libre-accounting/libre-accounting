@@ -15,6 +15,7 @@ return [
         'reconciled'        => 'I Pajtuar',
         'expense_account'   => 'Nga Llogaria',
         'income_account'    => 'Në Llogarinë',
+        'track_stock'       => 'Gjurmimi i Stokut',
     ],
 
 ];

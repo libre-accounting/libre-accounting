@@ -16,6 +16,7 @@ return [
         'expense_account'   => 'Tililtä',
         'income_account'    => 'Tilille',
         'recurring'         => 'Toistuva',
+        'track_stock'       => 'Seuraa varastoa',
     ],
 
 ];

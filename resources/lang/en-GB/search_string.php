@@ -16,6 +16,7 @@ return [
         'expense_account'   => 'From Account',
         'income_account'    => 'To Account',
         'recurring'         => 'Recurring',
+        'track_stock'       => 'Track Stock',
     ],
 
 ];

@@ -52,6 +52,18 @@
                     </x-slot>
                 </x-form.section>
 
+                <x-form.section v-if="form.type == 'product'">
+                    <x-slot name="head">
+                        <x-form.section.head title="{{ trans('stock.stock') }}" description="{{ trans('stock.form_description.stock') }}" />
+                    </x-slot>
+
+                    <x-slot name="body">
+                        <x-form.group.toggle name="track_stock" label="{{ trans('stock.track_stock') }}" :value="false" />
+
+                        <x-form.group.number name="stock_quantity" label="{{ trans('stock.opening_count') }}" v-show="form.track_stock == 1" not-required />
+                    </x-slot>
+                </x-form.section>
+
                 <x-form.section>
                     <x-slot name="foot">
                         <x-form.buttons cancel-route="items.index" />

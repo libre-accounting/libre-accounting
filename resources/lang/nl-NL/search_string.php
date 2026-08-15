@@ -16,6 +16,7 @@ return [
         'expense_account'   => 'Van account',
         'income_account'    => 'Naar account',
         'recurring'         => 'Terugkerend',
+        'track_stock'       => 'Voorraad bijhouden',
     ],
 
 ];

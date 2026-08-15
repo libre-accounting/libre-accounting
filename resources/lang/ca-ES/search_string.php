@@ -16,6 +16,7 @@ return [
         'expense_account'   => 'Compte origen',
         'income_account'    => 'Compte destí',
         'recurring'         => 'Recurrent',
+        'track_stock'       => 'Control d\'estoc',
     ],
 
 ];

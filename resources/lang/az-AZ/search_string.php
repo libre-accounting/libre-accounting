@@ -15,6 +15,7 @@ return [
         'reconciled'        => 'Razılaşdırıldı',
         'expense_account'   => 'Göndərən Hesab',
         'income_account'    => 'Qəbul Edən Hesab',
+        'track_stock'       => 'Anbar Qalığını İzlə',
     ],
 
 ];

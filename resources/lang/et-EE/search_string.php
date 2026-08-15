@@ -15,6 +15,7 @@ return [
         'reconciled'        => 'Vastavusse viidud',
         'expense_account'   => 'Kontolt',
         'income_account'    => 'Kontole',
+        'track_stock'       => 'Jälgi laoseisu',
     ],
 
 ];

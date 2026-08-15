@@ -10,6 +10,7 @@ return [
         'billed_at'         => 'Datum računa',
         'due_at'            => 'Datum dospeća',
         'invoiced_at'       => 'Datum fakture',
+        'track_stock'       => 'Praćenje zaliha',
     ],
 
 ];

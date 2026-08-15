@@ -55,10 +55,12 @@ class Item extends Model
      *
      * @var array
      */
-    protected $sortable = ['name', 'category.name', 'sale_price', 'purchase_price', 'enabled'];
+    protected $sortable = ['name', 'category.name', 'sale_price', 'purchase_price', 'enabled', 'stock'];
 
     /**
-     * Sortable aliases, loaded by scopes such as withStock().
+     * Sortable aliases: `stock` is the withStock() aggregate, so every list
+     * that allows sorting by it must apply that scope. It has to be in
+     * $sortable too, which is what lets a request's sort through.
      *
      * @var array
      */
@@ -266,6 +268,20 @@ class Item extends Model
                 'id' => 'index-line-actions-duplicate-item-' . $this->id,
             ],
         ];
+
+        if ($this->track_stock) {
+            $actions[] = [
+                'type' => 'button',
+                'title' => trans('stock.adjust'),
+                'icon' => 'inventory',
+                'url' => route('modals.items.stock.create', $this->id),
+                'permission' => 'update-common-items',
+                'attributes' => [
+                    'id' => 'index-line-actions-adjust-stock-item-' . $this->id,
+                    '@click' => 'onAddPayment("' . route('modals.items.stock.create', $this->id) . '")',
+                ],
+            ];
+        }
 
         $actions[] = [
             'type' => 'delete',

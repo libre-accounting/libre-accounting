@@ -57,8 +57,12 @@
                                 </x-slot>
                             </x-table.th>
 
-                            <x-table.th class="w-3/12" hidden-mobile>
+                            <x-table.th class="w-2/12" hidden-mobile>
                                 <x-sortablelink column="category.name" title="{{ trans_choice('general.categories', 1) }}" />
+                            </x-table.th>
+
+                            <x-table.th class="w-1/12" hidden-mobile>
+                                <x-sortablelink column="stock" title="{{ trans('stock.stock') }}" />
                             </x-table.th>
 
                             <x-table.th class="w-2/12" hidden-mobile>
@@ -96,10 +100,18 @@
                                     </x-slot>
                                 </x-table.td>
 
-                                <x-table.td class="w-3/12" hidden-mobile>
+                                <x-table.td class="w-2/12" hidden-mobile>
                                     <div class="flex items-center">
                                         <x-index.category :model="$item->category" />
                                     </div>
+                                </x-table.td>
+
+                                <x-table.td class="w-1/12" hidden-mobile>
+                                    @if (is_null($item->stock_quantity))
+                                        <x-empty-data />
+                                    @else
+                                        <span class="{{ $item->stock_quantity < 0 ? 'text-red' : '' }}">{{ $item->stock_quantity + 0 }}</span>
+                                    @endif
                                 </x-table.td>
 
                                 <x-table.td class="w-2/12" hidden-mobile>

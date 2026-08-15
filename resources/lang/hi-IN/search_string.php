@@ -16,6 +16,7 @@ return [
         'expense_account'   => 'खाते से',
         'income_account'    => 'खाते में',
         'recurring'         => 'आवर्ती',
+        'track_stock'       => 'स्टॉक ट्रैक करें',
     ],
 
 ];

@@ -16,6 +16,7 @@ return [
         'expense_account'   => 'No konta',
         'income_account'    => 'Uz kontu',
         'recurring'         => 'Atkārtojošs',
+        'track_stock'       => 'Uzskaitīt krājumus',
     ],
 
 ];
