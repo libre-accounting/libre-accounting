@@ -4,6 +4,9 @@ namespace Tests\Feature\Api;
 
 use App\Models\Banking\Transaction;
 use App\Models\Common\Contact;
+use App\Models\Common\Item;
+use App\Models\Common\ItemComponent;
+use App\Models\Common\ItemStockMovement;
 use App\Models\Common\Report;
 use Tests\Feature\FeatureTestCase;
 
@@ -21,6 +24,31 @@ class ResourcesTest extends FeatureTestCase
             ->getJson('api/transactions/' . $transaction->id)
             ->assertOk()
             ->assertJsonPath('data.number', $transaction->number);
+    }
+
+    public function testItemIncludesStockAndComponents()
+    {
+        $kit = Item::factory()->enabled()->create(['type' => 'product', 'track_stock' => true]);
+        $part = Item::factory()->enabled()->create(['type' => 'product', 'track_stock' => false]);
+
+        ItemComponent::factory()->forItem($kit)->component($part)->quantity(2)->create();
+        ItemStockMovement::factory()->forItem($kit)->quantity(3)->create();
+
+        $this->api()
+            ->getJson('api/items/' . $kit->id)
+            ->assertOk()
+            ->assertJsonPath('data.track_stock', true)
+            ->assertJsonPath('data.stock_quantity', 3)
+            ->assertJsonPath('data.components.data.0.component_id', $part->id)
+            ->assertJsonPath('data.components.data.0.name', $part->name)
+            ->assertJsonPath('data.components.data.0.quantity', 2);
+
+        $this->api()
+            ->getJson('api/items/' . $part->id)
+            ->assertOk()
+            ->assertJsonPath('data.track_stock', false)
+            ->assertJsonPath('data.stock_quantity', null)
+            ->assertJsonPath('data.components.data', []);
     }
 
     public function testContactIncludesFullAddress()

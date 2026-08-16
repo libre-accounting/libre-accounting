@@ -6,6 +6,8 @@ use App\Models\Banking\Reconciliation;
 use App\Models\Common\Contact;
 use App\Models\Common\Dashboard;
 use App\Models\Common\Item;
+use App\Models\Common\ItemComponent;
+use App\Models\Common\ItemStockMovement;
 use App\Models\Common\Report;
 use App\Models\Setting\Tax;
 use Illuminate\Database\Eloquent\Model;
@@ -45,9 +47,16 @@ class LazyLoadingTest extends FeatureTestCase
             ])->assertCreated()->json('data.id');
 
             Reconciliation::factory()->create(['account_id' => $account_id]);
+
+            // A tracked part with a movement, inside a kit, so items carry stock and components
+            $part = Item::factory()->enabled()->create(['type' => 'product', 'track_stock' => true]);
+            ItemStockMovement::factory()->forItem($part)->quantity(5)->create();
+            ItemComponent::factory()->forItem(Item::factory()->enabled()->create(['type' => 'product']))->component($part)->create();
+            $tracked_id = $part->id;
         }
 
         $endpoints = [
+            'api/items/' . $tracked_id . '/stock-movements',
             'api/users',
             'api/users/' . $this->user->id,
             'api/companies',

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Common;
 
+use App\Http\Resources\Common\ItemComponent;
 use App\Http\Resources\Common\ItemTax;
 use App\Http\Resources\Setting\Category;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -29,11 +30,15 @@ class Item extends JsonResource
             'category_id' => $this->category_id,
             'picture' => $this->picture,
             'enabled' => $this->enabled,
+            'track_stock' => (bool) $this->track_stock,
+            // Units on hand, or null when the item does not track stock; the accessor casts for PostgreSQL
+            'stock_quantity' => $this->stock_quantity,
             'created_from' => $this->created_from,
             'created_by' => $this->created_by,
             'created_at' => $this->created_at ? $this->created_at->toIso8601String() : '',
             'updated_at' => $this->updated_at ? $this->updated_at->toIso8601String() : '',
             'taxes' => [static::$wrap => ItemTax::collection($this->taxes)],
+            'components' => [static::$wrap => ItemComponent::collection($this->components)],
             'category' => new Category($this->category),
         ];
     }

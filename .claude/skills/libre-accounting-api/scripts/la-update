@@ -154,7 +154,8 @@ case $resource in
             {
                 type, name, description, sale_price, purchase_price, category_id,
                 tax_ids: [.taxes.data[]?.tax_id],
-                enabled: (.enabled | flag)
+                enabled: (.enabled | flag),
+                track_stock: ((.track_stock // false) | flag)
             }'
         ;;
     *)

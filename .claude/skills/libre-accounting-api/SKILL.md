@@ -187,6 +187,28 @@ expense category. Mark a draft bill received with
 servers return a 500 there; use
 `scripts/la-update bills ID '{"status":"received"}'` instead.
 
+**Stock** is opt-in per product: `GET items/{id}` shows `track_stock`,
+`stock_quantity` (null when untracked) and `components`. Invoices take
+units out when sent, bills bring them in when received; nothing moves on
+drafts. Negative stock is allowed.
+```bash
+scripts/la-api -q 'search=track_stock:1' -a GET items | jq '.data[] | {id, name, stock_quantity}'
+scripts/la-api GET items/12/stock-movements | jq '.data[] | {moved_at, type, quantity, via_item_name, description}'
+scripts/la-update items 12 '{"track_stock": 1, "stock_quantity": 40}'           # switch on with an opening count
+scripts/la-api -j '{"change": -2, "description": "Breakage"}' POST items/12/stock-adjustments
+scripts/la-api -j '{"quantity": 38, "moved_at": "2026-03-31"}' POST items/12/stock-adjustments   # set to a counted figure
+```
+- `stock_quantity` on an already-tracked item is ignored on update; only
+  `stock-adjustments` moves stock by hand. Show the current figure and the
+  change before sending one.
+- Kits: `POST items/{kit}/components` with `{"component_id": 7, "quantity": 2}`
+  lists what a product is built from (one level; a kit cannot contain a kit).
+  Leave the kit untracked and selling it takes the parts out of stock. Track
+  the kit instead and build units ahead with
+  `la-api -j '{"quantity": 5}' POST items/{kit}/stock-builds`; invoices then
+  consume the finished units. Changing a recipe recalculates past sales of
+  that kit, so warn before editing one with history.
+
 **Reports**
 ```bash
 scripts/la-api GET reports | jq '.data[] | {id, name, class}'

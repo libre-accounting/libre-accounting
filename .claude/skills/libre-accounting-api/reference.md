@@ -24,7 +24,11 @@ user's first enabled company. Bodies can be JSON, form-encoded or multipart.
 | `users` (+ `/{id}/enable`, `/disable`) | lists every user of the instance; show by id or email |
 | `companies` (+ `/{id}/enable`, `/disable`, `/owner`) | only the caller's companies; `owner` is 200 empty or 401 |
 | `dashboards` (+ enable/disable) | widgets carry computed `data`; `?start_date=&end_date=` |
-| `items` (+ enable/disable) | products/services catalogue |
+| `items` (+ enable/disable) | products/services catalogue; `track_stock`, `stock_quantity` and `components` per item |
+| `items/{id}/stock-movements` | GET, paged: the item's stock ledger, newest first |
+| `items/{id}/stock-adjustments` | POST `quantity` (set to) or `change` (move by), optional `moved_at`, `description`; 400 when the item does not track stock |
+| `items/{id}/stock-builds` | POST `quantity` (negative takes units apart): parts out, finished units in; 400 without tracking or components |
+| `items/{id}/components` | POST `component_id`, `quantity` adds or changes a part; DELETE `/{component_id}` removes it; 400 for a kit inside a kit |
 | `contacts` (+ enable/disable) | **needs `search=type:customer\|vendor`**; show by id or email |
 | `documents` | **needs `search=type:invoice\|bill`**; show by id or document_number |
 | `documents/{id}/transactions` | payments of a document: GET list (unpaginated), POST, GET/DELETE `/{tid}`; no update |
@@ -53,7 +57,7 @@ POST, update for PATCH and enable/disable, delete for DELETE.
 | `purchases-bills` | documents with `type:bill` |
 | `banking-transactions` | transactions, document payments |
 | `banking-accounts`, `banking-transfers`, `banking-reconciliations` | same names |
-| `common-items`, `common-companies`, `common-dashboards`, `common-reports` | same names |
+| `common-items`, `common-companies`, `common-dashboards`, `common-reports` | same names; the stock and component endpoints of an item need read (GET) or update (POST, DELETE) on `common-items` |
 | `settings-categories`, `settings-currencies`, `settings-taxes` | same names |
 | `settings-company`, `settings-defaults` or `settings-localisation` (any of them) | settings |
 | `auth-users` | users |
@@ -71,7 +75,7 @@ endpoints. **Admin** has everything.
   - documents: document_number, contact_name, amount, status, issued_at, due_at (default `issued_at desc`)
   - transactions: type, number, paid_at, amount, category.name, account.name (default `paid_at desc`)
   - contacts: name, email, phone, enabled
-  - items: name, category.name, sale_price, purchase_price, enabled
+  - items: name, category.name, sale_price, purchase_price, enabled, stock
   - accounts: name, number, balance, bank_name
   - categories: name, type, enabled; currencies: name, code, rate; taxes: name, rate
 - Unless the search has a `type:` filter, documents and transactions hide
@@ -107,8 +111,8 @@ Searchable keys (s = also free text):
   category_id, parent_id. There is no `number`.
 - **contacts**: id, type, name(s), email(s), tax_number(s), phone(s),
   address(s), website(s), currency_code, reference, user_id, enabled
-- **items**: id, name(s), description(s), enabled, category_id, sale_price,
-  purchase_price
+- **items**: id, name(s), description(s), enabled, track_stock, category_id,
+  sale_price, purchase_price
 - **accounts**: id, name(s), number(s), bank_name(s), bank_address(s),
   currency_code, enabled
 - **categories**: id, name(s), enabled, type (income|expense|item|other)
@@ -217,7 +221,24 @@ Shared rules:
   (an `item` category), `tax_ids[]`, `enabled`, `picture`.
 - An update replaces the taxes with `tax_ids`. Enable/disable also wipes the
   taxes.
-- Delete is blocked while the item is used on documents.
+- Delete is blocked while the item is used on documents or as a component.
+- Stock: `track_stock` (bool) switches tracking on or off; switching it on
+  rebuilds the ledger from past invoices and bills. `stock_quantity` in the
+  response is the units on hand (null when untracked). In a request it is
+  honoured only on create, or when `track_stock` flips to true: it then
+  becomes the opening count. On an already-tracked item it is ignored, so a
+  GET-then-PATCH round trip never moves stock; use `stock-adjustments`.
+- Movements: sent/viewed/partial/paid invoices take stock out, received or
+  paid bills bring it in, drafts and cancelled documents move nothing.
+  Rows with a `document_id` are derived and rewritten whenever the document
+  changes; `adjustment` and `assembly` rows are manual and permanent (undo
+  one with a reverse adjustment or a negative build).
+- Components: `components.data[]` lists the recipe (`component_id`, `name`,
+  `quantity` per unit), one level deep. An untracked item with components is
+  a kit: selling it takes the parts out of stock. A tracked item with
+  components is assembled ahead with `stock-builds`; selling it takes the
+  finished units. Changing a recipe recalculates every document that sold
+  the kit.
 
 **categories**
 
@@ -288,6 +309,7 @@ Servers released before these API fixes behave differently. If
 | Symptom | Workaround |
 |---|---|
 | `GET documents/{id}/received` returns 500 | `la-update bills ID '{"status":"received"}'` |
+| `GET items/{id}` has no `track_stock` | the server predates stock tracking; the stock and component endpoints 404 |
 | PUT reports "number/email has already been taken" | use PATCH |
 | PATCH without `enabled` disables the record, or fails if it's in use | send `enabled: 1` (`la-update` does) |
 | Missing id returns 500 instead of 404 | treat "No query results" as not found |

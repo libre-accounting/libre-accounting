@@ -31,6 +31,11 @@ Route::group(['as' => 'api.'], function () {
     // Items
     Route::get('items/{item}/enable', 'Common\Items@enable')->name('items.enable');
     Route::get('items/{item}/disable', 'Common\Items@disable')->name('items.disable');
+    Route::get('items/{item}/stock-movements', 'Common\Items@stockMovements')->name('items.stock-movements');
+    Route::post('items/{item}/stock-adjustments', 'Common\Items@adjustStock')->name('items.stock-adjustments');
+    Route::post('items/{item}/stock-builds', 'Common\Items@buildStock')->name('items.stock-builds');
+    Route::post('items/{item}/components', 'Common\Items@storeComponent')->name('items.components.store');
+    Route::delete('items/{item}/components/{component}', 'Common\Items@destroyComponent')->name('items.components.destroy');
     Route::apiResource('items', 'Common\Items', ['middleware' => ['dropzone']]);
 
     // Contacts

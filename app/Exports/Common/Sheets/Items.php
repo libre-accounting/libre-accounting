@@ -9,7 +9,7 @@ class Items extends Export
 {
     public function collection()
     {
-        return Model::with('category')->collectForExport($this->ids);
+        return Model::with('category')->withStock()->collectForExport($this->ids);
     }
 
     public function map($model): array
@@ -29,6 +29,8 @@ class Items extends Export
             'purchase_price',
             'category_name',
             'enabled',
+            'track_stock',
+            'stock_quantity',
         ];
     }
 }

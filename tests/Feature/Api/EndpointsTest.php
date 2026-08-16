@@ -4,6 +4,9 @@ namespace Tests\Feature\Api;
 
 use App\Models\Banking\Transaction;
 use App\Models\Common\Contact;
+use App\Models\Common\Item;
+use App\Models\Common\ItemComponent;
+use App\Models\Common\ItemStockMovement;
 use App\Models\Setting\Category;
 use Tests\Feature\FeatureTestCase;
 
@@ -130,6 +133,129 @@ class EndpointsTest extends FeatureTestCase
             ->getJson('api/accounts/' . setting('default.account') . '/enable')
             ->assertOk()
             ->assertJsonPath('data.enabled', true);
+    }
+
+    public function testItShouldListStockMovements()
+    {
+        $item = Item::factory()->enabled()->create(['type' => 'product', 'track_stock' => true]);
+
+        ItemStockMovement::factory()->forItem($item)->quantity(3)->create(['description' => 'Shelf count']);
+
+        $this->api()
+            ->getJson('api/items/' . $item->id . '/stock-movements')
+            ->assertOk()
+            ->assertJsonCount(1, 'data')
+            ->assertJsonPath('data.0.type', 'adjustment')
+            ->assertJsonPath('data.0.quantity', 3)
+            ->assertJsonPath('data.0.description', 'Shelf count');
+    }
+
+    public function testItShouldSortItemsByStock()
+    {
+        $quantities = [7, 2, 5];
+
+        foreach ($quantities as $quantity) {
+            $item = Item::factory()->enabled()->create(['type' => 'product', 'track_stock' => true]);
+
+            ItemStockMovement::factory()->forItem($item)->quantity($quantity)->create();
+        }
+
+        $response = $this->api()
+            ->getJson('api/items?search=track_stock:1&sort=stock&direction=asc')
+            ->assertOk()
+            ->json('data');
+
+        $this->assertSame([2, 5, 7], array_column($response, 'stock_quantity'));
+    }
+
+    public function testItShouldAdjustStock()
+    {
+        $item = Item::factory()->enabled()->create(['type' => 'product', 'track_stock' => true]);
+
+        $this->api()
+            ->postJson('api/items/' . $item->id . '/stock-adjustments', ['quantity' => 10])
+            ->assertCreated()
+            ->assertJsonPath('data.type', 'adjustment')
+            ->assertJsonPath('data.quantity', 10);
+
+        $this->api()
+            ->postJson('api/items/' . $item->id . '/stock-adjustments', ['change' => -3, 'moved_at' => '2026-02-01', 'description' => 'Breakage'])
+            ->assertCreated()
+            ->assertJsonPath('data.quantity', -3);
+
+        $this->api()
+            ->getJson('api/items/' . $item->id)
+            ->assertJsonPath('data.stock_quantity', 7);
+    }
+
+    public function testItShouldRefuseAdjustingAnUntrackedItem()
+    {
+        $item = Item::factory()->enabled()->create(['type' => 'product', 'track_stock' => false]);
+
+        $this->withExceptionHandling()
+            ->api()
+            ->postJson('api/items/' . $item->id . '/stock-adjustments', ['quantity' => 10])
+            ->assertStatus(400);
+
+        $this->withExceptionHandling()
+            ->api()
+            ->postJson('api/items/' . $item->id . '/stock-adjustments', [])
+            ->assertStatus(422);
+    }
+
+    public function testItShouldBuildStock()
+    {
+        $composite = Item::factory()->enabled()->create(['type' => 'product', 'track_stock' => true]);
+        $part = Item::factory()->enabled()->create(['type' => 'product', 'track_stock' => true]);
+
+        ItemComponent::factory()->forItem($composite)->component($part)->quantity(2)->create();
+
+        $this->api()
+            ->postJson('api/items/' . $composite->id . '/stock-builds', ['quantity' => 3])
+            ->assertCreated()
+            ->assertJsonPath('data.type', 'assembly')
+            ->assertJsonPath('data.quantity', 3);
+
+        $this->assertSame(3.0, $composite->fresh()->stock_quantity);
+        $this->assertSame(-6.0, $part->fresh()->stock_quantity);
+
+        $this->withExceptionHandling()
+            ->api()
+            ->postJson('api/items/' . $part->id . '/stock-builds', ['quantity' => 1])
+            ->assertStatus(400);
+    }
+
+    public function testItShouldAddAndRemoveComponents()
+    {
+        $kit = Item::factory()->enabled()->create(['type' => 'product', 'track_stock' => false]);
+        $part = Item::factory()->enabled()->create(['type' => 'product', 'track_stock' => true]);
+
+        $component = $this->api()
+            ->postJson('api/items/' . $kit->id . '/components', ['component_id' => $part->id, 'quantity' => 2])
+            ->assertCreated()
+            ->assertJsonPath('data.component_id', $part->id)
+            ->assertJsonPath('data.quantity', 2)
+            ->json('data.id');
+
+        $this->api()
+            ->getJson('api/items/' . $kit->id)
+            ->assertJsonCount(1, 'data.components.data');
+
+        // A kit cannot become a part of another item
+        $other = Item::factory()->enabled()->create(['type' => 'product']);
+
+        $this->withExceptionHandling()
+            ->api()
+            ->postJson('api/items/' . $other->id . '/components', ['component_id' => $kit->id, 'quantity' => 1])
+            ->assertStatus(400);
+
+        $this->api()
+            ->deleteJson('api/items/' . $kit->id . '/components/' . $component)
+            ->assertNoContent();
+
+        $this->api()
+            ->getJson('api/items/' . $kit->id)
+            ->assertJsonCount(0, 'data.components.data');
     }
 
     protected function createDocument(string $type): int
