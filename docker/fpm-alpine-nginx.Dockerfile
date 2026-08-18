@@ -8,16 +8,11 @@ COPY public public
 COPY webpack.mix.js tailwind.config.js presets.js ./
 RUN npm run production
 
-FROM php:8.1-fpm-alpine3.15 AS php
+FROM php:8.3-fpm-alpine AS php
 
 # Arguments defined in docker-compose.yml
 ARG LIBRE_ACCOUNTING_DOCKERFILE_VERSION=0.1
 ARG SUPPORTED_LOCALES="en_US.UTF-8"
-
-# Add Repositories
-RUN rm -f /etc/apk/repositories &&\
-    echo "http://dl-cdn.alpinelinux.org/alpine/v3.15/main" >> /etc/apk/repositories && \
-    echo "http://dl-cdn.alpinelinux.org/alpine/v3.15/community" >> /etc/apk/repositories
 
 # Add Dependencies
 RUN apk add --update --no-cache \

@@ -1,13 +1,8 @@
-FROM php:8.1-fpm-alpine3.15
+FROM php:8.3-fpm-alpine
 
 # Arguments defined in docker-compose.yml
 ARG LIBRE_ACCOUNTING_DOCKERFILE_VERSION=0.1
 ARG SUPPORTED_LOCALES="en_US.UTF-8"
-
-# Add Repositories
-RUN rm -f /etc/apk/repositories &&\
-    echo "http://dl-cdn.alpinelinux.org/alpine/v3.15/main" >> /etc/apk/repositories && \
-    echo "http://dl-cdn.alpinelinux.org/alpine/v3.15/community" >> /etc/apk/repositories
 
 # Add Dependencies
 RUN apk add --update --no-cache \

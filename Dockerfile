@@ -8,7 +8,7 @@ COPY public public
 COPY webpack.mix.js tailwind.config.js presets.js ./
 RUN npm run production
 
-FROM php:8.1-apache AS php
+FROM php:8.3-apache AS php
 
 ARG LIBRE_ACCOUNTING_DOCKERFILE_VERSION=0.1
 ARG SUPPORTED_LOCALES="en_US.UTF-8"
@@ -18,7 +18,7 @@ RUN apt-get update \
  && apt-get install -y \
     build-essential \
     imagemagick \
-    libfreetype6-dev \
+    libfreetype-dev \
     libicu-dev \
     libjpeg62-turbo-dev \
     libjpeg-dev \
@@ -72,6 +72,7 @@ RUN composer dump-autoload --optimize
 COPY --from=node /app/public/js /var/www/html/public/js
 
 COPY docker/files/libre-accounting.sh /usr/local/bin/libre-accounting.sh
+COPY docker/files/php.ini /usr/local/etc/php/php.ini
 COPY docker/files/html /var/www/html
 
 # Set ownership/permissions once at build time (cached layer) instead of on

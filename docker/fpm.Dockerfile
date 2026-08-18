@@ -8,7 +8,7 @@ COPY public public
 COPY webpack.mix.js tailwind.config.js presets.js ./
 RUN npm run production
 
-FROM php:8.1-fpm AS php
+FROM php:8.3-fpm AS php
 
 # Arguments defined in docker-compose.yml
 ARG LIBRE_ACCOUNTING_DOCKERFILE_VERSION=0.1
@@ -19,7 +19,7 @@ RUN apt-get update \
    && apt-get install -y \
    build-essential \
    imagemagick \
-   libfreetype6-dev \
+   libfreetype-dev \
    libicu-dev \
    libjpeg62-turbo-dev \
    libjpeg-dev \
