@@ -36,6 +36,20 @@ class InvoicesTest extends FeatureTestCase
             ->assertSee($invoice->contact_email);
     }
 
+    public function testItShouldDownloadInvoicePdf()
+    {
+        $request = $this->getRequest();
+
+        $invoice = $this->dispatch(new CreateDocument($request));
+
+        $response = $this->loginAs()
+            ->get(route('invoices.pdf', $invoice->id))
+            ->assertStatus(200)
+            ->assertHeader('content-type', 'application/pdf');
+
+        $this->assertStringStartsWith('%PDF-', $response->getContent());
+    }
+
     public function testItShouldSeeInvoiceCreatePage()
     {
         $this->loginAs()
