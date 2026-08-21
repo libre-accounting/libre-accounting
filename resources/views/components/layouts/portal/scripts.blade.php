@@ -270,9 +270,4 @@
 
 <script src="{{ asset('public/vendor/alpinejs/alpine.min.js') }}"></script>
 
-<!-- Livewire -->
-<script type="text/javascript">
-    window.livewire_app_url = {{ company_id() }};
-</script>
-
 @stack('scripts_end')

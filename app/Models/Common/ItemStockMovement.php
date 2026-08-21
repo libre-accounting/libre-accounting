@@ -7,7 +7,6 @@ use App\Traits\Sources;
 use App\Traits\Tenants;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model as Eloquent;
-use Laratrust\Contracts\Ownable;
 
 /**
  * One row per stock movement of an item.
@@ -19,7 +18,7 @@ use Laratrust\Contracts\Ownable;
  * Not based on App\Abstracts\Model on purpose: that base class soft-deletes
  * and caches, and a ledger wants neither.
  */
-class ItemStockMovement extends Eloquent implements Ownable
+class ItemStockMovement extends Eloquent
 {
     use HasFactory, Owners, Sources, Tenants;
 

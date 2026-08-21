@@ -1,8 +1,6 @@
 <?php
 
 use App\Traits\Database;
-use Doctrine\DBAL\Types\FloatType;
-use Doctrine\DBAL\Types\Type;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,10 +16,6 @@ return new class extends Migration
      */
     public function up()
     {
-        if (! Type::hasType('double')) {
-            Type::addType('double', FloatType::class);
-        }
-
         Schema::table('transactions', function (Blueprint $table) {
             $table->unsignedInteger('split_id')->nullable()->after('parent_id');
 

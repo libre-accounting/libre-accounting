@@ -18,10 +18,10 @@ use App\Utilities\Overrider;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Laratrust\Contracts\Ownable;
 use Lorisleiva\LaravelSearchString\Concerns\SearchString;
+use Plank\Mediable\MediableInterface;
 
-class Company extends Eloquent implements Ownable
+class Company extends Eloquent implements MediableInterface
 {
     use Contacts, HasFactory, Media, Owners, SearchString, SoftDeletes, Sortable, Sources, Tenants, Transactions;
 

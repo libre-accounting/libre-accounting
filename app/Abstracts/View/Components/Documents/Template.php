@@ -4,6 +4,7 @@ namespace App\Abstracts\View\Components\Documents;
 
 use App\Abstracts\View\Component;
 use App\Models\Common\Media;
+use App\Utilities\Images;
 use App\Traits\DateTime;
 use App\Traits\Documents;
 use App\Traits\Tailwind;
@@ -11,8 +12,6 @@ use App\Traits\ViewComponents;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-use Intervention\Image\Exception\NotReadableException;
-use Image;
 use ReflectionProperty;
 
 abstract class Template extends Component
@@ -234,29 +233,18 @@ abstract class Template extends Component
             $path = base_path('public/img/company.png');
         }
 
-        try {
-            $image = Image::cache(function($image) use ($media, $path) {
-                $width = setting('invoice.logo_size_width');
-                $height = setting('invoice.logo_size_height');
+        $width = setting('invoice.logo_size_width');
+        $height = setting('invoice.logo_size_height');
 
-                if ($media) {
-                    $image->make($media->contents())->resize($width, $height)->encode();
-                } else {
-                    $image->make($path)->resize($width, $height)->encode();
-                }
-            });
-        } catch (NotReadableException | \Exception $e) {
+        try {
+            $image = Images::resize($media, $path, $width, $height);
+        } catch (\Exception $e) {
             Log::info('Company ID: ' . company_id() . ' components/documentshow.php exception.');
             Log::info($e->getMessage());
 
             $path = base_path('public/img/company.png');
 
-            $image = Image::cache(function($image) use ($path) {
-                $width = setting('invoice.logo_size_width');
-                $height = setting('invoice.logo_size_height');
-
-                $image->make($path)->resize($width, $height)->encode();
-            });
+            $image = Images::resize(null, $path, $width, $height);
         }
 
         if (empty($image)) {

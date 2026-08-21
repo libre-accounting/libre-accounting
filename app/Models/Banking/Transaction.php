@@ -14,8 +14,9 @@ use Bkwld\Cloner\Cloneable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Str;
+use Plank\Mediable\MediableInterface;
 
-class Transaction extends Model
+class Transaction extends Model implements MediableInterface
 {
     use Cloneable, Currencies, DateTime, HasFactory, Media, Recurring, Transactions;
 

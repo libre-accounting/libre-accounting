@@ -13,10 +13,9 @@ use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Laratrust\Contracts\Ownable;
 use Lorisleiva\LaravelSearchString\Concerns\SearchString;
 
-abstract class Model extends Eloquent implements Ownable
+abstract class Model extends Eloquent
 {
     use Cachable, DateTime, Owners, SearchString, SoftDeletes, Sortable, Sources, Tenants;
 

@@ -33,7 +33,10 @@ return [
     |           This method doesn't support cache yet.
     |
      */
-    'checker' => 'default',
+    'checkers' => [
+        'user' => 'default',
+        'role' => 'default',
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -263,8 +266,6 @@ return [
     | Available: camel_case|snake_case|kebab_case
     |
     */
-    'magic_is_able_to_method_case' => 'kebab_case',
-
     /*
     |--------------------------------------------------------------------------
     | Laratrust Permissions as Gates

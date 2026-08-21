@@ -14,8 +14,6 @@ class Settings extends Component
 
     public $keyword = '';
 
-    public $settings = [];
-
     public $active_menu = 0;
 
     protected $listeners = ['resetKeyword'];
@@ -37,8 +35,6 @@ class Settings extends Component
                 }
 
                 if ($this->availableInSearch($item)) {
-                    $this->settings[] = $item;
-
                     continue;
                 }
 

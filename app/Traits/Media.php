@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Plank\Mediable\Mediable;
 
 /**
@@ -21,7 +22,7 @@ trait Media
      * Relationship for all attached media.
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    public function media()
+    public function media(): MorphToMany
     {
         $media = $this->morphToMany(config('mediable.model'), 'mediable')
             ->withPivot('tag', 'order')

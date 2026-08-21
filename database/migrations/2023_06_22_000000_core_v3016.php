@@ -15,10 +15,7 @@ return new class extends Migration
     {
         // Settings
         Schema::table('settings', function (Blueprint $table) {
-            $connection = Schema::getConnection();
-            $d_table = $connection->getDoctrineSchemaManager()->listTableDetails($connection->getTablePrefix() . 'settings');
-
-            if ($d_table->hasIndex('settings_company_id_key_unique')) {
+            if (in_array('settings_company_id_key_unique', Schema::getIndexListing('settings'))) {
                 $table->dropUnique('settings_company_id_key_unique');
             } else {
                 $table->dropUnique(['company_id', 'key']);
@@ -43,10 +40,7 @@ return new class extends Migration
     {
         // Settings
         Schema::table('settings', function (Blueprint $table) {
-            $connection = Schema::getConnection();
-            $d_table = $connection->getDoctrineSchemaManager()->listTableDetails($connection->getTablePrefix() . 'settings');
-
-            if ($d_table->hasIndex('settings_company_id_key_deleted_at_unique')) {
+            if (in_array('settings_company_id_key_deleted_at_unique', Schema::getIndexListing('settings'))) {
                 $table->dropUnique('settings_company_id_key_deleted_at_unique');
             } else {
                 $table->dropUnique(['company_id', 'key', 'deleted_at']);

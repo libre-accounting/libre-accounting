@@ -15,13 +15,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laratrust\Traits\LaratrustUserTrait;
+use Laratrust\Contracts\LaratrustUser;
+use Laratrust\Traits\HasRolesAndPermissions;
 use Lorisleiva\LaravelSearchString\Concerns\SearchString;
+use Plank\Mediable\MediableInterface;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
-class User extends Authenticatable implements HasLocalePreference
+class User extends Authenticatable implements HasLocalePreference, LaratrustUser, MediableInterface
 {
-    use HasFactory, HasRelationships, LaratrustUserTrait, Media, Notifiable, Owners, SearchString, SoftDeletes, Sortable, Sources, Tenants, Users;
+    use HasFactory, HasRelationships, HasRolesAndPermissions, Media, Notifiable, Owners, SearchString, SoftDeletes, Sortable, Sources, Tenants, Users;
 
     protected $table = 'users';
 
@@ -90,11 +92,6 @@ class User extends Authenticatable implements HasLocalePreference
     public function invitation()
     {
         return $this->hasOne('App\Models\Auth\UserInvitation', 'user_id', 'id');
-    }
-
-    public function roles()
-    {
-        return $this->belongsToMany('App\Models\Auth\Role', 'App\Models\Auth\UserRole');
     }
 
     /**

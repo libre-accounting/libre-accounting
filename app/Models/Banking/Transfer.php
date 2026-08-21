@@ -8,9 +8,10 @@ use App\Traits\Currencies;
 use App\Traits\Media;
 use Bkwld\Cloner\Cloneable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Plank\Mediable\MediableInterface;
 use Znck\Eloquent\Traits\BelongsToThrough;
 
-class Transfer extends Model
+class Transfer extends Model implements MediableInterface
 {
     use BelongsToThrough, Cloneable, Currencies, HasFactory, Media;
 

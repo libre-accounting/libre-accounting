@@ -2,7 +2,7 @@
 
 namespace Illuminate\Translation;
 
-use Illuminate\Support\Str;
+use Illuminate\Support\Collection;
 
 class MessageSelector
 {
@@ -61,14 +61,14 @@ class MessageSelector
         preg_match('/^[\{\[]([^\[\]\{\}]*)[\}\]](.*)/s', $part, $matches);
 
         if (count($matches) !== 3) {
-            return;
+            return null;
         }
 
         $condition = $matches[1];
 
         $value = $matches[2];
 
-        if (Str::contains($condition, ',')) {
+        if (str_contains($condition, ',')) {
             [$from, $to] = explode(',', $condition, 2);
 
             if ($to === '*' && $number >= $from) {
@@ -91,9 +91,9 @@ class MessageSelector
      */
     private function stripConditions($segments)
     {
-        return collect($segments)->map(function ($part) {
-            return preg_replace('/^[\{\[]([^\[\]\{\}]*)[\}\]]/', '', $part);
-        })->all();
+        return (new Collection($segments))
+            ->map(fn ($part) => preg_replace('/^[\{\[]([^\[\]\{\}]*)[\}\]]/', '', $part))
+            ->all();
     }
 
     /**
@@ -134,6 +134,9 @@ class MessageSelector
             case 'ms-MY':
             case 'th':
             case 'th-TH':
+            case 'tr':
+            case 'tr-CY':
+            case 'tr-TR':
             case 'vi':
             case 'vi-VN':
             case 'zh':
@@ -276,6 +279,7 @@ class MessageSelector
             case 'ps':
             case 'ps-AF':
             case 'pt':
+            case 'pt-BR':
             case 'pt-PT':
             case 'so':
             case 'so-DJ':
@@ -298,9 +302,6 @@ class MessageSelector
             case 'te-IN':
             case 'tk':
             case 'tk-TM':
-            case 'tr':
-            case 'tr-CY':
-            case 'tr-TR':
             case 'ur':
             case 'ur-IN':
             case 'ur-PK':
@@ -329,7 +330,6 @@ class MessageSelector
             case 'mg-MG':
             case 'nso':
             case 'nso-ZA':
-            case 'pt-BR':
             case 'ti':
             case 'ti-ER':
             case 'ti-ET':

@@ -19,6 +19,17 @@ return [
     'default_disk' => env('MEDIABLE_DEFAULT_DISK', 'uploads'),
 
     /*
+    |--------------------------------------------------------------------------
+    | MIME type source
+    |--------------------------------------------------------------------------
+    |
+    | Whether to trust the MIME type sent by the client over the one inferred
+    | from the file contents. Inferring is the safer choice.
+    |
+    */
+    'prefer_client_mime_type' => false,
+
+    /*
      * Filesystems that can be used for media storage
      *
      * Uploader will throw an exception if a disk not in this list is selected
@@ -207,7 +218,8 @@ return [
         'pattern' => [
             '^https?://' => Plank\Mediable\SourceAdapters\RemoteUrlAdapter::class,
             '^/' => Plank\Mediable\SourceAdapters\LocalPathAdapter::class,
-            '^[a-zA-Z]:\\\\' => Plank\Mediable\SourceAdapters\LocalPathAdapter::class
+            '^[a-zA-Z]:\\\\' => Plank\Mediable\SourceAdapters\LocalPathAdapter::class,
+            '^data:/?/?[^,]*,' => Plank\Mediable\SourceAdapters\DataUrlAdapter::class,
         ],
     ],
 
@@ -231,4 +243,54 @@ return [
      * Detach associated media when mediable model is soft deleted.
      */
     'detach_on_soft_delete' => false,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Package migrations
+    |--------------------------------------------------------------------------
+    |
+    | The media tables are created and altered by the package's own migrations.
+    |
+    */
+    'ignore_migrations' => false,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Image optimization
+    |--------------------------------------------------------------------------
+    |
+    | Uploaded images can be passed through spatie/image-optimizer. It needs
+    | the optimizer binaries on the host, so it stays off by default.
+    |
+    */
+    'image_optimization' => [
+        'enabled' => env('MEDIABLE_OPTIMIZE_IMAGES', false),
+        'optimizers' => [
+            \Spatie\ImageOptimizer\Optimizers\Jpegoptim::class => [
+                '--max=85',
+                '--strip-all',
+                '--all-progressive',
+            ],
+            \Spatie\ImageOptimizer\Optimizers\Pngquant::class => [
+                '--quality=85',
+                '--force',
+                '--skip-if-larger',
+            ],
+            \Spatie\ImageOptimizer\Optimizers\Optipng::class => [
+                '-i0',
+                '-o2',
+                '-quiet',
+            ],
+            \Spatie\ImageOptimizer\Optimizers\Gifsicle::class => [
+                '-b',
+                '-O3',
+            ],
+            \Spatie\ImageOptimizer\Optimizers\Cwebp::class => [
+                '-q 80',
+                '-m 6',
+                '-pass 10',
+                '-mt',
+            ],
+        ],
+    ],
 ];

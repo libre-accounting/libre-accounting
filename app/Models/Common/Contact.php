@@ -15,8 +15,9 @@ use App\Utilities\Str;
 use Bkwld\Cloner\Cloneable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Plank\Mediable\MediableInterface;
 
-class Contact extends Model
+class Contact extends Model implements MediableInterface
 {
     use Cloneable, Contacts, Currencies, Documents, HasFactory, Media, Notifiable, Transactions;
 

@@ -47,7 +47,7 @@
                     <x-table.tr>
                         <x-table.td class="w-1/12">
                             @if ($is_pending)
-                                <input type="checkbox" wire:model.defer="selected.{{ $line->id }}" />
+                                <input type="checkbox" wire:model="selected.{{ $line->id }}" />
                             @endif
                         </x-table.td>
 
@@ -68,7 +68,7 @@
 
                         <x-table.td class="w-2/12">
                             @if ($is_pending)
-                                <select wire:model.defer="categories.{{ $line->id }}" class="form-element w-full">
+                                <select wire:model="categories.{{ $line->id }}" class="form-element w-full">
                                     <option value="">-</option>
                                     @foreach (($line->type === 'income' ? $income_categories : $expense_categories) as $id => $name)
                                         <option value="{{ $id }}">{{ $name }}</option>
@@ -81,7 +81,7 @@
 
                         <x-table.td class="w-2/12" hidden-mobile>
                             @if ($is_pending)
-                                <select wire:model.defer="contacts.{{ $line->id }}" class="form-element w-full">
+                                <select wire:model="contacts.{{ $line->id }}" class="form-element w-full">
                                     <option value="">-</option>
                                     @foreach (($line->type === 'income' ? $customers : $vendors) as $id => $name)
                                         <option value="{{ $id }}">{{ $name }}</option>

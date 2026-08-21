@@ -18,7 +18,7 @@ It is a community fork of [Akaunting](https://github.com/akaunting/akaunting), t
 
 ## Requirements
 
-* PHP 8.1 or higher
+* PHP 8.2 or higher
 * Database (eg: MySQL, PostgreSQL, SQLite)
 * Web Server (eg: Apache, Nginx, IIS)
 * [Other libraries](https://libreaccounting.org/hc/docs/on-premise/requirements/)

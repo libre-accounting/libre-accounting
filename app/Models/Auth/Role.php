@@ -5,13 +5,12 @@ namespace App\Models\Auth;
 use Akaunting\Sortable\Traits\Sortable;
 use App\Traits\Tenants;
 use Bkwld\Cloner\Cloneable;
-use Laratrust\Models\LaratrustRole;
-use Laratrust\Traits\LaratrustRoleTrait;
+use Laratrust\Models\Role as LaratrustRole;
 use Lorisleiva\LaravelSearchString\Concerns\SearchString;
 
 class Role extends LaratrustRole
 {
-    use Cloneable, LaratrustRoleTrait, SearchString, Sortable, Tenants;
+    use Cloneable, SearchString, Sortable, Tenants;
 
     protected $table = 'roles';
 

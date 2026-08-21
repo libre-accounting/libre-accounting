@@ -19,7 +19,7 @@ namespace Symfony\Component\Process;
  */
 class PhpExecutableFinder
 {
-    private $executableFinder;
+    private ExecutableFinder $executableFinder;
 
     public function __construct()
     {
@@ -29,31 +29,31 @@ class PhpExecutableFinder
 
     public function getPhpPath()
     {
-		$php_path = getenv('APP_PHP_PATH');
+        $php_path = getenv('APP_PHP_PATH');
 
-		if (! empty($php_path)) {
-			return $php_path;
-		}
+        if (! empty($php_path)) {
+            return $php_path;
+        }
 
         if ($this->isCpanel()) {
             return '/usr/local/bin/php';
         }
 
         if ($this->isPlesk()) {
-            $php_80 = '/opt/plesk/php/8.0/bin/php';
-            $php_81 = '/opt/plesk/php/8.1/bin/php';
             $php_82 = '/opt/plesk/php/8.2/bin/php';
-
-            if (@is_executable($php_80)) {
-                return $php_80;
-            }
-
-            if (@is_executable($php_81)) {
-                return $php_81;
-            }
+            $php_83 = '/opt/plesk/php/8.3/bin/php';
+            $php_84 = '/opt/plesk/php/8.4/bin/php';
 
             if (@is_executable($php_82)) {
                 return $php_82;
+            }
+
+            if (@is_executable($php_83)) {
+                return $php_83;
+            }
+
+            if (@is_executable($php_84)) {
+                return $php_84;
             }
         }
 
@@ -102,25 +102,20 @@ class PhpExecutableFinder
 
     /**
      * Finds The PHP executable.
-     *
-     * @return string|false The PHP executable path or false if it cannot be found
      */
-    public function find(bool $includeArgs = true)
+    public function find(bool $includeArgs = true): string|false
     {
         # @override
         // Not working on shared hosting due to "open_basedir" restriction applied by cPanel/Plesk
         return $this->getPhpPath();
 
         if ($php = getenv('PHP_BINARY')) {
-            if (!is_executable($php)) {
-                $command = '\\' === \DIRECTORY_SEPARATOR ? 'where' : 'command -v';
-                if ($php = strtok(exec($command.' '.escapeshellarg($php)), PHP_EOL)) {
-                    if (!is_executable($php)) {
-                        return false;
-                    }
-                } else {
-                    return false;
-                }
+            if (!is_executable($php) && !$php = $this->executableFinder->find($php)) {
+                return false;
+            }
+
+            if (@is_dir($php)) {
+                return false;
             }
 
             return $php;
@@ -130,12 +125,12 @@ class PhpExecutableFinder
         $args = $includeArgs && $args ? ' '.implode(' ', $args) : '';
 
         // PHP_BINARY return the current sapi executable
-        if (PHP_BINARY && \in_array(\PHP_SAPI, ['cgi-fcgi', 'cli', 'cli-server', 'phpdbg'], true)) {
-            return PHP_BINARY.$args;
+        if (\PHP_BINARY && \in_array(\PHP_SAPI, ['cli', 'cli-server', 'phpdbg'], true)) {
+            return \PHP_BINARY.$args;
         }
 
         if ($php = getenv('PHP_PATH')) {
-            if (!@is_executable($php)) {
+            if (!@is_executable($php) || @is_dir($php)) {
                 return false;
             }
 
@@ -143,18 +138,22 @@ class PhpExecutableFinder
         }
 
         if ($php = getenv('PHP_PEAR_PHP_BIN')) {
-            if (@is_executable($php)) {
+            if (@is_executable($php) && !@is_dir($php)) {
                 return $php;
             }
         }
 
-        if (@is_executable($php = PHP_BINDIR.('\\' === \DIRECTORY_SEPARATOR ? '\\php.exe' : '/php'))) {
+        if (@is_executable($php = \PHP_BINDIR.('\\' === \DIRECTORY_SEPARATOR ? '\\php.exe' : '/php')) && !@is_dir($php)) {
             return $php;
         }
 
-        $dirs = [PHP_BINDIR];
+        $dirs = [\PHP_BINDIR];
         if ('\\' === \DIRECTORY_SEPARATOR) {
             $dirs[] = 'C:\xampp\php\\';
+        }
+
+        if ($herdPath = getenv('HERD_HOME')) {
+            $dirs[] = $herdPath.\DIRECTORY_SEPARATOR.'bin';
         }
 
         return $this->executableFinder->find('php', false, $dirs);
@@ -163,9 +162,9 @@ class PhpExecutableFinder
     /**
      * Finds the PHP executable arguments.
      *
-     * @return array The PHP executable arguments
+     * @return list<non-empty-string>
      */
-    public function findArguments()
+    public function findArguments(): array
     {
         $arguments = [];
         if ('phpdbg' === \PHP_SAPI) {

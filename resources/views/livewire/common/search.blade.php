@@ -7,7 +7,7 @@
                 </span>
             </div>
 
-            <input type="text" name="search" wire:model.debounce.500ms="keyword" class="text-black placeholder-light-gray bg-white disabled:bg-gray-200 focus:outline-none focus:ring-transparent focus:border-purple" autocomplete="off" placeholder="{{ trans('general.search') }}">
+            <input type="text" name="search" wire:model.live.debounce.500ms="keyword" class="text-black placeholder-light-gray bg-white disabled:bg-gray-200 focus:outline-none focus:ring-transparent focus:border-purple" autocomplete="off" placeholder="{{ trans('general.search') }}">
 
             @if ($results)
             <div class="dropdown-menu dropdown-menu-xl dropdown-menu-center show" ref="menu">
@@ -38,8 +38,10 @@
 @push('scripts_end')
 <script type="text/javascript">
     window.addEventListener('click', function() {
-        if (Livewire.components.getComponentsByName('common.search')[0].data.results.length > 0) {
-            Livewire.emit('resetKeyword');
+        var search = Livewire.getByName('common.search')[0];
+
+        if (search && search.results.length > 0) {
+            Livewire.dispatch('resetKeyword');
         }
     });
 </script>

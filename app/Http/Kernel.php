@@ -182,9 +182,9 @@ class Kernel extends HttpKernel
         'wizard.redirect' => \App\Http\Middleware\RedirectIfWizardNotCompleted::class,
 
         // Vendor
-        'ability' => \Laratrust\Middleware\LaratrustAbility::class,
-        'role' => \Laratrust\Middleware\LaratrustRole::class,
-        'permission' => \Laratrust\Middleware\LaratrustPermission::class,
+        'ability' => \Laratrust\Middleware\Ability::class,
+        'role' => \Laratrust\Middleware\Role::class,
+        'permission' => \Laratrust\Middleware\Permission::class,
     ];
 
     /**

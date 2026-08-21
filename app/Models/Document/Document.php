@@ -17,8 +17,9 @@ use Database\Factories\Document as DocumentFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Plank\Mediable\MediableInterface;
 
-class Document extends Model
+class Document extends Model implements MediableInterface
 {
     use HasFactory, Documents, Cloneable, Currencies, DateTime, Media, Recurring;
 

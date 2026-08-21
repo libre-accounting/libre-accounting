@@ -51,17 +51,20 @@ class Category extends Builder
      * @param  array  $columns
      * @param  string  $pageName
      * @param  int|null  $page
+     * @param  \Closure|int|null  $total
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      *
      * @throws \InvalidArgumentException
      */
-    public function paginate($perPage = null, $columns = ['*'], $pageName = 'page', $page = null)
+    public function paginate($perPage = null, $columns = ['*'], $pageName = 'page', $page = null, $total = null)
     {
         $page = $page ?: Paginator::resolveCurrentPage($pageName);
 
-        $perPage = $perPage ?: $this->model->getPerPage();
+        $total = value($total) ?? $this->toBase()->getCountForPagination();
 
-        $results = ($total = $this->toBase()->getCountForPagination())
+        $perPage = $perPage instanceof \Closure ? $perPage($total) : ($perPage ?: $this->model->getPerPage());
+
+        $results = $total
         ? $this->forPage($page, $perPage)->getWithoutChildren($columns)
         : $this->model->newCollection();
 

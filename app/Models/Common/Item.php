@@ -9,8 +9,9 @@ use App\Traits\Currencies;
 use App\Traits\Media;
 use Bkwld\Cloner\Cloneable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Plank\Mediable\MediableInterface;
 
-class Item extends Model
+class Item extends Model implements MediableInterface
 {
     use Cloneable, Currencies, HasFactory, Media;
 

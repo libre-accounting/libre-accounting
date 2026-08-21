@@ -4,13 +4,12 @@ namespace App\Models\Auth;
 
 use Akaunting\Sortable\Traits\Sortable;
 use App\Traits\Tenants;
-use Laratrust\Models\LaratrustPermission;
-use Laratrust\Traits\LaratrustPermissionTrait;
+use Laratrust\Models\Permission as LaratrustPermission;
 use Lorisleiva\LaravelSearchString\Concerns\SearchString;
 
 class Permission extends LaratrustPermission
 {
-    use LaratrustPermissionTrait, SearchString, Sortable, Tenants;
+    use SearchString, Sortable, Tenants;
 
     protected $table = 'permissions';
 

@@ -7,13 +7,13 @@ use App\Models\Banking\BankStatementImport;
 use App\Models\Banking\BankStatementLine;
 use App\Models\Common\Contact;
 use App\Models\Setting\Category;
-use App\Traits\Jobs;
+use Illuminate\Contracts\Bus\Dispatcher;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class StatementImportReview extends Component
 {
-    use Jobs, WithPagination;
+    use WithPagination;
 
     public BankStatementImport $statementImport;
 
@@ -105,11 +105,22 @@ class StatementImportReview extends Component
                 ]);
         }
 
-        $created = $this->dispatch(new CommitStatementLines($this->statementImport, $selected_ids));
+        $created = $this->runJob(new CommitStatementLines($this->statementImport, $selected_ids));
 
         flash(trans('statement_imports.messages.committed', ['count' => $created]))->success();
 
         return $this->backToReview();
+    }
+
+    /**
+     * Livewire 3 reserves dispatch() for browser events, so jobs go through the bus here
+     * the same way App\Traits\Jobs would route them.
+     */
+    protected function runJob($job)
+    {
+        $dispatcher = app(Dispatcher::class);
+
+        return should_queue() ? $dispatcher->dispatch($job) : $dispatcher->dispatchSync($job);
     }
 
     protected function backToReview()
