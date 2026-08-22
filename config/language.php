@@ -93,7 +93,7 @@ return [
     | This option indicates the middleware to change language.
     |
     */
-    'middleware'    => 'Akaunting\Language\Middleware\SetLocale',
+    'middleware'    => App\Http\Middleware\SetLocale::class,
 
     /*
     |--------------------------------------------------------------------------

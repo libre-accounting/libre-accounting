@@ -57,7 +57,7 @@ class Category extends Model
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return \App\Builders\Category
      */
-    public function newEloquentBuilder($query)
+    public function newEloquentBuilder($query): EloquentBuilder
     {
         return new Builder($query);
     }

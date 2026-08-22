@@ -1,13 +1,18 @@
-# Laravel 12 upgrade feasibility
+# Laravel 12 upgrade
+
+The first half of this document is the feasibility check that preceded the
+upgrade; the second half ([What was done](#what-was-done)) records how the two
+blockers were unblocked and what changed in the application.
+
+## Feasibility check
 
 Checked on 2026-10-21 against the Packagist metadata of every root package in
 `composer.json` (57 packages, `https://repo.packagist.org/p2/<vendor>/<name>.json`),
 a Packagist search for forks of the packages that fall short, `git ls-remote` of
 their upstream repositories, and the `composer.json` of upstream Akaunting's
-`master` branch. Nothing in the repository was changed; this document is the
-whole result of the check.
+`master` branch.
 
-## Verdict: blocked
+### Verdict at the time: blocked
 
 Two root packages have no release that installs with Laravel 11 or 12, and no
 drop-in replacement exists on Packagist. Composer refuses to resolve
@@ -31,7 +36,7 @@ and model, and `Console\Command`. The block is in their declared constraints,
 not in their code. That matters for the options below, but it is not something
 this check could prove without installing them against Laravel 12.
 
-### Also in the way, but solvable in application code
+#### Also in the way, but solvable in application code
 
 These do not stop Composer on their own once the two packages above are dealt
 with, but they turn the upgrade into application work rather than a dependency
@@ -59,14 +64,14 @@ bump:
   that override with `Livewire::setUpdateRoute()`, so the override and its
   `exclude-from-classmap` entry go away.
 
-## Package table
+### Package table
 
 "First Laravel 11" and "First Laravel 12" are the lowest released versions at
 or above the locked one whose declared constraints allow that framework major.
 "PHP floor" is the `php` constraint of the Laravel 12 version. A dash means the
 package declares no framework constraint, so the locked version installs as is.
 
-### `require`
+#### `require`
 
 | Package | Locked | First Laravel 11 | First Laravel 12 | PHP floor | Blockers and notes |
 |---|---|---|---|---|---|
@@ -120,7 +125,7 @@ package declares no framework constraint, so the locked version installs as is.
 | symfony/postmark-mailer | 6.4.45 | 6.4.45 | 6.4.45 | >=8.1 | Same as above. |
 | symfony/sendgrid-mailer | 6.4.46 | 6.4.46 | 6.4.46 | >=8.1 | Same as above. |
 
-### `require-dev`
+#### `require-dev`
 
 | Package | Locked | First Laravel 11 | First Laravel 12 | PHP floor | Blockers and notes |
 |---|---|---|---|---|---|
@@ -133,14 +138,14 @@ package declares no framework constraint, so the locked version installs as is.
 | spatie/laravel-ignition | 2.9.1 | 2.9.1 | 2.9.1 | ^8.1 | None. |
 | wnx/laravel-stats | 2.13.2 | 2.13.2 | 2.15.0 | ^8.2 | None. 2.18 and later need PHP ^8.4. |
 
-### PHP floor
+#### PHP floor
 
 Laravel 11 and 12 require PHP ^8.2, so the first step drops 8.1 from
 `composer.json`, the CI matrix in `.github/workflows/tests.yml` and the README.
 `plank/laravel-mediable` 7 then raises the floor to 8.3, which leaves the
 matrix at 8.3 only; adding 8.4 needs `brianium/paratest` ^7.8 and PHPUnit 11.
 
-## Ways to unblock
+### Ways to unblock
 
 All three are outside this check's remit; they are listed so the decision can
 be made with the facts in one place.
@@ -167,7 +172,7 @@ Whichever route is taken, the upgrade itself still needs the Livewire 3
 migration, the intervention/image 3 rewrite, the imagecache replacement and
 the twelve major bumps in the table above, in that order of risk.
 
-## How to re-run this check
+### How to re-run this check
 
 Fetch each package's metadata and read the `require` block of the versions at
 or above the locked one; the minified format repeats only the keys that changed
@@ -186,3 +191,108 @@ git ls-remote --heads https://github.com/akaunting/laravel-menu.git
 ```bash
 curl -s https://raw.githubusercontent.com/akaunting/akaunting/master/composer.json | jq '.require["laravel/framework"], .require["akaunting/laravel-menu"], .require["lorisleiva/laravel-search-string"]'
 ```
+
+## What was done
+
+Route 1 from the list above was taken on 2026-10-21: both packages were forked
+into the project's GitHub organisation with widened Composer constraints and
+nothing else changed, and the application moved to Laravel 11 and then 12 in
+two commits.
+
+### The forks
+
+| Fork | Based on | Tag | Change |
+|---|---|---|---|
+| [libre-accounting/laravel-menu](https://github.com/libre-accounting/laravel-menu) | akaunting/laravel-menu 3.1.2 | 3.2.0 | `illuminate/*` `^11\|^12\|^13`, PHP ^8.2, `laravelcollective/html` replaced by `rdx/laravelcollective-html` ^6.8 (same `Collective\Html` namespace, declares `replace` for the original). Package renamed, `replace`s `akaunting/laravel-menu`. |
+| [libre-accounting/laravel-search-string](https://github.com/libre-accounting/laravel-search-string) | lorisleiva/laravel-search-string 1.3.0 | v1.4.0 | `illuminate/support` `^9\|^10\|^11\|^12\|^13`. Package renamed, `replace`s `lorisleiva/laravel-search-string`. |
+
+`composer.json` lists both repositories under `repositories` (type `vcs`), so
+`composer update` reads their tags through the GitHub API. That phase needs a
+GitHub token when the unauthenticated rate limit is exhausted (`COMPOSER_AUTH`
+or `composer config github-oauth.github.com`); `composer install` from the lock
+only downloads the tagged zipballs, like every other GitHub-hosted package, and
+the CI workflow passes `secrets.GITHUB_TOKEN` as `COMPOSER_TOKEN` to be safe.
+Submitting the forks to Packagist would remove the `repositories` entries.
+
+### Commit 1: Laravel 10 to 11 (PHP 8.2)
+
+- `laravel/framework` ^11 (11.57), `nesbot/carbon` pinned to ^2.72 so the
+  Carbon 3 changes stay in the next commit.
+- Livewire 2 to 3: `$this->emit()` and `dispatchBrowserEvent()` became
+  `$this->dispatch()`, `wire:model.debounce` became `wire:model.live.debounce`,
+  `wire:model.defer` became `wire:model`, `Livewire.emit` became
+  `Livewire.dispatch`. The Settings and Neww components no longer keep menu
+  items in public properties (Livewire 3 cannot serialise them); their views
+  read the menu instance. `Favorites::getId()` was renamed `getFavoriteId()`
+  because Livewire 3 reserves `getId()`. `StatementImportReview` runs its job
+  through the bus directly because `dispatch()` is Livewire's event method now.
+  The `overrides/livewire` service provider and the published v2 assets are
+  gone: `App\Providers\App` registers the update route as
+  `/livewire/update/{company_id?}` with the `web`, `company.identify`,
+  `bindings` and `read.only` middleware, and the page's `auth`, disabled-user
+  and Laratrust checks are re-applied on updates through
+  `Livewire::addPersistentMiddleware()`. The empty
+  `notification/browser/index.blade.php` got a root element, and the
+  published pagination views were refreshed from Livewire 3.
+- Laratrust 7 to 8: `HasRolesAndPermissions` and the `LaratrustUser` contract
+  on the user model, `Role`/`Permission` base classes, `givePermission()` and
+  `removePermission()`, renamed middleware classes, `checkers` config. The
+  contract types `roles()` as a polymorphic relation, so `core_v3022` restores
+  the `user_roles.user_type` column that `core_v305` had dropped (default: the
+  user morph alias) and the model's `belongsToMany` override is gone. The
+  ownership feature was removed by Laratrust, so the `Ownable` contract is no
+  longer declared (the `ownerKey()` methods stay).
+- Sanctum 3 to 4: config middleware keys, `expires_at` column on
+  `personal_access_tokens` (also `core_v3022`), no more `ignoreMigrations()`.
+- Doctrine DBAL dropped: the index checks in `core_v2` and `core_v3016` use
+  `Schema::getIndexListing()`, and the `Type::addType('double')` guards in
+  `core_v300` and `core_v307` are gone.
+- intervention/image 2 to 3 and `intervention/imagecache` removed:
+  `App\Utilities\Images::resize()` keeps the five-minute cache the old
+  `Image::cache()` provided, backed by the cache store; `config/image.php` and
+  `config/imagecache.php` are gone.
+- `plank/laravel-mediable` 6: `MediableInterface` on the seven media-bearing
+  models, `media()` typed as `MorphToMany`, new config keys with image
+  optimisation off (it needs optimiser binaries on the host).
+- Sentry 4, Slack channel 3, model caching from `mike-bronner`, ide-helper 3,
+  collision 8, symfony 7 mailers, sortable 3, mutable-observer 3: no code
+  changes beyond the constraints.
+- `App\Builders\Category::paginate()` gained Laravel 11's `$total` argument.
+- The `MessageSelector` and `PhpExecutableFinder` overrides were regenerated
+  from the new vendor files (dash-separated locale cases; cPanel/Plesk PHP
+  lookup now checks 8.2 to 8.4).
+
+### Commit 2: Laravel 11 to 12 (PHP 8.3)
+
+- `laravel/framework` ^12.69 (12.70.1 in the lock), which is past the three
+  advisories; `plank/laravel-mediable` ^7 (needs PHP 8.3, fixes
+  CVE-2026-49970) with its upload-safety config keys and the `on_duplicate`
+  value as a string; Carbon 3; `graham-campbell/markdown` 16;
+  `mike-bronner/laravel-model-caching` 13; `akaunting/laravel-money` 6 (no API
+  change); staudenmeir packages one minor up; `wnx/laravel-stats` 2.15.
+- Carbon 3 returns signed floats from `diffInDays()` and `diffInMonths()`, so
+  the four call sites in `Recurring`, `RecurringCheck`, `CashFlow` and
+  `ProfitLoss` ask for absolute integers. Carbon 3 also rejects a `false`
+  locale, which `akaunting/laravel-language` passes on for guest requests
+  without an `Accept-Language` header; `App\Http\Middleware\SetLocale`
+  extends the package middleware and falls back to the configured locale, and
+  `config/language.php` points at it.
+- Laravel 12 types `Model::newEloquentBuilder()`, so
+  `App\Models\Setting\Category` declares the return type.
+- Laravel 12 needs collision 8.6, which needs PHPUnit 11: `phpunit/phpunit`
+  ^11.5, `brianium/paratest` ^7.8, the `@test` annotations in
+  `Camt053ParserTest` became `#[Test]` attributes, and `phpunit.xml` moved the
+  coverage include under `<source>`.
+- PHP floor 8.3: `composer.json`, the CI matrix (8.3 only; the lock's
+  paratest 7.8 and PHPUnit 11 would also run on 8.4, which this change does not
+  add) and the README.
+
+### Result
+
+`composer audit` on the Laravel 12 lock reports no security advisories. It
+still lists 13 abandoned packages: the twelve `hoa/*` packages and
+`sanmai/hoa-protocol`, which `laravel-search-string` depends on for its
+grammar and which have no replacement. Composer's default audit settings
+treat abandoned packages as a failure, so a CI step running `composer audit`
+would need `--abandoned=report` or `config.audit.abandoned`.
+

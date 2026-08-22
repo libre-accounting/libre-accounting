@@ -209,7 +209,7 @@ class RecurringCheck extends Command
         $model = $template->duplicate();
 
         // Days between issued and due date
-        $diff_days = Date::parse($template->due_at)->diffInDays(Date::parse($template->issued_at));
+        $diff_days = (int) Date::parse($template->due_at)->diffInDays(Date::parse($template->issued_at), true);
 
         $model->type = $this->getRealType($template->type);
         $model->parent_id = $template->id;

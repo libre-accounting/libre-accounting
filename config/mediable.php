@@ -30,6 +30,86 @@ return [
     'prefer_client_mime_type' => false,
 
     /*
+     * Reject files with specific MIME types from being uploaded
+     */
+    'forbidden_mime_types' => [],
+
+    /*
+     * Reject files with specific file extensions from being uploaded
+     * This is intended to be used as a security measure to prevent potentially executable files from being uploaded to public drives.
+     * This list should include any file extension which is configured to be executable from your Apache or Nginx configuration
+     *
+     * These extensions are also sanitized if nested in destination filenames (script.php.jpg becomes script-php.jpg) to protect against
+     * common Apache `AddHandler` and Nginx `fastcgi_split_path_info` misconfigurations
+     */
+    'forbidden_extensions' => [
+        'php',
+        'php3',
+        'php4',
+        'php5',
+        'php6',
+        'php7',
+        'php8',
+        'phtml',
+        'pht',
+        'phar',
+        'phpt',
+        'pgif',
+        'shtml',
+        'shtm',
+        'stm',
+        'pl',
+        'cgi',
+        'py',
+        'asp',
+        'aspx',
+        'ashx',
+        'jsp',
+        'jspx',
+        'cfm',
+        'cfml',
+        'htaccess',
+        'htpasswd',
+        'ini',
+        'cer',
+        'asa',
+    ],
+
+    /*
+     * Only allow remote files to be imported from specific host(s)
+     * If empty, will allow any host that is not a private IP address or localhost
+     */
+    'allowed_remote_hosts' => [],
+
+    /*
+     * Only allow remote files to be imported from URLs with specific scheme(s)
+     * If empty, will allow any scheme supported by the application.
+     * If modifying this value, be sure to also update the pattern matching in `source_adapters` as well
+     */
+    'allowed_remote_schemes' => ['https'],
+
+    /*
+     * Whether allowed_remote_hosts, allowed_remote_schemes, and private IP address
+     * validation should be applied to each step of a redirect chain
+     */
+    'validate_remote_url_redirects' => true,
+
+    /*
+     * Maximum number of redirects permitted for remote URLs
+     * Only applied if validate_remote_url_redirects is enabled
+     */
+    'max_remote_url_redirects' => 5,
+
+    /**
+     * List of file sanitizers to apply to uploaded files before they are stored
+     * Used to apply security measures to prevent malicious files from being uploaded,
+     * e.g. stripping executable javascript from SVGs
+     */
+    'file_sanitizers' => [
+        Plank\Mediable\FileSanitizers\SvgSanitizer::class,
+    ],
+
+    /*
      * Filesystems that can be used for media storage
      *
      * Uploader will throw an exception if a disk not in this list is selected
@@ -53,7 +133,7 @@ return [
      * * `'replace'` : the old file and media model is deleted
      * * `'error'`: an Exception is thrown
      */
-    'on_duplicate' => Plank\Mediable\MediaUploader::ON_DUPLICATE_INCREMENT,
+    'on_duplicate' => 'increment',
 
     /*
      * Reject files unless both their mime and extension are recognized and both match a single aggregate type

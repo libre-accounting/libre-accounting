@@ -79,7 +79,7 @@ class ProfitLoss extends Widget
             $end_month   = 12;
             $start_month = 0;
         } elseif ($range == 'custom') {
-            $end_month   = $this->end_date->diffInMonths($this->start_date);
+            $end_month   = (int) $this->end_date->diffInMonths($this->start_date, true);
             $start_month = 0;
         }
 

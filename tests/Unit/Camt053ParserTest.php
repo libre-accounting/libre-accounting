@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Utilities\Camt053ParseException;
 use App\Utilities\Camt053Parser;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class Camt053ParserTest extends TestCase
 {
@@ -13,7 +14,7 @@ class Camt053ParserTest extends TestCase
         return file_get_contents(__DIR__ . '/Fixtures/' . $name);
     }
 
-    /** @test */
+    #[Test]
     public function it_parses_statement_header_for_v02()
     {
         $result = Camt053Parser::parse($this->fixture('camt053_v02.xml'));
@@ -29,7 +30,7 @@ class Camt053ParserTest extends TestCase
         $this->assertSame('2026-01-14 23:59:59', $statement['statement_to']);
     }
 
-    /** @test */
+    #[Test]
     public function it_parses_credit_and_debit_entries_for_v02()
     {
         $result = Camt053Parser::parse($this->fixture('camt053_v02.xml'));
@@ -59,7 +60,7 @@ class Camt053ParserTest extends TestCase
         $this->assertSame('BILL-2001', $expense['remittance_info']);
     }
 
-    /** @test */
+    #[Test]
     public function it_parses_prefixed_namespace_for_v08()
     {
         $result = Camt053Parser::parse($this->fixture('camt053_v08_batched.xml'));
@@ -70,7 +71,7 @@ class Camt053ParserTest extends TestCase
         $this->assertSame(4700.00, $result['statement']['closing_balance']);
     }
 
-    /** @test */
+    #[Test]
     public function it_splits_a_batched_entry_into_one_line_per_transaction()
     {
         $result = Camt053Parser::parse($this->fixture('camt053_v08_batched.xml'));
@@ -95,7 +96,7 @@ class Camt053ParserTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function it_throws_on_empty_content()
     {
         $this->expectException(Camt053ParseException::class);
@@ -103,7 +104,7 @@ class Camt053ParserTest extends TestCase
         Camt053Parser::parse('   ');
     }
 
-    /** @test */
+    #[Test]
     public function it_throws_on_invalid_xml()
     {
         $this->expectException(Camt053ParseException::class);
@@ -111,7 +112,7 @@ class Camt053ParserTest extends TestCase
         Camt053Parser::parse('<Document><not-closed>');
     }
 
-    /** @test */
+    #[Test]
     public function it_throws_when_no_statement_present()
     {
         $this->expectException(Camt053ParseException::class);

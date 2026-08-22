@@ -37,7 +37,7 @@ class Recurring
 
                 if ($clone instanceof Document) {
                     // Days between invoiced/billed and due date
-                    $diff_days = Date::parse($clone->due_at)->diffInDays(Date::parse($clone->$issued_date_field));
+                    $diff_days = (int) Date::parse($clone->due_at)->diffInDays(Date::parse($clone->$issued_date_field), true);
 
                     $clone->due_at = $start_date->copy()->addDays($diff_days)->format('Y-m-d');
                 }
