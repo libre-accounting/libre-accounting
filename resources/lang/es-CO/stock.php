@@ -4,6 +4,7 @@ return [
 
     'stock'                 => 'Inventario',
     'track_stock'           => 'Controlar inventario',
+    'untrack_stock'         => 'Dejar de controlar inventario',
     'stock_quantity'        => 'Cantidad disponible',
     'opening_count'         => 'Inventario inicial',
     'adjust'                => 'Ajustar inventario',
@@ -27,9 +28,16 @@ return [
         'build'             => 'Descuenta los componentes del inventario y agrega las unidades terminadas. Una cantidad negativa vuelve a desensamblar las unidades.',
     ],
 
+    'bulk' => [
+        'track'             => '¿Está seguro que desea <b>controlar el inventario</b> de los :type seleccionados?',
+        'untrack'           => '¿Está seguro que desea <b>dejar de controlar el inventario</b> de los :type seleccionados?',
+    ],
+
     'messages' => [
         'adjusted'          => 'El inventario de :item ahora es :quantity.',
         'built'             => 'Se ensamblaron :quantity unidades de :item.',
+        'tracked'           => 'Se activó el control de inventario de los artículos seleccionados.',
+        'untracked'         => 'Se desactivó el control de inventario de los artículos seleccionados.',
     ],
 
     'errors' => [
@@ -38,6 +46,7 @@ return [
         'kit_as_component'  => ':item se usa como componente de otro artículo, por lo que no puede tener componentes propios.',
         'not_tracked'       => ':item no controla inventario.',
         'no_components'     => ':item no tiene componentes con los que ensamblarlo.',
+        'not_product'       => ':item es un servicio, por lo que no puede controlar inventario.',
     ],
 
 ];

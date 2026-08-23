@@ -4,6 +4,7 @@ return [
 
     'stock'                 => 'Lager',
     'track_stock'           => 'Følg lagerbeholdning',
+    'untrack_stock'         => 'Slutt å følge lagerbeholdning',
     'stock_quantity'        => 'Lagerbeholdning',
     'opening_count'         => 'Inngående beholdning',
     'adjust'                => 'Juster lager',
@@ -27,9 +28,16 @@ return [
         'build'             => 'Tar komponentene ut av lageret og legger til de ferdige enhetene. Et negativt antall tar enhetene fra hverandre igjen.',
     ],
 
+    'bulk' => [
+        'track'             => 'Er du sikker på at du vil <b>følge lagerbeholdning</b> for valgte :type?',
+        'untrack'           => 'Er du sikker på at du vil <b>slutte å følge lagerbeholdning</b> for valgte :type?',
+    ],
+
     'messages' => [
         'adjusted'          => 'Lagerbeholdningen for :item er nå :quantity.',
         'built'             => 'Bygde :quantity av :item.',
+        'tracked'           => 'Oppfølging av lagerbeholdning er slått på for de valgte artiklene.',
+        'untracked'         => 'Oppfølging av lagerbeholdning er slått av for de valgte artiklene.',
     ],
 
     'errors' => [
@@ -38,6 +46,7 @@ return [
         'kit_as_component'  => ':item brukes som komponent i en annen artikkel og kan derfor ikke ha egne komponenter.',
         'not_tracked'       => ':item følger ikke lagerbeholdning.',
         'no_components'     => ':item har ingen komponenter å bygge fra.',
+        'not_product'       => ':item er en tjeneste og kan derfor ikke følge lagerbeholdning.',
     ],
 
 ];

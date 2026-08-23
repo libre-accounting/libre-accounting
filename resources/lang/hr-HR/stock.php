@@ -4,6 +4,7 @@ return [
 
     'stock'                 => 'Zalihe',
     'track_stock'           => 'Prati zalihe',
+    'untrack_stock'         => 'Prestani pratiti zalihe',
     'stock_quantity'        => 'Stanje zaliha',
     'opening_count'         => 'Početno stanje',
     'adjust'                => 'Uskladi zalihe',
@@ -27,9 +28,16 @@ return [
         'build'             => 'Skida komponente sa zaliha i dodaje gotove jedinice. Negativna količina ponovno rastavlja jedinice.',
     ],
 
+    'bulk' => [
+        'track'             => 'Jeste li sigurni da želite <b>pratiti zalihe</b> za odabrane :type?',
+        'untrack'           => 'Jeste li sigurni da želite <b>prestati pratiti zalihe</b> za odabrane :type?',
+    ],
+
     'messages' => [
         'adjusted'          => 'Zalihe stavke :item sada iznose :quantity.',
         'built'             => 'Sastavljeno :quantity jedinica stavke :item.',
+        'tracked'           => 'Praćenje zaliha uključeno je za odabrane stavke.',
+        'untracked'         => 'Praćenje zaliha isključeno je za odabrane stavke.',
     ],
 
     'errors' => [
@@ -38,6 +46,7 @@ return [
         'kit_as_component'  => 'Stavka :item koristi se kao komponenta druge stavke pa ne može imati vlastite komponente.',
         'not_tracked'       => 'Stavka :item ne prati zalihe.',
         'no_components'     => 'Stavka :item nema komponente od kojih bi se sastavila.',
+        'not_product'       => 'Stavka :item je usluga pa ne može pratiti zalihe.',
     ],
 
 ];

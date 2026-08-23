@@ -4,6 +4,7 @@ return [
 
     'stock'                 => 'Stoc',
     'track_stock'           => 'Urmărește stocul',
+    'untrack_stock'         => 'Nu mai urmări stocul',
     'stock_quantity'        => 'Stoc curent',
     'opening_count'         => 'Stoc inițial',
     'adjust'                => 'Ajustează stocul',
@@ -27,9 +28,16 @@ return [
         'build'             => 'Scade componentele din stoc și adaugă unitățile finite. O cantitate negativă dezasamblează unitățile la loc.',
     ],
 
+    'bulk' => [
+        'track'             => 'Sunteți sigur că doriți să <b>urmăriți stocul</b> pentru :type selectate?',
+        'untrack'           => 'Sunteți sigur că doriți să <b>nu mai urmăriți stocul</b> pentru :type selectate?',
+    ],
+
     'messages' => [
         'adjusted'          => 'Stocul pentru :item este acum :quantity.',
         'built'             => 'S-au asamblat :quantity din :item.',
+        'tracked'           => 'Urmărirea stocului a fost activată pentru articolele selectate.',
+        'untracked'         => 'Urmărirea stocului a fost dezactivată pentru articolele selectate.',
     ],
 
     'errors' => [
@@ -38,6 +46,7 @@ return [
         'kit_as_component'  => ':item este folosit drept componentă a altui articol, deci nu poate avea propriile componente.',
         'not_tracked'       => ':item nu urmărește stocul.',
         'no_components'     => ':item nu are componente din care să fie asamblat.',
+        'not_product'       => ':item este un serviciu, deci nu poate urmări stocul.',
     ],
 
 ];

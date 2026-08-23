@@ -4,6 +4,7 @@ return [
 
     'stock'                 => '재고',
     'track_stock'           => '재고 추적',
+    'untrack_stock'         => '재고 추적 중지',
     'stock_quantity'        => '현재 재고',
     'opening_count'         => '기초 재고',
     'adjust'                => '재고 조정',
@@ -27,9 +28,16 @@ return [
         'build'             => '구성품의 재고를 차감하고 완성품을 재고에 추가합니다. 수량을 마이너스로 입력하면 완성품을 다시 구성품으로 분해합니다.',
     ],
 
+    'bulk' => [
+        'track'             => '정말 선택한 :type의 <b>재고를 추적</b>하시겠습니까?',
+        'untrack'           => '정말 선택한 :type의 <b>재고 추적을 중지</b>하시겠습니까?',
+    ],
+
     'messages' => [
         'adjusted'          => ':item의 현재 재고는 :quantity입니다.',
         'built'             => ':item :quantity개를 조립했습니다.',
+        'tracked'           => '선택한 항목의 재고 추적이 켜졌습니다.',
+        'untracked'         => '선택한 항목의 재고 추적이 꺼졌습니다.',
     ],
 
     'errors' => [
@@ -38,6 +46,7 @@ return [
         'kit_as_component'  => ':item은(는) 다른 항목의 구성품으로 사용되고 있으므로 자체 구성품을 가질 수 없습니다.',
         'not_tracked'       => ':item은(는) 재고를 추적하지 않습니다.',
         'no_components'     => ':item에는 조립할 구성품이 없습니다.',
+        'not_product'       => ':item은(는) 서비스이므로 재고를 추적할 수 없습니다.',
     ],
 
 ];

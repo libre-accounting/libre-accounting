@@ -4,6 +4,7 @@ return [
 
     'stock'                 => 'Lager',
     'track_stock'           => 'Lagerstyring',
+    'untrack_stock'         => 'Stop lagerstyring',
     'stock_quantity'        => 'Lagerbeholdning',
     'opening_count'         => 'Primobeholdning',
     'adjust'                => 'Regulér lager',
@@ -27,9 +28,16 @@ return [
         'build'             => 'Trækker komponenterne fra lageret og lægger de færdige enheder til. Et negativt antal skiller enhederne ad igen.',
     ],
 
+    'bulk' => [
+        'track'             => 'Er du sikker på du vil <b>slå lagerstyring til</b> for de valgte :type?',
+        'untrack'           => 'Er du sikker på du vil <b>slå lagerstyring fra</b> for de valgte :type?',
+    ],
+
     'messages' => [
         'adjusted'          => 'Lagerbeholdningen af :item er nu :quantity.',
         'built'             => 'Der er samlet :quantity stk. :item.',
+        'tracked'           => 'Lagerstyring er slået til for de valgte varer.',
+        'untracked'         => 'Lagerstyring er slået fra for de valgte varer.',
     ],
 
     'errors' => [
@@ -38,6 +46,7 @@ return [
         'kit_as_component'  => ':item bruges som komponent i en anden vare og kan derfor ikke selv have komponenter.',
         'not_tracked'       => ':item har ikke lagerstyring.',
         'no_components'     => ':item har ingen komponenter at samle ud fra.',
+        'not_product'       => ':item er en ydelse og kan derfor ikke have lagerstyring.',
     ],
 
 ];

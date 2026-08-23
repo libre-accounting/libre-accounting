@@ -4,6 +4,7 @@ return [
 
     'stock'                 => 'Tồn kho',
     'track_stock'           => 'Theo dõi tồn kho',
+    'untrack_stock'         => 'Ngừng theo dõi tồn kho',
     'stock_quantity'        => 'Số lượng tồn kho',
     'opening_count'         => 'Tồn đầu kỳ',
     'adjust'                => 'Điều chỉnh tồn kho',
@@ -27,9 +28,16 @@ return [
         'build'             => 'Xuất các thành phần khỏi kho và nhập thành phẩm vào kho. Số lượng âm sẽ tháo rời thành phẩm trở lại thành các thành phần.',
     ],
 
+    'bulk' => [
+        'track'             => 'Bạn có chắc muốn <b>theo dõi tồn kho</b> cho các :type đã chọn?',
+        'untrack'           => 'Bạn có chắc muốn <b>ngừng theo dõi tồn kho</b> cho các :type đã chọn?',
+    ],
+
     'messages' => [
         'adjusted'          => 'Tồn kho của :item hiện là :quantity.',
         'built'             => 'Đã lắp ráp :quantity :item.',
+        'tracked'           => 'Đã bật theo dõi tồn kho cho các mục đã chọn.',
+        'untracked'         => 'Đã tắt theo dõi tồn kho cho các mục đã chọn.',
     ],
 
     'errors' => [
@@ -38,6 +46,7 @@ return [
         'kit_as_component'  => ':item đang được dùng làm thành phần của mục khác nên không thể có thành phần riêng.',
         'not_tracked'       => ':item không theo dõi tồn kho.',
         'no_components'     => ':item không có thành phần nào để lắp ráp.',
+        'not_product'       => ':item là dịch vụ nên không thể theo dõi tồn kho.',
     ],
 
 ];

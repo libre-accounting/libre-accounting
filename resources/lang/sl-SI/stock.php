@@ -4,6 +4,7 @@ return [
 
     'stock'                 => 'Zaloga',
     'track_stock'           => 'Spremljaj zalogo',
+    'untrack_stock'         => 'Prenehaj spremljati zalogo',
     'stock_quantity'        => 'Stanje zaloge',
     'opening_count'         => 'Začetno stanje',
     'adjust'                => 'Prilagodi zalogo',
@@ -27,9 +28,16 @@ return [
         'build'             => 'Odvzame sestavine iz zaloge in doda končne enote. Negativna količina enote znova razstavi na sestavine.',
     ],
 
+    'bulk' => [
+        'track'             => 'Ali ste prepričani, da želite, da izbrani :type <b>spremljajo zalogo</b>?',
+        'untrack'           => 'Ali ste prepričani, da želite, da izbrani :type <b>prenehajo spremljati zalogo</b>?',
+    ],
+
     'messages' => [
         'adjusted'          => 'Zaloga artikla :item je zdaj :quantity.',
         'built'             => 'Sestavljeno :quantity artikla :item.',
+        'tracked'           => 'Spremljanje zaloge je vklopljeno za izbrane artikle.',
+        'untracked'         => 'Spremljanje zaloge je izklopljeno za izbrane artikle.',
     ],
 
     'errors' => [
@@ -38,6 +46,7 @@ return [
         'kit_as_component'  => 'Artikel :item se uporablja kot sestavina drugega artikla, zato ne more imeti lastnih sestavin.',
         'not_tracked'       => 'Artikel :item ne spremlja zaloge.',
         'no_components'     => 'Artikel :item nima sestavin, iz katerih bi ga lahko sestavili.',
+        'not_product'       => 'Artikel :item je storitev, zato ne more spremljati zaloge.',
     ],
 
 ];

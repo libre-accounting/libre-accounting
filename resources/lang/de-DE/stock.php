@@ -4,6 +4,7 @@ return [
 
     'stock'                 => 'Lagerbestand',
     'track_stock'           => 'Lagerbestand führen',
+    'untrack_stock'         => 'Lagerbestand nicht mehr führen',
     'stock_quantity'        => 'Aktueller Bestand',
     'opening_count'         => 'Anfangsbestand',
     'adjust'                => 'Bestand korrigieren',
@@ -27,9 +28,16 @@ return [
         'build'             => 'Bucht die Komponenten aus dem Bestand aus und die fertigen Einheiten ein. Eine negative Menge zerlegt die Einheiten wieder.',
     ],
 
+    'bulk' => [
+        'track'             => 'Sind Sie sicher, dass Sie für die ausgewählten :type den <b>Lagerbestand führen</b> möchten?',
+        'untrack'           => 'Sind Sie sicher, dass Sie für die ausgewählten :type den <b>Lagerbestand nicht mehr führen</b> möchten?',
+    ],
+
     'messages' => [
         'adjusted'          => 'Der Bestand von :item beträgt jetzt :quantity.',
         'built'             => 'Es wurden :quantity Einheiten von :item gefertigt.',
+        'tracked'           => 'Die Lagerbestandsführung wurde für die ausgewählten Artikel eingeschaltet.',
+        'untracked'         => 'Die Lagerbestandsführung wurde für die ausgewählten Artikel ausgeschaltet.',
     ],
 
     'errors' => [
@@ -38,6 +46,7 @@ return [
         'kit_as_component'  => ':item wird als Komponente eines anderen Artikels verwendet und kann daher keine eigenen Komponenten haben.',
         'not_tracked'       => ':item führt keinen Lagerbestand.',
         'no_components'     => ':item hat keine Komponenten, aus denen gefertigt werden könnte.',
+        'not_product'       => ':item ist eine Dienstleistung und kann daher keinen Lagerbestand führen.',
     ],
 
 ];

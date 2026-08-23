@@ -4,6 +4,7 @@ return [
 
     'stock'                 => 'Készlet',
     'track_stock'           => 'Készlet követése',
+    'untrack_stock'         => 'Készlet követésének leállítása',
     'stock_quantity'        => 'Aktuális készlet',
     'opening_count'         => 'Nyitó készlet',
     'adjust'                => 'Készletkorrekció',
@@ -27,9 +28,16 @@ return [
         'build'             => 'Leveszi az összetevőket a készletről, és hozzáadja a kész egységeket. Negatív mennyiség esetén az egységeket újra összetevőire bontja.',
     ],
 
+    'bulk' => [
+        'track'             => 'Biztosan <b>követi a készletet</b> a kiválasztott :type esetében?',
+        'untrack'           => 'Biztosan <b>leállítja a készlet követését</b> a kiválasztott :type esetében?',
+    ],
+
     'messages' => [
         'adjusted'          => ':item készlete mostantól :quantity.',
         'built'             => ':quantity db :item összeállítva.',
+        'tracked'           => 'A készletkövetés be lett kapcsolva a kiválasztott tételeknél.',
+        'untracked'         => 'A készletkövetés ki lett kapcsolva a kiválasztott tételeknél.',
     ],
 
     'errors' => [
@@ -38,6 +46,7 @@ return [
         'kit_as_component'  => ':item egy másik tétel összetevőjeként szerepel, ezért nem lehetnek saját összetevői.',
         'not_tracked'       => ':item nem követi a készletet.',
         'no_components'     => ':item nem rendelkezik összetevőkkel, amelyekből összeállítható lenne.',
+        'not_product'       => ':item szolgáltatás, ezért nem követheti a készletet.',
     ],
 
 ];

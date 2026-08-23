@@ -4,6 +4,7 @@ return [
 
     'stock'                 => '在庫',
     'track_stock'           => '在庫を管理する',
+    'untrack_stock'         => '在庫の管理をやめる',
     'stock_quantity'        => '在庫数',
     'opening_count'         => '初期在庫数',
     'adjust'                => '在庫を調整',
@@ -27,9 +28,16 @@ return [
         'build'             => '構成品の在庫を減らし、完成品を在庫に加えます。マイナスの数量を指定すると、完成品を再び構成品に分解します。',
     ],
 
+    'bulk' => [
+        'track'             => '選択した :type の<b>在庫を管理</b>してもよろしいですか?',
+        'untrack'           => '選択した :type の<b>在庫の管理をやめて</b>もよろしいですか?',
+    ],
+
     'messages' => [
         'adjusted'          => ':item の在庫数は :quantity になりました。',
         'built'             => ':item を :quantity 個組み立てました。',
+        'tracked'           => '選択した商品の在庫管理を有効にしました。',
+        'untracked'         => '選択した商品の在庫管理を無効にしました。',
     ],
 
     'errors' => [
@@ -38,6 +46,7 @@ return [
         'kit_as_component'  => ':item は他の商品の構成品として使用されているため、独自の構成品を持つことはできません。',
         'not_tracked'       => ':item は在庫を管理していません。',
         'no_components'     => ':item には組み立てに使う構成品がありません。',
+        'not_product'       => ':item はサービスのため、在庫を管理できません。',
     ],
 
 ];

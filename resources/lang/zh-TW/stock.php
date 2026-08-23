@@ -4,6 +4,7 @@ return [
 
     'stock'                 => '庫存',
     'track_stock'           => '追蹤庫存',
+    'untrack_stock'         => '停止追蹤庫存',
     'stock_quantity'        => '現有庫存',
     'opening_count'         => '期初數量',
     'adjust'                => '調整庫存',
@@ -27,9 +28,16 @@ return [
         'build'             => '從庫存扣除組件並加入成品。負數數量會將成品重新拆回組件。',
     ],
 
+    'bulk' => [
+        'track'             => '你確定要為選定的 :type <b>追蹤庫存</b>嗎？',
+        'untrack'           => '你確定要為選定的 :type <b>停止追蹤庫存</b>嗎？',
+    ],
+
     'messages' => [
         'adjusted'          => ':item 的庫存現為 :quantity。',
         'built'             => '已組裝 :quantity 個 :item。',
+        'tracked'           => '已為選定的產品開啟庫存追蹤。',
+        'untracked'         => '已為選定的產品關閉庫存追蹤。',
     ],
 
     'errors' => [
@@ -38,6 +46,7 @@ return [
         'kit_as_component'  => ':item 已被用作其他產品的組件，因此不能擁有自己的組件。',
         'not_tracked'       => ':item 不追蹤庫存。',
         'no_components'     => ':item 沒有可用於組裝的組件。',
+        'not_product'       => ':item 是服務，因此不能追蹤庫存。',
     ],
 
 ];

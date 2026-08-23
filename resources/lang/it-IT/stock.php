@@ -4,6 +4,7 @@ return [
 
     'stock'                 => 'Magazzino',
     'track_stock'           => 'Gestisci giacenza',
+    'untrack_stock'         => 'Interrompi gestione giacenza',
     'stock_quantity'        => 'Giacenza attuale',
     'opening_count'         => 'Giacenza iniziale',
     'adjust'                => 'Rettifica giacenza',
@@ -27,9 +28,16 @@ return [
         'build'             => 'Scarica i componenti dal magazzino e carica le unità finite. Una quantità negativa smonta di nuovo le unità.',
     ],
 
+    'bulk' => [
+        'track'             => 'Sei sicuro di voler <b>gestire la giacenza</b> per gli :type selezionati?',
+        'untrack'           => 'Sei sicuro di voler <b>interrompere la gestione della giacenza</b> per gli :type selezionati?',
+    ],
+
     'messages' => [
         'adjusted'          => 'La giacenza di :item è ora :quantity.',
         'built'             => 'Assemblate :quantity unità di :item.',
+        'tracked'           => 'Gestione della giacenza attivata per gli articoli selezionati.',
+        'untracked'         => 'Gestione della giacenza disattivata per gli articoli selezionati.',
     ],
 
     'errors' => [
@@ -38,6 +46,7 @@ return [
         'kit_as_component'  => ':item è usato come componente di un altro articolo, quindi non può avere componenti propri.',
         'not_tracked'       => ':item non gestisce la giacenza.',
         'no_components'     => ':item non ha componenti da assemblare.',
+        'not_product'       => ':item è un servizio, quindi non può gestire la giacenza.',
     ],
 
 ];

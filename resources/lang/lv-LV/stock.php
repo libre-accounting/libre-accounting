@@ -4,6 +4,7 @@ return [
 
     'stock'                 => 'Krājumi',
     'track_stock'           => 'Uzskaitīt krājumus',
+    'untrack_stock'         => 'Pārtraukt krājumu uzskaiti',
     'stock_quantity'        => 'Krājumu atlikums',
     'opening_count'         => 'Sākuma atlikums',
     'adjust'                => 'Koriģēt krājumus',
@@ -27,9 +28,16 @@ return [
         'build'             => 'Izņem sastāvdaļas no krājumiem un pievieno gatavās vienības. Negatīvs daudzums vienības atkal izjauc sastāvdaļās.',
     ],
 
+    'bulk' => [
+        'track'             => 'Vai tiešām vēlaties atlasītās :type <b>iekļaut krājumu uzskaitē</b>?',
+        'untrack'           => 'Vai tiešām vēlaties atlasītās :type <b>izņemt no krājumu uzskaites</b>?',
+    ],
+
     'messages' => [
         'adjusted'          => 'Preces :item krājumu atlikums tagad ir :quantity.',
         'built'             => 'Komplektēšana pabeigta: :item, :quantity gab.',
+        'tracked'           => 'Atlasītajām precēm ieslēgta krājumu uzskaite.',
+        'untracked'         => 'Atlasītajām precēm izslēgta krājumu uzskaite.',
     ],
 
     'errors' => [
@@ -38,6 +46,7 @@ return [
         'kit_as_component'  => 'Prece :item tiek izmantota kā citas preces sastāvdaļa, tāpēc tai nevar būt savu sastāvdaļu.',
         'not_tracked'       => 'Precei :item krājumi netiek uzskaitīti.',
         'no_components'     => 'Precei :item nav sastāvdaļu, no kurām to komplektēt.',
+        'not_product'       => ':item ir pakalpojums, tāpēc tam nevar uzskaitīt krājumus.',
     ],
 
 ];

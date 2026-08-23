@@ -4,6 +4,7 @@ return [
 
     'stock'                 => 'Stock',
     'track_stock'           => 'Controlar stock',
+    'untrack_stock'         => 'Dejar de controlar stock',
     'stock_quantity'        => 'Stock disponible',
     'opening_count'         => 'Stock inicial',
     'adjust'                => 'Ajustar stock',
@@ -27,9 +28,16 @@ return [
         'build'             => 'Descuenta los componentes del stock y suma las unidades terminadas. Una cantidad negativa vuelve a desarmar las unidades.',
     ],
 
+    'bulk' => [
+        'track'             => '¿Está seguro de que desea <b>controlar el stock</b> de los :type seleccionados?',
+        'untrack'           => '¿Está seguro de que desea <b>dejar de controlar el stock</b> de los :type seleccionados?',
+    ],
+
     'messages' => [
         'adjusted'          => 'El stock de :item ahora es :quantity.',
         'built'             => 'Se armaron :quantity unidades de :item.',
+        'tracked'           => 'Se activó el control de stock de los artículos seleccionados.',
+        'untracked'         => 'Se desactivó el control de stock de los artículos seleccionados.',
     ],
 
     'errors' => [
@@ -38,6 +46,7 @@ return [
         'kit_as_component'  => ':item se usa como componente de otro artículo, por lo que no puede tener componentes propios.',
         'not_tracked'       => ':item no controla stock.',
         'no_components'     => ':item no tiene componentes con los que armarlo.',
+        'not_product'       => ':item es un servicio, por lo que no puede controlar stock.',
     ],
 
 ];

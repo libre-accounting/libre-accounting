@@ -4,6 +4,7 @@ return [
 
     'stock'                 => 'Stock',
     'track_stock'           => 'Suivre le stock',
+    'untrack_stock'         => 'Ne plus suivre le stock',
     'stock_quantity'        => 'Quantité en stock',
     'opening_count'         => 'Stock initial',
     'adjust'                => 'Ajuster le stock',
@@ -27,9 +28,16 @@ return [
         'build'             => 'Sort les composants du stock et ajoute les unités finies. Une quantité négative désassemble à nouveau les unités.',
     ],
 
+    'bulk' => [
+        'track'             => 'Êtes-vous sûr de vouloir <b>suivre le stock</b> des :type sélectionnés ?',
+        'untrack'           => 'Êtes-vous sûr de vouloir <b>ne plus suivre le stock</b> des :type sélectionnés ?',
+    ],
+
     'messages' => [
         'adjusted'          => 'Le stock de :item est désormais de :quantity.',
         'built'             => ':quantity unité(s) de :item assemblée(s).',
+        'tracked'           => 'Le suivi du stock a été activé pour les articles sélectionnés.',
+        'untracked'         => 'Le suivi du stock a été désactivé pour les articles sélectionnés.',
     ],
 
     'errors' => [
@@ -38,6 +46,7 @@ return [
         'kit_as_component'  => ':item est utilisé comme composant d\'un autre article et ne peut donc pas avoir ses propres composants.',
         'not_tracked'       => ':item ne suit pas le stock.',
         'no_components'     => ':item n\'a aucun composant à assembler.',
+        'not_product'       => ':item est un service et ne peut donc pas suivre le stock.',
     ],
 
 ];

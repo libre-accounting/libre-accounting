@@ -4,6 +4,7 @@ return [
 
     'stock'                 => 'Ladu',
     'track_stock'           => 'Jälgi laoseisu',
+    'untrack_stock'         => 'Lõpeta laoseisu jälgimine',
     'stock_quantity'        => 'Laoseis',
     'opening_count'         => 'Algseis',
     'adjust'                => 'Korrigeeri laoseisu',
@@ -27,9 +28,16 @@ return [
         'build'             => 'Võtab komponendid laost välja ja lisab valmis ühikud. Negatiivne kogus võtab ühikud uuesti osadeks lahti.',
     ],
 
+    'bulk' => [
+        'track'             => 'Kas soovite kindlasti, et valitud :type hakkaksid <b>laoseisu jälgima</b>?',
+        'untrack'           => 'Kas soovite kindlasti, et valitud :type <b>lõpetaksid laoseisu jälgimise</b>?',
+    ],
+
     'messages' => [
         'adjusted'          => 'Eseme :item laoseis on nüüd :quantity.',
         'built'             => 'Komplekteeriti :quantity tk eset :item.',
+        'tracked'           => 'Valitud esemete laoseisu jälgimine on sisse lülitatud.',
+        'untracked'         => 'Valitud esemete laoseisu jälgimine on välja lülitatud.',
     ],
 
     'errors' => [
@@ -38,6 +46,7 @@ return [
         'kit_as_component'  => 'Eset :item kasutatakse teise eseme komponendina, seega ei saa sellel endal komponente olla.',
         'not_tracked'       => 'Ese :item ei jälgi laoseisu.',
         'no_components'     => 'Esemel :item pole komponente, millest komplekteerida.',
+        'not_product'       => 'Ese :item on teenus, seega ei saa see laoseisu jälgida.',
     ],
 
 ];

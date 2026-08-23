@@ -4,6 +4,7 @@ return [
 
     'stock'                 => 'Anbar',
     'track_stock'           => 'Anbar qalığını izlə',
+    'untrack_stock'         => 'Anbar qalığını izləməyi dayandır',
     'stock_quantity'        => 'Anbar qalığı',
     'opening_count'         => 'Açılış qalığı',
     'adjust'                => 'Anbar qalığını düzəlt',
@@ -27,9 +28,16 @@ return [
         'build'             => 'Komponentləri anbardan çıxarır və hazır vahidləri əlavə edir. Mənfi miqdar vahidləri yenidən komponentlərə ayırır.',
     ],
 
+    'bulk' => [
+        'track'             => 'Seçilmiş :type üçün <b>anbar qalığını izləmək</b> istədiyinizə əminsiniz?',
+        'untrack'           => 'Seçilmiş :type üçün <b>anbar qalığının izlənməsini dayandırmaq</b> istədiyinizə əminsiniz?',
+    ],
+
     'messages' => [
         'adjusted'          => ':item üçün anbar qalığı indi :quantity təşkil edir.',
         'built'             => ':item məhsulundan :quantity ədəd komplektləşdirildi.',
+        'tracked'           => 'Seçilmiş məhsullar üçün anbar qalığının izlənməsi aktivləşdirildi.',
+        'untracked'         => 'Seçilmiş məhsullar üçün anbar qalığının izlənməsi dayandırıldı.',
     ],
 
     'errors' => [
@@ -38,6 +46,7 @@ return [
         'kit_as_component'  => ':item başqa bir məhsulun komponenti kimi istifadə olunur, buna görə də özünün komponentləri ola bilməz.',
         'not_tracked'       => ':item anbar qalığını izləmir.',
         'no_components'     => ':item məhsulunun komplektləşdirmə üçün komponenti yoxdur.',
+        'not_product'       => ':item xidmətdir, buna görə də anbar qalığını izləyə bilməz.',
     ],
 
 ];

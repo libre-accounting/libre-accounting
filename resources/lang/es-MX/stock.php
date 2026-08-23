@@ -4,6 +4,7 @@ return [
 
     'stock'                 => 'Existencias',
     'track_stock'           => 'Controlar existencias',
+    'untrack_stock'         => 'Dejar de controlar existencias',
     'stock_quantity'        => 'Existencias disponibles',
     'opening_count'         => 'Conteo inicial',
     'adjust'                => 'Ajustar existencias',
@@ -27,9 +28,16 @@ return [
         'build'             => 'Descuenta los componentes de las existencias y agrega las unidades terminadas. Una cantidad negativa vuelve a desarmar las unidades.',
     ],
 
+    'bulk' => [
+        'track'             => '¿Está seguro que desea <b>controlar las existencias</b> de los :type seleccionados?',
+        'untrack'           => '¿Está seguro que desea <b>dejar de controlar las existencias</b> de los :type seleccionados?',
+    ],
+
     'messages' => [
         'adjusted'          => 'Las existencias de :item ahora son :quantity.',
         'built'             => 'Se ensamblaron :quantity unidades de :item.',
+        'tracked'           => 'Se activó el control de existencias para los artículos seleccionados.',
+        'untracked'         => 'Se desactivó el control de existencias para los artículos seleccionados.',
     ],
 
     'errors' => [
@@ -38,6 +46,7 @@ return [
         'kit_as_component'  => ':item se usa como componente de otro artículo, por lo que no puede tener componentes propios.',
         'not_tracked'       => ':item no controla existencias.',
         'no_components'     => ':item no tiene componentes con los que ensamblarlo.',
+        'not_product'       => ':item es un servicio, por lo que no puede controlar existencias.',
     ],
 
 ];

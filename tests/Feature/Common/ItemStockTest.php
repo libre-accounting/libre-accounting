@@ -434,4 +434,88 @@ class ItemStockTest extends StockTestCase
         $this->assertSoftDeleted('items', ['id' => $item->id]);
         $this->assertCount(0, $this->rows(null, $item));
     }
+
+    public function testTogglingTrackingWithAPlainSaveResyncsTheLedger()
+    {
+        $item = $this->product();
+
+        $invoice = $this->dispatch(new CreateDocument($this->documentRequest('invoice', 'sent', $item, 2)));
+
+        $this->assertCount(0, $this->rows($invoice));
+
+        // No job involved: the item observer alone keeps the ledger in step
+        $item->track_stock = true;
+        $item->save();
+
+        $this->assertCount(1, $this->rows($invoice));
+        $this->assertSame(-2.0, $this->onHand($item));
+
+        $item->track_stock = false;
+        $item->save();
+
+        $this->assertCount(0, $this->rows($invoice));
+        $this->assertNull($this->onHand($item));
+    }
+
+    public function testBulkTrackSwitchesTrackingOnForProductsOnly()
+    {
+        $product = $this->product();
+        $service = Item::factory()->enabled()->create(['type' => 'service', 'track_stock' => false]);
+
+        $invoice = $this->dispatch(new CreateDocument($this->documentRequest('invoice', 'sent', $product, 4)));
+
+        $this->loginAs()
+            ->post(route('bulk-actions.action', ['group' => 'common', 'type' => 'items']), [
+                'handle' => 'track',
+                'selected' => [$product->id, $service->id],
+            ])
+            ->assertStatus(200)
+            ->assertJsonPath('success', true);
+
+        $this->assertTrue($product->fresh()->track_stock);
+        $this->assertFalse($service->fresh()->track_stock);
+
+        // The sale made before the switch is backfilled
+        $this->assertCount(1, $this->rows($invoice));
+        $this->assertSame(-4.0, $this->onHand($product));
+
+        // The service is reported, not switched
+        $this->assertFlashLevel('warning');
+    }
+
+    public function testBulkUntrackClearsDerivedRowsAndKeepsAdjustments()
+    {
+        $item = $this->trackedItem();
+
+        $this->dispatch(new CreateItemStockAdjustment($item, ['quantity' => 10]));
+
+        $invoice = $this->dispatch(new CreateDocument($this->documentRequest('invoice', 'sent', $item, 3)));
+
+        $this->assertSame(7.0, $this->onHand($item));
+
+        $this->loginAs()
+            ->post(route('bulk-actions.action', ['group' => 'common', 'type' => 'items']), [
+                'handle' => 'untrack',
+                'selected' => [$item->id],
+            ])
+            ->assertStatus(200)
+            ->assertJsonPath('success', true);
+
+        $this->assertFalse($item->fresh()->track_stock);
+        $this->assertCount(0, $this->rows($invoice));
+        $this->assertCount(1, $this->rows(null, $item));
+        $this->assertNull($this->onHand($item));
+        $this->assertFlashLevel('success');
+
+        // Switching back on brings the sale back next to the kept adjustment
+        $this->loginAs()
+            ->post(route('bulk-actions.action', ['group' => 'common', 'type' => 'items']), [
+                'handle' => 'track',
+                'selected' => [$item->id],
+            ])
+            ->assertStatus(200)
+            ->assertJsonPath('success', true);
+
+        $this->assertSame(7.0, $this->onHand($item));
+    }
 }

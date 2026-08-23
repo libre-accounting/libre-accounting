@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Banking\Transaction;
+use App\Models\Common\Item;
 use App\Models\Document\Document;
 use App\Models\Document\DocumentItem;
 use Illuminate\Support\ServiceProvider as Provider;
@@ -31,5 +32,8 @@ class Observer extends Provider
         // Keep the stock ledger in step with invoices and bills
         Document::observe('App\Observers\Document');
         DocumentItem::observe('App\Observers\DocumentItem');
+
+        // Rebuild an item's ledger when its stock tracking is switched
+        Item::observe('App\Observers\Item');
     }
 }

@@ -4,6 +4,7 @@ return [
 
     'stock'                 => 'Estoque',
     'track_stock'           => 'Controlar estoque',
+    'untrack_stock'         => 'Parar de controlar estoque',
     'stock_quantity'        => 'Saldo em estoque',
     'opening_count'         => 'Estoque inicial',
     'adjust'                => 'Ajustar estoque',
@@ -27,9 +28,16 @@ return [
         'build'             => 'Dá saída nos componentes e dá entrada nas unidades acabadas. Uma quantidade negativa desmonta as unidades novamente.',
     ],
 
+    'bulk' => [
+        'track'             => 'Tem certeza de que deseja <b>controlar o estoque</b> dos :type selecionados?',
+        'untrack'           => 'Tem certeza de que deseja <b>parar de controlar o estoque</b> dos :type selecionados?',
+    ],
+
     'messages' => [
         'adjusted'          => 'O estoque de :item agora é :quantity.',
         'built'             => 'Montagem concluída: :quantity de :item.',
+        'tracked'           => 'Controle de estoque ativado para os itens selecionados.',
+        'untracked'         => 'Controle de estoque desativado para os itens selecionados.',
     ],
 
     'errors' => [
@@ -38,6 +46,7 @@ return [
         'kit_as_component'  => ':item é usado como componente de outro item, portanto não pode ter componentes próprios.',
         'not_tracked'       => ':item não controla estoque.',
         'no_components'     => ':item não tem componentes para montar.',
+        'not_product'       => ':item é um serviço, portanto não pode controlar estoque.',
     ],
 
 ];

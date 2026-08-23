@@ -4,6 +4,7 @@ return [
 
     'stock'                 => 'Varasto',
     'track_stock'           => 'Seuraa varastoa',
+    'untrack_stock'         => 'Lopeta varaston seuranta',
     'stock_quantity'        => 'Varastosaldo',
     'opening_count'         => 'Alkusaldo',
     'adjust'                => 'Korjaa varastosaldoa',
@@ -27,9 +28,16 @@ return [
         'build'             => 'Vähentää komponentit varastosta ja lisää valmiit yksiköt. Negatiivinen määrä purkaa yksiköt takaisin komponenteiksi.',
     ],
 
+    'bulk' => [
+        'track'             => 'Oletko varma, että haluat, että valitut :type <b>seuraavat varastoa</b>?',
+        'untrack'           => 'Oletko varma, että haluat, että valitut :type <b>lopettavat varaston seurannan</b>?',
+    ],
+
     'messages' => [
         'adjusted'          => 'Tuotteen :item varastosaldo on nyt :quantity.',
         'built'             => 'Koottiin :quantity kpl tuotetta :item.',
+        'tracked'           => 'Varaston seuranta otettiin käyttöön valituille tuotteille.',
+        'untracked'         => 'Varaston seuranta poistettiin käytöstä valituilta tuotteilta.',
     ],
 
     'errors' => [
@@ -38,6 +46,7 @@ return [
         'kit_as_component'  => 'Tuotetta :item käytetään toisen tuotteen komponenttina, joten sillä ei voi olla omia komponentteja.',
         'not_tracked'       => 'Tuote :item ei seuraa varastoa.',
         'no_components'     => 'Tuotteella :item ei ole komponentteja, joista koota.',
+        'not_product'       => 'Tuote :item on palvelu, joten se ei voi seurata varastoa.',
     ],
 
 ];

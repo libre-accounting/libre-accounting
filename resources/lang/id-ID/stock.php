@@ -4,6 +4,7 @@ return [
 
     'stock'                 => 'Stok',
     'track_stock'           => 'Lacak Stok',
+    'untrack_stock'         => 'Berhenti Melacak Stok',
     'stock_quantity'        => 'Stok Tersedia',
     'opening_count'         => 'Stok Awal',
     'adjust'                => 'Sesuaikan Stok',
@@ -27,9 +28,16 @@ return [
         'build'             => 'Mengurangi komponen dari stok dan menambahkan unit jadi. Kuantitas negatif mengurai unit kembali menjadi komponen.',
     ],
 
+    'bulk' => [
+        'track'             => 'Yakin ingin <b>melacak stok</b> untuk :type yang dipilih?',
+        'untrack'           => 'Yakin ingin <b>berhenti melacak stok</b> untuk :type yang dipilih?',
+    ],
+
     'messages' => [
         'adjusted'          => 'Stok :item sekarang :quantity.',
         'built'             => 'Berhasil merakit :quantity unit :item.',
+        'tracked'           => 'Pelacakan stok diaktifkan untuk item yang dipilih.',
+        'untracked'         => 'Pelacakan stok dinonaktifkan untuk item yang dipilih.',
     ],
 
     'errors' => [
@@ -38,6 +46,7 @@ return [
         'kit_as_component'  => ':item digunakan sebagai komponen item lain, sehingga tidak dapat memiliki komponen sendiri.',
         'not_tracked'       => ':item tidak melacak stok.',
         'no_components'     => ':item tidak memiliki komponen untuk dirakit.',
+        'not_product'       => ':item adalah jasa, sehingga tidak dapat melacak stok.',
     ],
 
 ];

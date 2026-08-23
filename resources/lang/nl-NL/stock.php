@@ -4,6 +4,7 @@ return [
 
     'stock'                 => 'Voorraad',
     'track_stock'           => 'Voorraad bijhouden',
+    'untrack_stock'         => 'Voorraad niet meer bijhouden',
     'stock_quantity'        => 'Actuele voorraad',
     'opening_count'         => 'Beginvoorraad',
     'adjust'                => 'Voorraad aanpassen',
@@ -27,9 +28,16 @@ return [
         'build'             => 'Haalt de onderdelen uit de voorraad en voegt de gerede eenheden toe. Een negatief aantal haalt de eenheden weer uit elkaar.',
     ],
 
+    'bulk' => [
+        'track'             => 'Weet u zeker dat u voor de geselecteerde :type de <b>voorraad wilt bijhouden</b>?',
+        'untrack'           => 'Weet u zeker dat u voor de geselecteerde :type de <b>voorraad niet meer wilt bijhouden</b>?',
+    ],
+
     'messages' => [
         'adjusted'          => 'De voorraad van :item is nu :quantity.',
         'built'             => ':quantity stuks van :item samengesteld.',
+        'tracked'           => 'Voorraad bijhouden is ingeschakeld voor de geselecteerde artikelen.',
+        'untracked'         => 'Voorraad bijhouden is uitgeschakeld voor de geselecteerde artikelen.',
     ],
 
     'errors' => [
@@ -38,6 +46,7 @@ return [
         'kit_as_component'  => ':item wordt gebruikt als onderdeel van een ander artikel en kan daarom geen eigen onderdelen hebben.',
         'not_tracked'       => ':item houdt geen voorraad bij.',
         'no_components'     => ':item heeft geen onderdelen om uit samen te stellen.',
+        'not_product'       => ':item is een dienst en kan daarom geen voorraad bijhouden.',
     ],
 
 ];

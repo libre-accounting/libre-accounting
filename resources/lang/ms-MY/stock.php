@@ -4,6 +4,7 @@ return [
 
     'stock'                 => 'Stok',
     'track_stock'           => 'Jejak stok',
+    'untrack_stock'         => 'Berhenti menjejak stok',
     'stock_quantity'        => 'Baki stok',
     'opening_count'         => 'Stok awal',
     'adjust'                => 'Laraskan stok',
@@ -27,9 +28,16 @@ return [
         'build'             => 'Mengeluarkan komponen daripada stok dan menambah unit siap. Kuantiti negatif merombak semula unit tersebut kepada komponen.',
     ],
 
+    'bulk' => [
+        'track'             => 'Adakah anda pasti anda mahu <b>menjejak stok</b> untuk :type yang dipilih?',
+        'untrack'           => 'Adakah anda pasti anda mahu <b>berhenti menjejak stok</b> untuk :type yang dipilih?',
+    ],
+
     'messages' => [
         'adjusted'          => 'Stok :item kini :quantity.',
         'built'             => 'Telah membina :quantity unit :item.',
+        'tracked'           => 'Penjejakan stok dihidupkan untuk item yang dipilih.',
+        'untracked'         => 'Penjejakan stok dimatikan untuk item yang dipilih.',
     ],
 
     'errors' => [
@@ -38,6 +46,7 @@ return [
         'kit_as_component'  => ':item digunakan sebagai komponen item lain, jadi ia tidak boleh mempunyai komponen sendiri.',
         'not_tracked'       => ':item tidak menjejak stok.',
         'no_components'     => ':item tiada komponen untuk dibina.',
+        'not_product'       => ':item ialah perkhidmatan, jadi ia tidak boleh menjejak stok.',
     ],
 
 ];

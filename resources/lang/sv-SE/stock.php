@@ -4,6 +4,7 @@ return [
 
     'stock'                 => 'Lager',
     'track_stock'           => 'Lagerförd artikel',
+    'untrack_stock'         => 'Sluta lagerföra',
     'stock_quantity'        => 'Lagersaldo',
     'opening_count'         => 'Ingående lagersaldo',
     'adjust'                => 'Justera lager',
@@ -27,9 +28,16 @@ return [
         'build'             => 'Tar ut komponenterna ur lagret och lägger till de färdiga enheterna. Ett negativt antal plockar isär enheter igen.',
     ],
 
+    'bulk' => [
+        'track'             => 'Är du säker på att du vill <b>lagerföra</b> markerade :type?',
+        'untrack'           => 'Är du säker på att du vill <b>sluta lagerföra</b> markerade :type?',
+    ],
+
     'messages' => [
         'adjusted'          => 'Lagersaldot för :item är nu :quantity.',
         'built'             => ':quantity st :item har monterats.',
+        'tracked'           => 'Lagerföring har aktiverats för de markerade artiklarna.',
+        'untracked'         => 'Lagerföring har inaktiverats för de markerade artiklarna.',
     ],
 
     'errors' => [
@@ -38,6 +46,7 @@ return [
         'kit_as_component'  => ':item används som komponent i en annan artikel och kan därför inte ha egna komponenter.',
         'not_tracked'       => ':item är inte lagerförd.',
         'no_components'     => ':item har inga komponenter att montera av.',
+        'not_product'       => ':item är en tjänst och kan därför inte lagerföras.',
     ],
 
 ];

@@ -4,6 +4,7 @@ return [
 
     'stock'                 => 'Stoku',
     'track_stock'           => 'Gjurmo stokun',
+    'untrack_stock'         => 'Ndalo gjurmimin e stokut',
     'stock_quantity'        => 'Gjendja e stokut',
     'opening_count'         => 'Gjendja fillestare',
     'adjust'                => 'Rregullo stokun',
@@ -27,9 +28,16 @@ return [
         'build'             => 'I nxjerr përbërësit nga stoku dhe shton njësitë e gatshme. Një sasi negative i çmonton përsëri njësitë.',
     ],
 
+    'bulk' => [
+        'track'             => 'Jeni i sigurt që doni të <b>gjurmoni stokun</b> për :type të zgjedhur?',
+        'untrack'           => 'Jeni i sigurt që doni të <b>ndaloni gjurmimin e stokut</b> për :type të zgjedhur?',
+    ],
+
     'messages' => [
         'adjusted'          => 'Stoku i :item tani është :quantity.',
         'built'             => 'U montuan :quantity njësi të :item.',
+        'tracked'           => 'Gjurmimi i stokut u aktivizua për artikujt e zgjedhur.',
+        'untracked'         => 'Gjurmimi i stokut u çaktivizua për artikujt e zgjedhur.',
     ],
 
     'errors' => [
@@ -38,6 +46,7 @@ return [
         'kit_as_component'  => ':item përdoret si përbërës i një artikulli tjetër, prandaj nuk mund të ketë përbërësit e vet.',
         'not_tracked'       => ':item nuk e gjurmon stokun.',
         'no_components'     => ':item nuk ka përbërës për t\'u montuar.',
+        'not_product'       => ':item është shërbim, prandaj nuk mund ta gjurmojë stokun.',
     ],
 
 ];

@@ -4,6 +4,7 @@ return [
 
     'stock'                 => 'Estoc',
     'track_stock'           => 'Controla l\'estoc',
+    'untrack_stock'         => 'Deixa de controlar l\'estoc',
     'stock_quantity'        => 'Estoc disponible',
     'opening_count'         => 'Estoc inicial',
     'adjust'                => 'Ajusta l\'estoc',
@@ -27,9 +28,16 @@ return [
         'build'             => 'Treu els components de l\'estoc i hi afegeix les unitats acabades. Una quantitat negativa torna a desmuntar les unitats.',
     ],
 
+    'bulk' => [
+        'track'             => 'Estàs segur de voler <b>controlar l\'estoc</b> dels :type seleccionats?',
+        'untrack'           => 'Estàs segur de voler <b>deixar de controlar l\'estoc</b> dels :type seleccionats?',
+    ],
+
     'messages' => [
         'adjusted'          => 'L\'estoc de :item ara és de :quantity.',
         'built'             => 'S\'han muntat :quantity unitats de :item.',
+        'tracked'           => 'S\'ha activat el control d\'estoc dels articles seleccionats.',
+        'untracked'         => 'S\'ha desactivat el control d\'estoc dels articles seleccionats.',
     ],
 
     'errors' => [
@@ -38,6 +46,7 @@ return [
         'kit_as_component'  => ':item es fa servir com a component d\'un altre article, de manera que no pot tenir components propis.',
         'not_tracked'       => ':item no controla l\'estoc.',
         'no_components'     => ':item no té components amb què muntar-lo.',
+        'not_product'       => ':item és un servei, de manera que no pot controlar l\'estoc.',
     ],
 
 ];

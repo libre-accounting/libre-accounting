@@ -35,6 +35,18 @@ class Items extends BulkAction
             'type'          => '*',
             'permission'    => 'update-common-items',
         ],
+        'track'     => [
+            'icon'          => 'inventory_2',
+            'name'          => 'stock.track_stock',
+            'message'       => 'stock.bulk.track',
+            'permission'    => 'update-common-items',
+        ],
+        'untrack'   => [
+            'icon'          => 'layers_clear',
+            'name'          => 'stock.untrack_stock',
+            'message'       => 'stock.bulk.untrack',
+            'permission'    => 'update-common-items',
+        ],
         'delete'    => [
             'icon'          => 'delete',
             'name'          => 'general.delete',
@@ -48,6 +60,41 @@ class Items extends BulkAction
             'type'          => 'download',
         ],
     ];
+
+    public function __construct()
+    {
+        $this->messages += [
+            'track'     => 'stock.messages.tracked',
+            'untrack'   => 'stock.messages.untracked',
+        ];
+    }
+
+    /**
+     * Switch stock tracking on for the selected products. Services never
+     * track stock, so each one selected is reported and left alone.
+     */
+    public function track($request)
+    {
+        foreach ($this->getSelectedRecords($request) as $item) {
+            if ($item->type != 'product') {
+                flash(trans('stock.errors.not_product', ['item' => $item->name]))->warning()->important();
+
+                continue;
+            }
+
+            $this->setTracking($item, true);
+        }
+    }
+
+    /**
+     * Switch stock tracking off for the selected items.
+     */
+    public function untrack($request)
+    {
+        foreach ($this->getSelectedRecords($request) as $item) {
+            $this->setTracking($item, false);
+        }
+    }
 
     public function destroy($request)
     {
@@ -67,5 +114,17 @@ class Items extends BulkAction
         $selected = $this->getSelectedInput($request);
 
         return $this->exportExcel(new Export($selected), trans_choice('general.items', 2));
+    }
+
+    /**
+     * The item observer rebuilds the ledger when the flag changes, so the
+     * flag and the ledger land in one transaction.
+     */
+    protected function setTracking(Item $item, bool $track): void
+    {
+        \DB::transaction(function () use ($item, $track) {
+            $item->track_stock = $track;
+            $item->save();
+        });
     }
 }

@@ -4,6 +4,7 @@ return [
 
     'stock'                 => 'Birgðir',
     'track_stock'           => 'Fylgjast með birgðum',
+    'untrack_stock'         => 'Hætta að fylgjast með birgðum',
     'stock_quantity'        => 'Birgðastaða',
     'opening_count'         => 'Upphafsstaða',
     'adjust'                => 'Leiðrétta birgðir',
@@ -27,9 +28,16 @@ return [
         'build'             => 'Tekur íhlutina úr birgðum og bætir fullbúnu einingunum við. Neikvætt magn tekur einingarnar í sundur aftur.',
     ],
 
+    'bulk' => [
+        'track'             => 'Ertu viss um að þú viljir <b>fylgjast með birgðum</b> fyrir valdar :type?',
+        'untrack'           => 'Ertu viss um að þú viljir <b>hætta að fylgjast með birgðum</b> fyrir valdar :type?',
+    ],
+
     'messages' => [
         'adjusted'          => 'Birgðastaða :item er nú :quantity.',
         'built'             => ':quantity einingar af :item settar saman.',
+        'tracked'           => 'Kveikt hefur verið á birgðaeftirliti fyrir valdar vörur.',
+        'untracked'         => 'Slökkt hefur verið á birgðaeftirliti fyrir valdar vörur.',
     ],
 
     'errors' => [
@@ -38,6 +46,7 @@ return [
         'kit_as_component'  => ':item er notuð sem íhlutur í annarri vöru og getur því ekki haft eigin íhluti.',
         'not_tracked'       => ':item heldur ekki utan um birgðir.',
         'no_components'     => ':item hefur enga íhluti til að setja saman úr.',
+        'not_product'       => ':item er þjónusta og getur því ekki haldið utan um birgðir.',
     ],
 
 ];

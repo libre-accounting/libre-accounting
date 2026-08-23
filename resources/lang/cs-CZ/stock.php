@@ -4,6 +4,7 @@ return [
 
     'stock'                 => 'Sklad',
     'track_stock'           => 'Sledovat stav skladu',
+    'untrack_stock'         => 'Přestat sledovat stav skladu',
     'stock_quantity'        => 'Stav skladu',
     'opening_count'         => 'Počáteční stav',
     'adjust'                => 'Upravit stav skladu',
@@ -27,9 +28,16 @@ return [
         'build'             => 'Odebere komponenty ze skladu a přidá hotové jednotky. Záporné množství jednotky opět rozebere.',
     ],
 
+    'bulk' => [
+        'track'             => 'Jste si jisti, že chcete <b>sledovat stav skladu</b> pro vybrané :type?',
+        'untrack'           => 'Jste si jisti, že chcete <b>přestat sledovat stav skladu</b> pro vybrané :type?',
+    ],
+
     'messages' => [
         'adjusted'          => 'Stav skladu položky :item je nyní :quantity.',
         'built'             => 'Sestaveno :quantity ks položky :item.',
+        'tracked'           => 'Sledování stavu skladu bylo pro vybrané položky zapnuto.',
+        'untracked'         => 'Sledování stavu skladu bylo pro vybrané položky vypnuto.',
     ],
 
     'errors' => [
@@ -38,6 +46,7 @@ return [
         'kit_as_component'  => ':item se používá jako komponenta jiné položky, proto nemůže mít vlastní komponenty.',
         'not_tracked'       => ':item nesleduje stav skladu.',
         'no_components'     => ':item nemá žádné komponenty, ze kterých by šla sestavit.',
+        'not_product'       => ':item je služba, proto nemůže sledovat stav skladu.',
     ],
 
 ];

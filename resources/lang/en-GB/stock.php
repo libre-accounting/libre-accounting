@@ -4,6 +4,7 @@ return [
 
     'stock'                 => 'Stock',
     'track_stock'           => 'Track stock',
+    'untrack_stock'         => 'Stop tracking stock',
     'stock_quantity'        => 'Stock on hand',
     'opening_count'         => 'Opening count',
     'adjust'                => 'Adjust stock',
@@ -27,9 +28,16 @@ return [
         'build'             => 'Takes the components out of stock and adds the finished units. A negative quantity takes units apart again.',
     ],
 
+    'bulk' => [
+        'track'             => 'Are you sure you want to <b>track stock</b> for the selected :type?',
+        'untrack'           => 'Are you sure you want to <b>stop tracking stock</b> for the selected :type?',
+    ],
+
     'messages' => [
         'adjusted'          => 'Stock of :item is now :quantity.',
         'built'             => 'Built :quantity of :item.',
+        'tracked'           => 'Stock tracking switched on for the selected items.',
+        'untracked'         => 'Stock tracking switched off for the selected items.',
     ],
 
     'errors' => [
@@ -38,6 +46,7 @@ return [
         'kit_as_component'  => ':item is used as a component of another item, so it cannot have components of its own.',
         'not_tracked'       => ':item does not track stock.',
         'no_components'     => ':item has no components to build from.',
+        'not_product'       => ':item is a service, so it cannot track stock.',
     ],
 
 ];

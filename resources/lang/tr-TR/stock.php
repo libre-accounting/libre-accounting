@@ -4,6 +4,7 @@ return [
 
     'stock'                 => 'Stok',
     'track_stock'           => 'Stok takibi',
+    'untrack_stock'         => 'Stok takibini durdur',
     'stock_quantity'        => 'Mevcut stok',
     'opening_count'         => 'Açılış stoğu',
     'adjust'                => 'Stoğu düzelt',
@@ -27,9 +28,16 @@ return [
         'build'             => 'Bileşenleri stoktan düşer ve bitmiş adetleri stoğa ekler. Negatif miktar, adetleri yeniden bileşenlerine ayırır.',
     ],
 
+    'bulk' => [
+        'track'             => 'Seçili :type için <b>stok takibi yapmak</b> istediğinizden emin misiniz?',
+        'untrack'           => 'Seçili :type için <b>stok takibini durdurmak</b> istediğinizden emin misiniz?',
+    ],
+
     'messages' => [
         'adjusted'          => ':item stoğu artık :quantity.',
         'built'             => ':quantity adet :item üretildi.',
+        'tracked'           => 'Seçili ürünler için stok takibi açıldı.',
+        'untracked'         => 'Seçili ürünler için stok takibi kapatıldı.',
     ],
 
     'errors' => [
@@ -38,6 +46,7 @@ return [
         'kit_as_component'  => ':item başka bir ürünün bileşeni olarak kullanıldığından kendi bileşenleri olamaz.',
         'not_tracked'       => ':item stok takibi yapmıyor.',
         'no_components'     => ':item için üretimde kullanılacak bileşen yok.',
+        'not_product'       => ':item bir hizmet olduğundan stok takibi yapamaz.',
     ],
 
 ];

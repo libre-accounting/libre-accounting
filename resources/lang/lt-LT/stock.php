@@ -4,6 +4,7 @@ return [
 
     'stock'                 => 'Atsargos',
     'track_stock'           => 'Sekti atsargas',
+    'untrack_stock'         => 'Nustoti sekti atsargas',
     'stock_quantity'        => 'Atsargų likutis',
     'opening_count'         => 'Pradinis likutis',
     'adjust'                => 'Koreguoti atsargas',
@@ -27,9 +28,16 @@ return [
         'build'             => 'Nurašo komponentus iš atsargų ir užpajamuoja gatavus vienetus. Neigiamas kiekis vienetus vėl išardo į komponentus.',
     ],
 
+    'bulk' => [
+        'track'             => 'Ar tikrai norite, kad pasirinktos :type <b>sektų atsargas</b>?',
+        'untrack'           => 'Ar tikrai norite, kad pasirinktos :type <b>nustotų sekti atsargas</b>?',
+    ],
+
     'messages' => [
         'adjusted'          => 'Prekės :item atsargų likutis dabar :quantity.',
         'built'             => 'Surinkta :quantity vnt. prekės :item.',
+        'tracked'           => 'Pasirinktoms prekėms įjungtas atsargų sekimas.',
+        'untracked'         => 'Pasirinktoms prekėms išjungtas atsargų sekimas.',
     ],
 
     'errors' => [
@@ -38,6 +46,7 @@ return [
         'kit_as_component'  => 'Prekė :item naudojama kaip kitos prekės komponentas, todėl negali turėti savo komponentų.',
         'not_tracked'       => 'Prekės :item atsargos nesekamos.',
         'no_components'     => 'Prekė :item neturi komponentų, iš kurių būtų galima ją surinkti.',
+        'not_product'       => ':item yra paslauga, todėl jos atsargų sekti negalima.',
     ],
 
 ];
