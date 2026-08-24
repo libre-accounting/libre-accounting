@@ -219,8 +219,11 @@ Shared rules:
 - Required: `type` (`product`|`service`) and `name`.
 - Optional: `description`, `sale_price`, `purchase_price`, `category_id`
   (an `item` category), `tax_ids[]`, `enabled`, `picture`.
-- An update replaces the taxes with `tax_ids`. Enable/disable also wipes the
-  taxes.
+- An update replaces the taxes only when it sends `tax_ids`; `tax_ids: []`
+  clears them, and a request without the key, like enable/disable, keeps
+  them. A server older than 2026-08-24 replaced them on every update and
+  wiped them on enable/disable, so send `tax_ids` from the GET there (the
+  `la-update` template already does).
 - Delete is blocked while the item is used on documents or as a component.
 - Stock: `track_stock` (bool) switches tracking on or off; switching it on
   rebuilds the ledger from past invoices and bills. `stock_quantity` in the

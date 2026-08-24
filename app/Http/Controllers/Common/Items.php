@@ -156,6 +156,9 @@ class Items extends Controller
      */
     public function update(Item $item, Request $request)
     {
+        // The form always states the taxes, but sends no tax_ids at all once every tax is removed
+        $request->merge(['tax_ids' => $request->input('tax_ids', [])]);
+
         $response = $this->ajaxDispatch(new UpdateItem($item, $request));
 
         if ($response['success']) {

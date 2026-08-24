@@ -2,12 +2,14 @@
 
 namespace Tests\Feature\Api;
 
+use App\Jobs\Common\CreateItem;
 use App\Models\Banking\Transaction;
 use App\Models\Common\Contact;
 use App\Models\Common\Item;
 use App\Models\Common\ItemComponent;
 use App\Models\Common\ItemStockMovement;
 use App\Models\Setting\Category;
+use App\Models\Setting\Tax;
 use Tests\Feature\FeatureTestCase;
 
 class EndpointsTest extends FeatureTestCase
@@ -278,6 +280,29 @@ class EndpointsTest extends FeatureTestCase
                 ['name' => 'Line', 'description' => '', 'quantity' => 1, 'price' => 100],
             ],
         ])->assertCreated()->json('data.id');
+    }
+
+    public function testPatchItemWithoutTaxIdsShouldKeepTaxes()
+    {
+        $tax = Tax::factory()->create();
+
+        $item = $this->dispatch(new CreateItem(Item::factory()->enabled()->raw() + ['tax_ids' => [$tax->id]]));
+
+        $fields = ['type' => $item->type, 'name' => $item->name . ' (renamed)', 'sale_price' => $item->sale_price, 'purchase_price' => $item->purchase_price];
+
+        $this->api()
+            ->patchJson('api/items/' . $item->id, $fields)
+            ->assertOk()
+            ->assertJsonPath('data.name', $fields['name'])
+            ->assertJsonPath('data.taxes.data.0.tax_id', $tax->id);
+
+        // An explicit empty list clears them
+        $this->api()
+            ->patchJson('api/items/' . $item->id, $fields + ['tax_ids' => []])
+            ->assertOk()
+            ->assertJsonPath('data.taxes.data', []);
+
+        $this->assertDatabaseMissing('item_taxes', ['item_id' => $item->id, 'deleted_at' => null]);
     }
 
     protected function api()

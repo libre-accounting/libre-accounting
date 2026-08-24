@@ -7,6 +7,7 @@ use App\Jobs\Common\CreateItem;
 use App\Models\Common\Item;
 use App\Models\Common\ItemComponent;
 use App\Models\Common\ItemStockMovement;
+use App\Models\Setting\Tax;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 use Maatwebsite\Excel\Facades\Excel;
@@ -318,6 +319,48 @@ class ItemsTest extends FeatureTestCase
             ->assertJsonPath('redirect', route('items.edit', $kit->id));
 
         $this->assertSoftDeleted('item_components', ['id' => $component->id]);
+    }
+
+    public function testItShouldKeepTaxesWhenEnablingOrDisabling()
+    {
+        $tax = Tax::factory()->create();
+
+        $item = $this->dispatch(new CreateItem($this->getRequest() + ['tax_ids' => [$tax->id]]));
+
+        $this->loginAs()
+            ->get(route('items.disable', $item->id))
+            ->assertStatus(200)
+            ->assertJsonPath('success', true);
+
+        $this->loginAs()
+            ->get(route('items.enable', $item->id))
+            ->assertStatus(200)
+            ->assertJsonPath('success', true);
+
+        $this->assertTrue($item->fresh()->enabled);
+        $this->assertDatabaseHas('item_taxes', ['item_id' => $item->id, 'tax_id' => $tax->id, 'deleted_at' => null]);
+    }
+
+    public function testItShouldReplaceTaxesFromTheFormAndClearThemWhenNoneIsSent()
+    {
+        [$old, $new] = Tax::factory()->count(2)->create();
+
+        $item = $this->dispatch(new CreateItem($this->getRequest() + ['tax_ids' => [$old->id]]));
+
+        $this->loginAs()
+            ->patch(route('items.update', $item->id), $this->getRequest() + ['tax_ids' => [$new->id]])
+            ->assertStatus(200);
+
+        $this->assertDatabaseHas('item_taxes', ['item_id' => $item->id, 'tax_id' => $new->id, 'deleted_at' => null]);
+        $this->assertDatabaseMissing('item_taxes', ['item_id' => $item->id, 'tax_id' => $old->id, 'deleted_at' => null]);
+
+        // The form sends no tax_ids at all once every tax is removed
+        $this->loginAs()
+            ->patch(route('items.update', $item->id), $this->getRequest())
+            ->assertStatus(200);
+
+        $this->assertFlashLevel('success');
+        $this->assertDatabaseMissing('item_taxes', ['item_id' => $item->id, 'deleted_at' => null]);
     }
 
     public function getRequest()

@@ -32,9 +32,12 @@ class UpdateItem extends Job implements ShouldUpdate
                 $this->model->attachMedia($media, 'picture');
             }
 
-            $this->deleteRelationships($this->model, ['taxes']);
+            // A request that says nothing about taxes keeps them; one that sends tax_ids, even empty, replaces them
+            if ($this->request->has('tax_ids') || $this->request->has('tax_id')) {
+                $this->deleteRelationships($this->model, ['taxes']);
 
-            $this->dispatch(new CreateItemTaxes($this->model, $this->request));
+                $this->dispatch(new CreateItemTaxes($this->model, $this->request));
+            }
         });
 
         return $this->model;
