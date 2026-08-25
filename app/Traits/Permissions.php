@@ -8,7 +8,6 @@ use App\Traits\SearchString;
 use App\Traits\Translations;
 use App\Utilities\Reports;
 use App\Utilities\Widgets;
-use Illuminate\Routing\Route;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
@@ -457,10 +456,9 @@ trait Permissions
                 $controller .= $prefix;
             }
         } else {
-            $route = app(Route::class);
-
-            // Get the controller array
-            $arr = array_reverse(explode('\\', explode('@', $route->getAction()['uses'])[0]));
+            // Name the permission after this class rather than the current route: while Livewire
+            // replays a page's middleware on an update, the current route is the Livewire endpoint
+            $arr = array_reverse(explode('\\', static::class));
 
             $controller = '';
 
