@@ -12,6 +12,4 @@
 
 @livewireScripts
 
-<script src="{{ asset('public/vendor/alpinejs/alpine.min.js') }}"></script>
-
 @stack('scripts_end')
