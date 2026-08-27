@@ -86,6 +86,19 @@ class BankStatementLine extends Model
         return $this->belongsTo('App\Models\Common\Contact')->withDefault(['name' => trans('general.na')]);
     }
 
+    /**
+     * The category a line falls back to when nobody picked one: its matched
+     * document's, else the company default for its direction.
+     */
+    public function defaultCategoryId(): ?int
+    {
+        if ($this->document_id && ($category_id = $this->document()->value('category_id'))) {
+            return (int) $category_id;
+        }
+
+        return (int) setting('default.' . $this->type . '_category') ?: null;
+    }
+
     public function transaction()
     {
         return $this->belongsTo('App\Models\Banking\Transaction')->withDefault();

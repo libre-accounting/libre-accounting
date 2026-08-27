@@ -84,7 +84,7 @@ class CommitStatementLines extends Job
             'currency_code'  => $line->currency_code,
             'currency_rate'  => $this->getCurrencyRate($line->currency_code),
             'contact_id'     => $line->contact_id,
-            'category_id'    => $line->category_id,
+            'category_id'    => $line->category_id ?: $line->defaultCategoryId(),
             'payment_method' => $line->payment_method ?: setting('default.payment_method'),
             'reference'      => $line->bank_reference,
             'description'    => $line->description,

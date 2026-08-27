@@ -109,7 +109,7 @@
         <div class="flex items-center justify-end mt-6">
             <button
                 type="button"
-                wire:click="commit"
+                wire:click="importSelected"
                 wire:loading.attr="disabled"
                 class="relative flex items-center justify-center bg-green hover:bg-green-700 text-white px-6 py-1.5 text-base rounded-lg disabled:bg-green-100"
             >

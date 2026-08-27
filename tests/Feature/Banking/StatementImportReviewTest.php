@@ -8,6 +8,7 @@ use App\Models\Banking\Account;
 use App\Models\Banking\BankStatementImport;
 use App\Models\Banking\BankStatementLine;
 use App\Models\Banking\Transaction;
+use App\Models\Document\Document;
 use App\Models\Setting\Category;
 use Tests\Feature\FeatureTestCase;
 
@@ -135,17 +136,61 @@ class StatementImportReviewTest extends FeatureTestCase
         $this->assertNull($line->transaction_id);
     }
 
-    public function testItShouldBlockCommitWhenCategoryMissing()
+    public function testItShouldPrefillAndImportWithTheDefaultCategory()
     {
         $this->loginAs();
+
+        $import = $this->makeImport();
+        $income = $import->lines()->where('type', 'income')->first();
+        $expense = $import->lines()->where('type', 'expense')->first();
+
+        $component = $this->makeReviewComponent($import);
+
+        // The review pre-selects the company default for each direction
+        $this->assertEquals(setting('default.income_category'), $component->categories[$income->id]);
+        $this->assertEquals(setting('default.expense_category'), $component->categories[$expense->id]);
+
+        // Even with the selection cleared the line is imported with the default
+        $component->categories[$income->id] = null;
+        $component->selected[$income->id] = true;
+        $component->importSelected();
+
+        $this->assertFlashLevel('success');
+
+        $income->refresh();
+
+        $this->assertEquals(BankStatementLine::STATUS_IMPORTED, $income->status);
+        $this->assertDatabaseHas('transactions', ['id' => $income->transaction_id, 'category_id' => setting('default.income_category')]);
+    }
+
+    public function testItShouldPreferTheMatchedDocumentCategory()
+    {
+        $this->loginAs();
+
+        $import = $this->makeImport();
+        $income = $import->lines()->where('type', 'income')->first();
+
+        $invoice = Document::factory()->invoice()->create();
+
+        $income->update(['document_id' => $invoice->id]);
+
+        $component = $this->makeReviewComponent($import);
+
+        $this->assertEquals($invoice->category_id, $component->categories[$income->id]);
+    }
+
+    public function testItShouldBlockCommitWhenNoCategoryAndNoDefault()
+    {
+        $this->loginAs();
+
+        setting()->forget('default.income_category');
 
         $import = $this->makeImport();
         $line = $import->lines()->where('type', 'income')->first();
 
         $component = $this->makeReviewComponent($import);
         $component->selected[$line->id] = true;
-        // no category chosen for the selected line
-        $component->commit();
+        $component->importSelected();
 
         $this->assertFlashLevel('danger');
 

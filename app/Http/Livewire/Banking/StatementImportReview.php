@@ -4,7 +4,6 @@ namespace App\Http\Livewire\Banking;
 
 use App\Jobs\Banking\CommitStatementLines;
 use App\Models\Banking\BankStatementImport;
-use App\Models\Banking\BankStatementLine;
 use App\Models\Common\Contact;
 use App\Models\Setting\Category;
 use Illuminate\Contracts\Bus\Dispatcher;
@@ -34,7 +33,7 @@ class StatementImportReview extends Component
         $this->statementImport = $statementImport;
 
         foreach ($this->pendingLines() as $line) {
-            $this->categories[$line->id] = $line->category_id;
+            $this->categories[$line->id] = $line->category_id ?: $line->defaultCategoryId();
             $this->contacts[$line->id] = $line->contact_id;
             $this->selected[$line->id] = false;
         }
@@ -76,7 +75,7 @@ class StatementImportReview extends Component
         }
     }
 
-    public function commit()
+    public function importSelected()
     {
         $selected_ids = array_keys(array_filter($this->selected));
 
@@ -86,26 +85,30 @@ class StatementImportReview extends Component
             return $this->backToReview();
         }
 
-        // Enforce that every selected line has a category before committing.
-        foreach ($selected_ids as $id) {
-            if (empty($this->categories[$id] ?? null)) {
+        $lines = $this->statementImport->lines()->pending()->whereIn('id', $selected_ids)->get();
+
+        // A line nobody categorised gets the default for its direction; only a missing default blocks the import
+        foreach ($lines as $line) {
+            $category_id = ($this->categories[$line->id] ?? null) ?: $line->defaultCategoryId();
+
+            if (empty($category_id)) {
                 flash(trans('statement_imports.errors.category_required'))->error()->important();
 
                 return $this->backToReview();
             }
+
+            $this->categories[$line->id] = $category_id;
         }
 
-        // Persist per-line category/contact edits chosen during review.
-        foreach ($selected_ids as $id) {
-            BankStatementLine::where('id', $id)
-                ->where('bank_statement_import_id', $this->statementImport->id)
-                ->update([
-                    'category_id' => $this->categories[$id],
-                    'contact_id'  => $this->contacts[$id] ?? null,
-                ]);
+        // Persist the category and contact chosen during review.
+        foreach ($lines as $line) {
+            $line->update([
+                'category_id' => $this->categories[$line->id],
+                'contact_id'  => ($this->contacts[$line->id] ?? null) ?: null,
+            ]);
         }
 
-        $created = $this->runJob(new CommitStatementLines($this->statementImport, $selected_ids));
+        $created = $this->runJob(new CommitStatementLines($this->statementImport, $lines->pluck('id')->all()));
 
         flash(trans('statement_imports.messages.committed', ['count' => $created]))->success();
 
