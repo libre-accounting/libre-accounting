@@ -123,7 +123,7 @@ class Handler extends ExceptionHandler
 
         return $request->expectsJson()
             ? response()->json(['message' => $exception->getMessage()], 401)
-            : redirect()->to($exception->redirectTo() ?? route('login'));
+            : redirect()->to($exception->redirectTo($request) ?? route('login'));
     }
 
     protected function handleWebExceptions($request, $exception)

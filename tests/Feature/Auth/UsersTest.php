@@ -148,6 +148,34 @@ class UsersTest extends FeatureTestCase
         $this->assertGuest();
     }
 
+    public function testItShouldSendAGuestToLoginAndBackToTheRequestedPage()
+    {
+        // Render exceptions as production does: a guest, such as a visitor whose session expired, used to get a 500 here
+        $this->withExceptionHandling();
+        config(['app.debug' => false]);
+
+        $request = array_merge($this->getRequest(), [
+            'password' => 'guest-redirect',
+            'password_confirmation' => 'guest-redirect',
+            'companies' => [(string) $this->company->id],
+        ]);
+
+        $this->dispatch(new CreateUser($request));
+
+        $url = route('statement-imports.index', ['company_id' => $this->company->id]);
+
+        $this->get($url)
+            ->assertRedirect(route('login'));
+
+        $this->assertGuest();
+
+        $this->post(route('login'), ['email' => $request['email'], 'password' => $request['password']])
+            ->assertOk()
+            ->assertJson(['success' => true, 'redirect' => $url]);
+
+        $this->assertAuthenticated();
+    }
+
     public function testItShouldLogoutUser()
     {
         $request = $this->getRequest();
