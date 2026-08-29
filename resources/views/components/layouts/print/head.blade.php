@@ -18,7 +18,8 @@
     <link rel="icon" href="{{ asset('public/img/favicon.ico') }}" type="image/png">
 
     <!-- Css -->
-    <link rel="stylesheet" href="{{ asset('public/css/print.css') }}" type="text/css">
+    {{-- Inline, so dompdf does not download it from the app's own URL, which hangs when the server cannot reach itself --}}
+    <style type="text/css">{!! file_get_contents(public_path('css/print.css')) !!}</style>
 
     @if (isset($currency_style) && $currency_style || in_array(app()->getLocale(), ['zh-CN', 'ja-JP', 'zh-TW']))
     <style type="text/css">

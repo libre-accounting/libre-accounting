@@ -50,6 +50,35 @@ class InvoicesTest extends FeatureTestCase
         $this->assertStringStartsWith('%PDF-', $response->getContent());
     }
 
+    public function testItShouldDownloadInvoicePdfWithoutRemoteRequests()
+    {
+        // dompdf used to download print.css from the app's own URL, which hangs when the server cannot reach itself
+        $urls = [];
+
+        $block = function ($url) use (&$urls) {
+            $urls[] = $url;
+
+            return [false, 'Remote requests are blocked in this test'];
+        };
+
+        config(['dompdf.options.allowed_protocols' => [
+            'file://' => ['rules' => []],
+            'http://' => ['rules' => [$block]],
+            'https://' => ['rules' => [$block]],
+        ]]);
+
+        $request = $this->getRequest();
+
+        $invoice = $this->dispatch(new CreateDocument($request));
+
+        $this->loginAs()
+            ->get(route('invoices.pdf', $invoice->id))
+            ->assertStatus(200)
+            ->assertHeader('content-type', 'application/pdf');
+
+        $this->assertSame([], $urls);
+    }
+
     public function testItShouldSeeInvoiceCreatePage()
     {
         $this->loginAs()
