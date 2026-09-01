@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Banking;
 
 use App\Abstracts\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class LinkTransfer extends FormRequest
 {
@@ -14,7 +15,11 @@ class LinkTransfer extends FormRequest
     public function rules()
     {
         return [
-            'target_transaction_id' => 'required|integer|exists:transactions,id',
+            'target_transaction_id' => [
+                'required',
+                'integer',
+                Rule::exists('transactions', 'id')->where('company_id', company_id())->whereNull('deleted_at'),
+            ],
         ];
     }
 }
