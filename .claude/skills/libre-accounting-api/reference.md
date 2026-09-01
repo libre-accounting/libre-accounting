@@ -36,6 +36,7 @@ user's first enabled company. Bodies can be JSON, form-encoded or multipart.
 | `accounts` (+ enable/disable) | show by id or number; `current_balance` included |
 | `reconciliations` | |
 | `transactions` | income and expense; transfers and splits are internal types |
+| `transactions/{id}/link-transfer` | POST `target_transaction_id`: retypes two existing transactions into a transfer pair and returns the transfer (201); 400 when the pair is not linkable, 422 for a missing or foreign target |
 | `transfers` | between two accounts; creates an expense-transfer + income-transfer pair |
 | `reports` | show computes the report; `/create` and `/{id}/edit` exist but 500 |
 | `categories` (+ enable/disable) | |
@@ -55,7 +56,7 @@ POST, update for PATCH and enable/disable, delete for DELETE.
 | `purchases-vendors` | contacts with `type:vendor` |
 | `sales-invoices` | documents with `type:invoice` |
 | `purchases-bills` | documents with `type:bill` |
-| `banking-transactions` | transactions, document payments |
+| `banking-transactions` | transactions, document payments; `link-transfer` needs update on `banking-transactions` and create on `banking-transfers` |
 | `banking-accounts`, `banking-transfers`, `banking-reconciliations` | same names |
 | `common-items`, `common-companies`, `common-dashboards`, `common-reports` | same names; the stock and component endpoints of an item need read (GET) or update (POST, DELETE) on `common-items` |
 | `settings-categories`, `settings-currencies`, `settings-taxes` | same names |
@@ -264,10 +265,35 @@ Shared rules:
 
 **transfers**
 
+- A transfer is either created new (below) or made out of two transactions
+  that already exist (`link-transfer`, below).
 - Required: `from_account_id`, `to_account_id`, `amount` (> 0),
   `transferred_at` (**`Y-m-d` only**), `payment_method`.
 - Optional: `description`, `reference`, and for cross-currency transfers the
   `from_account_rate` and `to_account_rate`.
+- Responses carry `expense_transaction_id` and `income_transaction_id`.
+
+**transactions/{id}/link-transfer** (`POST`, body `{"target_transaction_id": N}`)
+
+- Pairs the transaction in the path with an existing one on another account
+  and turns both into a transfer. Nothing is deleted or recreated: the same
+  two rows are retyped in place (`expense-transfer` / `income-transfer`,
+  transfer category, no contact), so `number`, `reference`, `description`
+  and dates survive. Which id goes in the path does not matter; the expense
+  becomes the expense leg.
+- Returns 201 with the transfer (`id`, `expense_transaction_id`,
+  `income_transaction_id`, `from_account_id`, `to_account_id`, `amount`,
+  `created_from: "core::link_transfer"`) and a `Location` header.
+- Cross-currency pairs may have different amounts; the transfer takes its
+  amount and date from the expense leg.
+- 400 with `{"message": ...}` when the pair is refused, with nothing
+  changed: same transaction, same account, both expenses or both incomes,
+  either one reconciled, either one matched to an invoice or bill, or either
+  one already part of a transfer.
+- 422 when `target_transaction_id` is missing or is not a transaction of the
+  current company (`X-Company`); 404 when the path transaction is not.
+- There is no unlink endpoint (the UI has none either). Deleting the
+  transfer deletes both transactions.
 
 **taxes**
 

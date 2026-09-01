@@ -57,6 +57,7 @@ Route::group(['as' => 'api.'], function () {
     Route::apiResource('reconciliations', 'Banking\Reconciliations', ['middleware' => ['date.format', 'money', 'dropzone']]);
 
     // Transactions
+    Route::post('transactions/{transaction}/link-transfer', 'Banking\Transactions@linkTransfer')->name('transactions.link-transfer');
     Route::apiResource('transactions', 'Banking\Transactions', ['middleware' => ['date.format', 'money', 'dropzone']]);
 
     // Transfers

@@ -146,6 +146,15 @@ everything as multipart: `-S type=expense -S number=... ... -F 'attachment[]=@/p
 4. Re-list and confirm. Transfers and reconciled transactions can't be
    edited; `la-update` refuses them or the server rejects them.
 
+**Turn two imported transactions into a transfer** (one expense, one income,
+different accounts, same company; neither reconciled or matched to a document)
+```bash
+scripts/la-api -j '{"target_transaction_id": 456}' POST transactions/123/link-transfer
+```
+The two rows are retyped in place, keeping their numbers and references; do
+not delete imports and re-create them as a transfer. See the `link-transfer`
+notes in `reference.md` for the error cases.
+
 **Create an invoice**
 ```bash
 scripts/la-next-number invoice              # e.g. INV-00042

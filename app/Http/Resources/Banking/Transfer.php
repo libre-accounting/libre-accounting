@@ -20,6 +20,8 @@ class Transfer extends JsonResource
         return [
             'id' => $this->id,
             'company_id' => $this->company_id,
+            'expense_transaction_id' => $this->expense_transaction_id,
+            'income_transaction_id' => $this->income_transaction_id,
             'from_account' => $expense_transaction->account->name,
             'from_account_id' => $expense_transaction->account->id,
             'to_account' => $income_transaction->account->name,
