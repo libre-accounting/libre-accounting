@@ -46,12 +46,16 @@
                             </div>
                         </div>
 
-                        <div class="hover:bg-gray-100 text-center py-2 px-4" v-if="!sortedItems.length">
+                        <div class="hover:bg-gray-100 text-center py-2 px-4" v-if="!sortedItems.length && !search_error">
                             <div class="text-center">
                                 <span v-if="!items.length && !search">{{ noDataText }}</span>
 
                                 <span v-else>{{ noMatchingDataText }}</span>
                             </div>
+                        </div>
+
+                        <div class="text-center py-2 px-4 text-red" role="alert" v-if="search_error">
+                            <span>{{ searchErrorText }}</span>
                         </div>
                     </ul>
                 </div>
@@ -150,6 +154,11 @@ export default {
             default: 'No Matchign Data',
             description: "Selectbox search option not found item message"
         },
+        searchErrorText: {
+            type: String,
+            default: 'Oops! Something went wrong',
+            description: "Message shown when the item search request fails"
+        },
         dynamicCurrency: {
             type: Object,
             default: function () {
@@ -189,6 +198,9 @@ export default {
             selected_items: [],
             changeBackground: true,
             search: '', // search column model
+            search_error: false, // last item search request failed
+            search_request_id: 0, // ignore responses of superseded searches
+            item_list_search: null, // search term the server returned item_list for, null for the preloaded list
             show: {
                 item_selected: false,
                 item_list: false,
@@ -237,6 +249,9 @@ export default {
     methods: {
         setItemList(items) {
             this.item_list = [];
+            this.item_list_search = null;
+            this.search_error = false;
+            this.search_request_id++; // drop responses of searches still in flight
 
             this.search.length === 0 ? this.isItemMatched = false : {}
 
@@ -291,6 +306,8 @@ export default {
             //to optimize performance we kept the condition that checks for if search exists or not
             if (!this.search) {
                 this.isItemMatched = false; //to remove the style from matched item on input is cleared (option)
+                this.search_error = false;
+                this.search_request_id++; // drop responses of searches still in flight
                 return;
             }
 
@@ -317,9 +334,18 @@ export default {
         },
 
         async fetchMatchedItems() {
-            await window.axios.get(url + '/common/items?search="' + this.search + '" not ' + this.price + ':NULL enabled:1 limit:10')
+            const request_id = ++this.search_request_id;
+            const search = this.search;
+
+            await window.axios.get(url + '/common/items?search="' + search + '" not ' + this.price + ':NULL enabled:1 limit:10')
                 .then(response => {
+                    if (request_id !== this.search_request_id) {
+                        return;
+                    }
+
+                    this.search_error = false;
                     this.item_list = [];
+                    this.item_list_search = search;
                     let items = response.data.data;
 
                     items.forEach(function (item, index) {
@@ -336,7 +362,16 @@ export default {
                         });
                     }, this);
                 })
-                .catch(error => {});
+                .catch(error => {
+                    if (request_id !== this.search_request_id) {
+                        return;
+                    }
+
+                    // Surface the failure instead of letting it look like "no matching data".
+                    console.error('Item search failed', error);
+
+                    this.search_error = true;
+                });
         },
 
         onItemSelected(clickSelectedItem) {
@@ -499,8 +534,20 @@ export default {
                 return 0;
             });
 
-            const sortedItemList = this.item_list.filter(item => 
-                item.value.toLowerCase().includes(this.search.toLowerCase())
+            // The server already matched these items for the current search term (on name
+            // or description, using the database's collation), so don't filter them again:
+            // a name-only filter here hid items that only matched on their description.
+            if (this.item_list_search !== null && this.item_list_search === this.search) {
+                return this.item_list;
+            }
+
+            // Preloaded list, or results of an earlier term while the next request is in
+            // flight: filter locally on the same fields the server searches.
+            const search = this.search.toLowerCase();
+
+            const sortedItemList = this.item_list.filter(item =>
+                item.value.toLowerCase().includes(search)
+                || (item.description && item.description.toLowerCase().includes(search))
             );
 
             return sortedItemList;
