@@ -2,6 +2,7 @@
     placeholder="{{ trans('general.placeholder.item_search') }}"
     no-data-text="{{ trans('general.no_data') }}"
     no-matching-data-text="{{ trans('general.no_matching_data') }}"
+    search-error-text="{{ trans('errors.title.500') }}"
     type="{{ $type }}"
     price="{{ $price }}"
     :dynamic-currency="currency"

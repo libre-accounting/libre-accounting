@@ -57,7 +57,7 @@
         "league/oauth2-client": "^2.6",
         "league/omnipay": "^3.2",
         "libre-accounting/laravel-menu": "^3.2",
-        "libre-accounting/laravel-search-string": "^1.4",
+        "libre-accounting/laravel-search-string": "^1.4.1",
         "livewire/livewire": "^3.5",
         "maatwebsite/excel": "3.1.*",
         "mike-bronner/laravel-model-caching": "^13.0",
