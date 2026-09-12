@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8f7484c3724d30087e809d56893e4bd5",
+    "content-hash": "b1346f8728da8993c5faa75f1d77d70f",
     "packages": [
         {
             "name": "akaunting/laravel-apexcharts",
@@ -6068,16 +6068,16 @@
         },
         {
             "name": "libre-accounting/laravel-search-string",
-            "version": "v1.4.0",
+            "version": "v1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/libre-accounting/laravel-search-string.git",
-                "reference": "c66de9bc9b31953b5800a607a4e3ed3d8b08a18f"
+                "reference": "7c7d0ba4147e3dc91c85c1aaba374e485ceceed2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/libre-accounting/laravel-search-string/zipball/c66de9bc9b31953b5800a607a4e3ed3d8b08a18f",
-                "reference": "c66de9bc9b31953b5800a607a4e3ed3d8b08a18f",
+                "url": "https://api.github.com/repos/libre-accounting/laravel-search-string/zipball/7c7d0ba4147e3dc91c85c1aaba374e485ceceed2",
+                "reference": "7c7d0ba4147e3dc91c85c1aaba374e485ceceed2",
                 "shasum": ""
             },
             "require": {
@@ -6091,7 +6091,7 @@
             },
             "require-dev": {
                 "orchestra/testbench": "^7.0|^8.0|^9.0|^10.0|^11.0",
-                "phpunit/phpunit": "^9.0"
+                "phpunit/phpunit": "^9.0|^10.5|^11.5"
             },
             "type": "library",
             "extra": {
@@ -6123,7 +6123,7 @@
             "description": "Generates database queries based on one unique string using a simple and customizable syntax. (Libre Accounting fork of lorisleiva/laravel-search-string with Laravel 11+ support)",
             "homepage": "https://github.com/libre-accounting/laravel-search-string",
             "support": {
-                "source": "https://github.com/libre-accounting/laravel-search-string/tree/v1.4.0"
+                "source": "https://github.com/libre-accounting/laravel-search-string/tree/v1.4.1"
             },
             "funding": [
                 {
@@ -6131,7 +6131,7 @@
                     "url": "https://github.com/lorisleiva"
                 }
             ],
-            "time": "2026-10-21T21:48:25+00:00"
+            "time": "2026-11-18T17:31:18+00:00"
         },
         {
             "name": "livewire/livewire",
