@@ -27,4 +27,6 @@ return [
         'transactions'          => 'Šim klientam vēl nav veikts neviens darījums. Izveidojiet jaunu tūlīt.',
     ],
 
+    'language_default'          => 'Uzņēmuma valoda (:language)',
+
 ];

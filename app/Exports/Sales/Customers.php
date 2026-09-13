@@ -41,6 +41,7 @@ class Customers extends Export
             'city',
             'website',
             'currency_code',
+            'language',
             'reference',
             'enabled',
             'can_login',

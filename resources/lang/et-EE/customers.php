@@ -9,4 +9,6 @@ return [
         'email'             => 'See e-posti aadress on juba kasutusel.',
     ],
 
+    'language_default'      => 'Ettevõtte keel (:language)',
+
 ];

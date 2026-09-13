@@ -27,4 +27,6 @@ return [
         'transactions'          => 'Nu există încă nicio tranzacție pentru acest client. Creați una nouă acum.',
     ],
 
+    'language_default'          => 'Limba companiei (:language)',
+
 ];

@@ -9,4 +9,6 @@ return [
         'email'             => 'यो ईमेल पहिले नै लिइसकिएको छ ।',
     ],
 
+    'language_default'      => 'कम्पनीको भाषा (:language)',
+
 ];

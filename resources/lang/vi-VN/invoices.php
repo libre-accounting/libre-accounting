@@ -65,4 +65,6 @@ return [
         'button'        => 'Trả ngay',
     ],
 
+    'language_default'  => 'Ngôn ngữ của khách hàng',
+
 ];

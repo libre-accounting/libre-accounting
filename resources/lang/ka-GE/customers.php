@@ -9,4 +9,6 @@ return [
         'email'             => 'ელ-ფოსტა უკვე დაკავებულია.',
     ],
 
+    'language_default'      => 'კომპანიის ენა (:language)',
+
 ];

@@ -30,6 +30,7 @@ class Contact extends JsonResource
             'country' => $this->country,
             'website' => $this->website,
             'currency_code' => $this->currency_code,
+            'language' => $this->language,
             'enabled' => $this->enabled,
             'reference' => $this->reference,
             'logo' => $this->logo,

@@ -62,6 +62,10 @@ class Invoices extends Controller
     {
         $layout = $request->isPortal($invoice->company_id) ? 'portal' : 'signed';
 
+        if ($layout == 'signed') {
+            $this->useInvoiceLanguage($invoice);
+        }
+
         return view('portal.invoices.finish', compact('invoice', 'layout'));
     }
 
@@ -76,9 +80,11 @@ class Invoices extends Controller
     {
         event(new \App\Events\Document\DocumentPrinting($invoice));
 
-        $view = view($invoice->template_path, compact('invoice'));
+        return $this->withDocumentLanguage($invoice, function () use ($invoice) {
+            $view = view($invoice->template_path, compact('invoice'))->render();
 
-        return mb_convert_encoding($view, 'HTML-ENTITIES', 'UTF-8');
+            return mb_convert_encoding($view, 'HTML-ENTITIES', 'UTF-8');
+        });
     }
 
     /**
@@ -92,19 +98,21 @@ class Invoices extends Controller
     {
         event(new \App\Events\Document\DocumentPrinting($invoice));
 
-        $currency_style = true;
+        return $this->withDocumentLanguage($invoice, function () use ($invoice) {
+            $currency_style = true;
 
-        $view = view($invoice->template_path, compact('invoice', 'currency_style'))->render();
-        $html = mb_convert_encoding($view, 'HTML-ENTITIES', 'UTF-8');
+            $view = view($invoice->template_path, compact('invoice', 'currency_style'))->render();
+            $html = mb_convert_encoding($view, 'HTML-ENTITIES', 'UTF-8');
 
-        $pdf = app('dompdf.wrapper');
-        $pdf->loadHTML($html);
+            $pdf = app('dompdf.wrapper');
+            $pdf->loadHTML($html);
 
-        //$pdf->setPaper('A4', 'portrait');
+            //$pdf->setPaper('A4', 'portrait');
 
-        $file_name = $this->getDocumentFileName($invoice);
+            $file_name = $this->getDocumentFileName($invoice);
 
-        return $pdf->download($file_name);
+            return $pdf->download($file_name);
+        });
     }
 
     public function preview(Document $invoice)
@@ -134,6 +142,8 @@ class Invoices extends Controller
             return redirect()->route('login');
         }
 
+        $this->useInvoiceLanguage($invoice);
+
         $payment_actions = [];
 
         $payment_methods = Modules::getPaymentMethods();
@@ -155,5 +165,18 @@ class Invoices extends Controller
         }
 
         return view('portal.invoices.signed', compact('invoice', 'payment_methods', 'payment_actions', 'print_action', 'pdf_action'));
+    }
+
+    /**
+     * The public link is the customer's page, so show it in the invoice's
+     * language, unless ?lang= asked for another one.
+     */
+    protected function useInvoiceLanguage(Document $invoice): void
+    {
+        if (request()->has('lang')) {
+            return;
+        }
+
+        app()->setLocale($invoice->effective_language);
     }
 }

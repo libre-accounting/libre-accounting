@@ -58,4 +58,6 @@ return [
         ],
     ],
 
+    'language_default'      => 'زبان مشتری',
+
 ];

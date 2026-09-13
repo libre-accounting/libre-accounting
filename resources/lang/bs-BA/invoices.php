@@ -82,4 +82,6 @@ return [
         'description'       => 'Pregledate kako će vaš klijent vidjeti web verziju vaše fakture.',
     ],
 
+    'language_default'      => 'Jezik kupca',
+
 ];

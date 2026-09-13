@@ -9,4 +9,6 @@ return [
         'email'             => 'Þetta netfang er þegar skráð.',
     ],
 
+    'language_default'      => 'Tungumál fyrirtækisins (:language)',
+
 ];

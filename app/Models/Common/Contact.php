@@ -61,6 +61,7 @@ class Contact extends Model implements MediableInterface
         'country',
         'website',
         'currency_code',
+        'language',
         'reference',
         'enabled',
         'created_from',
@@ -284,6 +285,22 @@ class Contact extends Model implements MediableInterface
         }
 
         return implode(', ', $location);
+    }
+
+    /**
+     * The language this customer's invoices are rendered in: their own
+     * preference, or the company's default language when they have none.
+     *
+     * @return string
+     */
+    public function getEffectiveLanguageAttribute(): string
+    {
+        // allowed() with no code returns the whole list, so check for a value first
+        if (filled($this->language) && language()->allowed($this->language)) {
+            return $this->language;
+        }
+
+        return setting('default.locale', config('app.locale', 'en-GB'));
     }
 
     /**

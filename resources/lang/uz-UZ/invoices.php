@@ -66,4 +66,6 @@ return [
         ],
     ],
 
+    'language_default'      => 'Mijoz tili',
+
 ];

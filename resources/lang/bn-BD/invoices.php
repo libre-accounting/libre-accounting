@@ -57,4 +57,6 @@ return [
         ],
     ],
 
+    'language_default'      => 'ক্রেতার ভাষা',
+
 ];

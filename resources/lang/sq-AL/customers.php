@@ -9,4 +9,6 @@ return [
         'email'             => 'Emaili tashmë është marrë.',
     ],
 
+    'language_default'      => 'Gjuha e kompanisë (:language)',
+
 ];

@@ -71,6 +71,7 @@ class Document extends JsonResource
             'category_id' => $this->category_id,
             'currency_code' => $this->currency_code,
             'currency_rate' => $this->currency_rate,
+            'language' => $this->language,
             'contact_id' => $this->contact_id,
             'contact_name' => $this->contact_name,
             'contact_email' => $this->contact_email,

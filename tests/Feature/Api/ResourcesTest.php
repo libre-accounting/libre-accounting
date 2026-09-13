@@ -69,6 +69,46 @@ class ResourcesTest extends FeatureTestCase
             ->assertJsonPath('data.country', 'PL');
     }
 
+    public function testContactAndInvoiceIncludeLanguage()
+    {
+        $contact = Contact::factory()->customer()->enabled()->create(['language' => 'de-DE']);
+
+        $this->api()
+            ->getJson('api/contacts/' . $contact->id . '?search=type:customer')
+            ->assertOk()
+            ->assertJsonPath('data.language', 'de-DE');
+
+        $invoice = [
+            'type' => 'invoice',
+            'document_number' => 'API-LANG-1',
+            'status' => 'draft',
+            'issued_at' => '2026-10-19 10:00:00',
+            'due_at' => '2026-11-02 10:00:00',
+            'amount' => 0,
+            'currency_code' => default_currency(),
+            'currency_rate' => 1,
+            'contact_id' => $contact->id,
+            'contact_name' => $contact->name,
+            'category_id' => setting('default.income_category'),
+            'language' => 'fr-FR',
+            'items' => [
+                ['name' => 'API test service', 'quantity' => 1, 'price' => 100],
+            ],
+        ];
+
+        $this->api()
+            ->postJson('api/documents?search=type:invoice', $invoice)
+            ->assertCreated()
+            ->assertJsonPath('data.language', 'fr-FR')
+            ->assertJsonPath('data.contact.language', 'de-DE');
+
+        // Only the offered languages are accepted
+        $this->withExceptionHandling()
+            ->api()
+            ->postJson('api/documents?search=type:invoice', ['document_number' => 'API-LANG-2', 'language' => 'xx-XX'] + $invoice)
+            ->assertStatus(422);
+    }
+
     public function testInvoiceItemsIncludeQuantityAndDiscount()
     {
         $contact = Contact::factory()->customer()->enabled()->create();

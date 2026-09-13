@@ -3,6 +3,7 @@
 namespace App\Abstracts\View\Components\Contacts;
 
 use App\Abstracts\View\Component;
+use App\Models\Common\Contact;
 use App\Traits\ViewComponents;
 
 abstract class Form extends Component
@@ -97,6 +98,12 @@ abstract class Form extends Component
     /** @var bool */
     public $hideCurrency;
 
+    /** @var bool */
+    public $hideLanguage;
+
+    /** @var string */
+    public $textLanguagePlaceholder;
+
     /** @var string */
     public $textSectionAddressTitle;
 
@@ -154,6 +161,7 @@ abstract class Form extends Component
         string $textSectionBillingTitle = '', string $textSectionBillingDescription = '',
         bool $hideTaxNumber = false, string $textTaxNumber = '',
         bool $hideCurrency = false,
+        bool $hideLanguage = false,
         string $textSectionAddressTitle = '', string $textSectionAddressDescription = '',
         bool $hideAddress = false, string $textAddress = '',
         bool $hideCity = false, string $textCity = '',
@@ -208,6 +216,10 @@ abstract class Form extends Component
         $this->textTaxNumber = $this->getTextTaxNumber($type, $textTaxNumber);
 
         $this->hideCurrency = $hideCurrency;
+
+        // Only customers get invoices, so only they have an invoice language
+        $this->hideLanguage = $hideLanguage || $type !== Contact::CUSTOMER_TYPE;
+        $this->textLanguagePlaceholder = $this->getTextLanguagePlaceholder();
         /* -- Billing End -- */
 
         /* -- Address Start -- */
@@ -500,4 +512,13 @@ abstract class Form extends Component
     }
     /* -- Address End -- */
     /* -- Content End -- */
+
+    protected function getTextLanguagePlaceholder(): string
+    {
+        $locale = setting('default.locale', config('app.locale', 'en-GB'));
+
+        return trans('customers.language_default', [
+            'language' => language()->allowed()[$locale] ?? $locale,
+        ]);
+    }
 }

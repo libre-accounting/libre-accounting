@@ -42,6 +42,7 @@ class Invoices extends Export implements WithColumnFormatting
             'amount',
             'currency_code',
             'currency_rate',
+            'language',
             'category_name',
             'contact_name',
             'contact_email',

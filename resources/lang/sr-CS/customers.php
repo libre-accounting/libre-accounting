@@ -9,4 +9,6 @@ return [
         'email'             => 'Email već postoji.',
     ],
 
+    'language_default'      => 'Jezik firme (:language)',
+
 ];

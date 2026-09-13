@@ -259,6 +259,12 @@ abstract class Form extends Component
     public $categoryId;
 
     /** @var bool */
+    public $hideLanguage;
+
+    /** @var string */
+    public $classLanguage;
+
+    /** @var bool */
     public $hideAttachment;
 
     /** @var string */
@@ -299,6 +305,7 @@ abstract class Form extends Component
         bool $hideAdvanced = false, string $textSectionAdvancedTitle = '', string $textSectionAdvancedDescription = '',
         bool $hideFooter = false, string $classFooter = '', string $footer = '',
         bool $hideCategory = false, string $classCategory = '', string $typeCategory = '', $categoryId = '',
+        bool $hideLanguage = false, string $classLanguage = '',
         bool $hideAttachment = false, string $classAttachment = '',
         bool $hideButtons = false, string $cancelRoute = '', $hideSendTo = false
     ) {
@@ -423,6 +430,10 @@ abstract class Form extends Component
         $this->classCategory = !empty($classCategory) ? $classCategory : 'sm:col-span-4 grid gap-x-8 gap-y-3';
         $this->typeCategory = $this->getTypeCategory($type, $typeCategory);
         $this->categoryId = $this->getCategoryId($type, $categoryId);
+
+        // Only documents sent to customers are rendered in a chosen language
+        $this->hideLanguage = $hideLanguage || config('type.document.' . $type . '.contact_type') !== Contact::CUSTOMER_TYPE;
+        $this->classLanguage = !empty($classLanguage) ? $classLanguage : 'sm:col-span-4';
 
         $this->hideAttachment = $hideAttachment;
         $this->classAttachment = !empty($classAttachment) ? $classAttachment : 'sm:col-span-4';

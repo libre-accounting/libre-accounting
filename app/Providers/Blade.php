@@ -33,6 +33,16 @@ class Blade extends ServiceProvider
             return "<?php echo module_is_enabled($expression); ?>";
         });
 
+        // Render a block in another language, e.g. an invoice preview in the
+        // customer's language; the previous locale is restored at @endlocale
+        Facade::directive('locale', function ($expression) {
+            return "<?php \$__previousLocales[] = app()->getLocale(); app()->setLocale({$expression}); ?>";
+        });
+
+        Facade::directive('endlocale', function () {
+            return "<?php app()->setLocale(array_pop(\$__previousLocales)); ?>";
+        });
+
         Facade::if('readonly', function () {
             return config('read-only.enabled');
         });

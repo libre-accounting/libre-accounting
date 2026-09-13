@@ -86,4 +86,6 @@ return [
         'description'       => 'Anda sedang mempratinjau bagaimana pelanggan Anda akan melihat versi web faktur Anda.',
     ],
 
+    'language_default'      => 'Bahasa pelanggan',
+
 ];

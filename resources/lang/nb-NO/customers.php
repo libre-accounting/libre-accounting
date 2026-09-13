@@ -27,4 +27,6 @@ return [
         'transactions'          => 'Det er ingen transaksjoner for denne kunden ennå. Opprett ny nå.',
     ],
 
+    'language_default'          => 'Foretakets språk (:language)',
+
 ];

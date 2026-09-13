@@ -27,4 +27,6 @@ return [
         'transactions'          => 'Belum ada transaksi untuk pelanggan ini. Buat yang baru sekarang.',
     ],
 
+    'language_default'          => 'Bahasa perusahaan (:language)',
+
 ];

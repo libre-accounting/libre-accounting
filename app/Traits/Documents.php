@@ -7,6 +7,7 @@ use App\Models\Document\Document;
 use App\Abstracts\View\Components\Documents\Document as DocumentComponent;
 use App\Utilities\Date;
 use App\Traits\Transactions;
+use Closure;
 use Egulias\EmailValidator\EmailValidator;
 use Egulias\EmailValidator\Validation\DNSCheckValidation;
 use Egulias\EmailValidator\Validation\MultipleValidationWithAnd;
@@ -175,24 +176,69 @@ trait Documents
         return $key;
     }
 
+    /**
+     * The invoice.title setting is seeded with the word for "Invoice" in the
+     * company's language, and the form copies it onto every invoice. A title
+     * that is that built-in word in any language is shown in the current
+     * language instead; any other title stays as typed.
+     */
+    public function translateDefaultDocumentTitle(string $title, ?string $translation_key): string
+    {
+        if (empty($translation_key)) {
+            return $title;
+        }
+
+        $current = trans_choice($translation_key, 1);
+
+        if ($title === $current) {
+            return $title;
+        }
+
+        foreach (array_keys(language()->allowed()) as $locale) {
+            if (trans_choice($translation_key, 1, [], $locale) === $title) {
+                return $current;
+            }
+        }
+
+        return $title;
+    }
+
+    /**
+     * Run the callback in the document's language, then switch back.
+     */
+    public function withDocumentLanguage(Document $document, Closure $callback): mixed
+    {
+        $original = app()->getLocale();
+
+        app()->setLocale($document->effective_language);
+
+        try {
+            return $callback();
+        } finally {
+            app()->setLocale($original);
+        }
+    }
+
     public function storeDocumentPdfAndGetPath($document)
     {
         event(new \App\Events\Document\DocumentPrinting($document));
 
-        $view = view($document->template_path, ['invoice' => $document, 'document' => $document])->render();
-        $html = mb_convert_encoding($view, 'HTML-ENTITIES', 'UTF-8');
+        return $this->withDocumentLanguage($document, function () use ($document) {
+            $view = view($document->template_path, ['invoice' => $document, 'document' => $document])->render();
+            $html = mb_convert_encoding($view, 'HTML-ENTITIES', 'UTF-8');
 
-        $pdf = app('dompdf.wrapper');
-        $pdf->loadHTML($html);
+            $pdf = app('dompdf.wrapper');
+            $pdf->loadHTML($html);
 
-        $file_name = $this->getDocumentFileName($document);
+            $file_name = $this->getDocumentFileName($document);
 
-        $pdf_path = get_storage_path('app/temp/' . $file_name);
+            $pdf_path = get_storage_path('app/temp/' . $file_name);
 
-        // Save the PDF file into temp folder
-        $pdf->save($pdf_path);
+            // Save the PDF file into temp folder
+            $pdf->save($pdf_path);
 
-        return $pdf_path;
+            return $pdf_path;
+        });
     }
 
     public function getTotalsForFutureDocuments($type = 'invoice', $documents = null)

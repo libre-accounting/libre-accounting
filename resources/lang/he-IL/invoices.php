@@ -65,4 +65,6 @@ return [
         'button'        => 'שלם עכשיו',
     ],
 
+    'language_default'  => 'שפת הלקוח',
+
 ];

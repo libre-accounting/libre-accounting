@@ -9,4 +9,6 @@ return [
         'email'             => '此郵件已被使用。',
     ],
 
+    'language_default'      => '公司語言 (:language)',
+
 ];

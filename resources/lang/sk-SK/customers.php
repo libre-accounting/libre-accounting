@@ -27,4 +27,6 @@ return [
         'transactions'          => 'Pre tohto zákazníka zatiaľ neexistuje žiadna transakcia. Vytvorte si teraz novú.',
     ],
 
+    'language_default'          => 'Jazyk spoločnosti (:language)',
+
 ];

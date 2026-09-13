@@ -9,4 +9,6 @@ return [
         'email'             => 'The email has already been taken.',
     ],
 
+    'language_default'      => 'Company language (:language)',
+
 ];

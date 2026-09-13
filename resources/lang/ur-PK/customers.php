@@ -13,4 +13,7 @@ return [
         'message'       => ': کسٹمر بنا دیا: نمبر انوائس کے لئے ادائیگی کی رقم: invoice_number ۔',
         'button'        => 'دکھائیں',
     ],
+
+    'language_default'      => 'کمپنی کی زبان (:language)',
+
 ];

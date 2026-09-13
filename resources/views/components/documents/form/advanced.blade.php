@@ -26,6 +26,18 @@
                 <x-form.input.hidden name="category_id" :value="$categoryId" />
             @endif
 
+            @if (! $hideLanguage)
+                <div class="{{ $classLanguage }}">
+                    <x-form.group.select
+                        name="language"
+                        :label="trans_choice('general.languages', 1)"
+                        :options="language()->allowed()"
+                        :placeholder="trans('invoices.language_default')"
+                        not-required
+                    />
+                </div>
+            @endif
+
             @stack('attachment_end')
 
             @if (! $hideAttachment)

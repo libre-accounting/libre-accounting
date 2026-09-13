@@ -9,4 +9,6 @@ return [
         'email'             => 'Emel ini telah wujud.',
     ],
 
+    'language_default'      => 'Bahasa syarikat (:language)',
+
 ];

@@ -83,4 +83,6 @@ return [
         'description'       => 'Sie sehen wie Ihr Kunde die Web-Version Ihrer Rechnung sehen wird.',
     ],
 
+    'language_default'      => 'Sprache des Kunden',
+
 ];

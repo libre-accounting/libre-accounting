@@ -118,6 +118,13 @@
             @endif
             @stack('tax_number_input_end')
 
+            @if ($contact->language)
+                <div class="flex flex-col text-sm sm:mb-5">
+                    <div class="font-medium">{{ trans_choice('general.languages', 1) }}</div>
+                    <span>{{ language()->allowed()[$contact->language] ?? $contact->language }}</span>
+                </div>
+            @endif
+
             @stack('website_input_start')
             @if (! $hideWebsite)
             @if ($contact->website)

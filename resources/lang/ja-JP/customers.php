@@ -9,4 +9,6 @@ return [
         'email'             => '電子メールは既に撮影されています。',
     ],
 
+    'language_default'      => '会社の言語 (:language)',
+
 ];

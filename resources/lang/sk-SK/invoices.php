@@ -65,4 +65,6 @@ return [
         'button'        => 'Zaplatiť teraz',
     ],
 
+    'language_default'  => 'Jazyk zákazníka',
+
 ];

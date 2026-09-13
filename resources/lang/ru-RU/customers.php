@@ -9,4 +9,6 @@ return [
         'email'             => 'Этот e-mail уже занят.',
     ],
 
+    'language_default'      => 'Язык компании (:language)',
+
 ];

@@ -62,6 +62,7 @@ class Document extends FormRequest
             'items.*.price'         => 'required|amount',
             'currency_code'         => 'required|string|currency',
             'currency_rate'         => 'required|gt:0',
+            'language'              => 'nullable|string|in:' . implode(',', array_keys(language()->allowed())),
             'contact_id'            => 'required|integer',
             'contact_name'          => 'required|string',
             'category_id'           => 'required|integer',

@@ -68,4 +68,6 @@ return [
         'button'            => '지금 구매',
     ],
 
+    'language_default'      => '고객 언어',
+
 ];

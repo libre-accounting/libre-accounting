@@ -57,4 +57,6 @@ return [
         ],
     ],
 
+    'language_default'      => 'お客様の言語',
+
 ];

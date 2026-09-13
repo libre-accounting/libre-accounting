@@ -74,4 +74,6 @@ return [
         ],
     ],
 
+    'language_default'      => 'Idioma do cliente',
+
 ];
