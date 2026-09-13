@@ -207,6 +207,24 @@ class InvoiceLanguageTest extends FeatureTestCase
             ->assertDontSee($placeholder);
     }
 
+    public function testItShouldLoadTheChineseFontFromDisk()
+    {
+        // dompdf keeps the first font source that loads; a download from the app's own URL hung for 75 s when the server could not reach itself
+        $invoice = $this->createInvoice($this->createCustomer('zh-CN'));
+
+        $html = $this->loginAs()
+            ->get(route('invoices.print', $invoice->id))
+            ->assertOk()
+            ->getContent();
+
+        $local = strpos($html, "url('file://" . public_path('css/fonts/firefly_sung_normal.ttf') . "')");
+        $remote = strpos($html, asset('/public/css/fonts/firefly_sung_normal.ttf'));
+
+        $this->assertNotFalse($local);
+        $this->assertNotFalse($remote);
+        $this->assertLessThan($remote, $local);
+    }
+
     public function testItShouldKeepTheLanguageOnACopy()
     {
         $invoice = $this->createInvoice($this->createCustomer(null), 'fr-FR');
