@@ -118,7 +118,7 @@ case $resource in
                 currency_code, currency_rate, category_id,
                 contact_id, contact_name, contact_email, contact_tax_number, contact_phone,
                 contact_address, contact_city, contact_zip_code, contact_state, contact_country,
-                title, subheading, notes, footer,
+                title, subheading, notes, footer, language,
                 items: [.items.data[] | {
                     item_id, name,
                     description: (.description // ""),
@@ -137,7 +137,7 @@ case $resource in
         template='
             {
                 type, name, email, currency_code, tax_number, phone, address,
-                city, zip_code, state, country, website, reference,
+                city, zip_code, state, country, website, reference, language,
                 enabled: (.enabled | flag)
             }
             + (if (.logo | type) == "object" then {uploaded_logo: {id: .logo.id}} else {} end)'
