@@ -26,7 +26,8 @@
         @font-face {
             font-family: 'Firefly Sung';
             font-weight: 'normal';
-            src: url('{{ asset("/public/css/fonts/firefly_sung_normal.ttf") }}') format("truetype");
+            {{-- The file comes first, so dompdf reads it from disk instead of downloading it from the app's own URL, which hangs when the server cannot reach itself; browsers skip the file:// source --}}
+            src: url('file://{{ public_path('css/fonts/firefly_sung_normal.ttf') }}') format("truetype"), url('{{ asset("/public/css/fonts/firefly_sung_normal.ttf") }}') format("truetype");
         }
 
         * {
