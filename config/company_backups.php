@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'schema_version' => 2, // 2: items.track_stock, item_components, item_stock_movements
+    'schema_version' => 3, // 2: items.track_stock, item_components, item_stock_movements; 3: contacts.language, documents.language
 
     /*
     |--------------------------------------------------------------------------

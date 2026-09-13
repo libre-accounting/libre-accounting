@@ -14,5 +14,15 @@
         @if (! $hideCurrency)
             <x-form.group.currency />
         @endif
+
+        @if (! $hideLanguage)
+            <x-form.group.select
+                name="language"
+                :label="trans_choice('general.languages', 1)"
+                :options="language()->allowed()"
+                :placeholder="$textLanguagePlaceholder"
+                not-required
+            />
+        @endif
     </x-slot>
 </x-form.section>

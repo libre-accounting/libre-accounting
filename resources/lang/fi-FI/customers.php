@@ -9,4 +9,6 @@ return [
         'email'             => 'Sähköpostiosoite on jo käytössä.',
     ],
 
+    'language_default'      => 'Yhtiön kieli (:language)',
+
 ];

@@ -82,4 +82,6 @@ return [
         'description'       => 'You are previewing how your customer will see the web version of your invoice.',
     ],
 
+    'language_default'      => 'Customer\'s language',
+
 ];

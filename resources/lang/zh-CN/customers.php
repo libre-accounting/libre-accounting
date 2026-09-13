@@ -9,4 +9,6 @@ return [
         'email'             => '邮箱已注册',
     ],
 
+    'language_default'      => '公司语言 (:language)',
+
 ];

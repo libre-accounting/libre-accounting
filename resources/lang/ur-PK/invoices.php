@@ -69,4 +69,6 @@ return [
         'button'            => 'ابھی ادا کریں',
     ],
 
+    'language_default'      => 'گاہک کی زبان',
+
 ];

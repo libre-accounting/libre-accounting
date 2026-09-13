@@ -61,6 +61,7 @@ class Contact extends FormRequest
             'email'         => $email,
             'user_id'       => 'integer|nullable',
             'currency_code' => 'required|string|currency',
+            'language'      => 'nullable|string|in:' . implode(',', array_keys(language()->allowed())),
             'enabled'       => 'integer|boolean',
             'logo'          => $logo,
         ];

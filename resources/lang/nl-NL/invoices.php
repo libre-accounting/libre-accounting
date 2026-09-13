@@ -86,4 +86,6 @@ return [
         'description'       => 'Je bekijkt hoe je klant de webversie van je factuur zal zien.',
     ],
 
+    'language_default'      => 'Taal van de klant',
+
 ];

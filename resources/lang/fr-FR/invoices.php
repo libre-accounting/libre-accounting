@@ -86,4 +86,6 @@ return [
         'description'       => 'Vous êtes en train de prévisualiser comment votre client va voir la version web de votre facture.',
     ],
 
+    'language_default'      => 'Langue du client',
+
 ];

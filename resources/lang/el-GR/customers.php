@@ -9,4 +9,6 @@ return [
         'email'             => 'Το email αυτό χρησιμοποιείται ήδη.',
     ],
 
+    'language_default'      => 'Γλώσσα εταιρίας (:language)',
+
 ];

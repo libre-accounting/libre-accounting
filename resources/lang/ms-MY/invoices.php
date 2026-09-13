@@ -69,4 +69,6 @@ return [
         ],
     ],
 
+    'language_default'      => 'Bahasa pelanggan',
+
 ];

@@ -13,4 +13,7 @@ return [
         'message'       => ':customer је уплатио :amount по фактури број :invoice_number.',
         'button'        => 'Прикажи',
     ],
+
+    'language_default'      => 'Језик фирме (:language)',
+
 ];

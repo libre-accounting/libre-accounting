@@ -83,4 +83,6 @@ Nume articol|Nume articole',
         'description'       => 'Previzualizați modul în care clientul va vedea versiunea web a facturii.',
     ],
 
+    'language_default'      => 'Limba clientului',
+
 ];

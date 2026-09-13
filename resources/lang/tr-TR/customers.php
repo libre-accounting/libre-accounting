@@ -9,4 +9,6 @@ return [
         'email'             => 'Bu email adresi kullanılmaktadır.',
     ],
 
+    'language_default'      => 'Şirket dili (:language)',
+
 ];

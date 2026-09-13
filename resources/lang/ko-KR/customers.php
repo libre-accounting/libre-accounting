@@ -13,4 +13,7 @@ return [
         'message'       => ':customer 가 :amount 지불을 만들었습니다. 청구번호는 :invoice_number 입니다.',
         'button'        => '보기',
     ],
+
+    'language_default'      => '기업 언어 (:language)',
+
 ];

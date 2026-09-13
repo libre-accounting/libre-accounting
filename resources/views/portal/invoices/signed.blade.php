@@ -1,7 +1,7 @@
 <div class="w-full lg:max-w-6xl px-4 lg:px-0  m-auto">
     <x-layouts.signed>
         <x-slot name="title">
-            {{ setting('invoice.title', trans_choice('general.invoices', 1)) . ': ' . $invoice->document_number }}
+            {{ $invoice->translateDefaultDocumentTitle(setting('invoice.title', trans_choice('general.invoices', 1)), 'general.invoices') . ': ' . $invoice->document_number }}
         </x-slot>
 
         <x-slot name="buttons">
@@ -136,11 +136,13 @@
                 </div>
 
                 <div class="w-full lg:w-7/12">
-                    <x-documents.show.template
-                        type="invoice"
-                        :document="$invoice"
-                        document-template="{{ setting('invoice.template', 'default') }}"
-                    />
+                    @locale($invoice->effective_language)
+                        <x-documents.show.template
+                            type="invoice"
+                            :document="$invoice"
+                            document-template="{{ setting('invoice.template', 'default') }}"
+                        />
+                    @endlocale
                 </div>
             </div>
         </x-slot>

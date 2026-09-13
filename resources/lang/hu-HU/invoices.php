@@ -62,4 +62,6 @@ Fizetésre vár',
         ],
     ],
 
+    'language_default'      => 'Az ügyfél nyelve',
+
 ];

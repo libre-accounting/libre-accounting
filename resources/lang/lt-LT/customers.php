@@ -9,4 +9,6 @@ return [
         'email'             => 'Šis el. paštas jau užimtas.',
     ],
 
+    'language_default'      => 'Įmonės kalba (:language)',
+
 ];

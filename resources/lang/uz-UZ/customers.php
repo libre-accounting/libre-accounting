@@ -9,4 +9,6 @@ return [
         'email'             => 'Bu elektron pochta band.',
     ],
 
+    'language_default'      => 'Kompaniya tili (:language)',
+
 ];

@@ -27,4 +27,6 @@ return [
         'transactions'          => 'Det finns ingen transaktion för denna kund ännu. Skapa en ny nu.',
     ],
 
+    'language_default'          => 'Företagets språk (:language)',
+
 ];

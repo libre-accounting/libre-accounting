@@ -9,4 +9,6 @@ return [
         'email'             => 'อีเมลนี้ได้ลงทะเบียนอยู่แล้ว',
     ],
 
+    'language_default'      => 'ภาษาของบริษัท (:language)',
+
 ];

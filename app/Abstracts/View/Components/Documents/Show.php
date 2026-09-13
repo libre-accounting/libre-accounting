@@ -981,22 +981,23 @@ abstract class Show extends Component
     }
 
     protected function getTextDocumentTitle($type, $textDocumentTitle)
-    { 
+    {
         if (! empty($textDocumentTitle)) {
             return $textDocumentTitle;
         }
 
-        if (! empty($this->document) && $this->document->title !== '') {
-            return $this->document->title;
+        $translation = $this->getTextFromConfig($type, 'document_title', Str::plural($type));
+
+        // blank(), so a NULL title falls back like an empty one instead of printing no heading
+        if (! empty($this->document) && ! blank($this->document->title)) {
+            return $this->translateDefaultDocumentTitle($this->document->title, $translation);
         }
 
         $key = $this->getDocumentSettingKey($type, 'title');
 
         if (! empty(setting($key))) {
-            return setting($key);
+            return $this->translateDefaultDocumentTitle(setting($key), $translation);
         }
-
-        $translation = $this->getTextFromConfig($type, 'document_title', Str::plural($type));
 
         if (! empty($translation)) {
             return trans_choice($translation, 1);

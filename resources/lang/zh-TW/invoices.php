@@ -57,4 +57,6 @@ return [
         ],
     ],
 
+    'language_default'      => '客戶的語言',
+
 ];

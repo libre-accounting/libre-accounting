@@ -82,4 +82,6 @@ return [
         'description'       => 'Du förhandsgranskar hur din kund ser webbversionen av din faktura.',
     ],
 
+    'language_default'      => 'Kundens språk',
+
 ];

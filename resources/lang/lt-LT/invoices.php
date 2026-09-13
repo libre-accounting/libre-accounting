@@ -82,4 +82,6 @@ return [
         'description'       => 'Peržiūrite, kaip klientas matys internetinę sąskaitos faktūros versiją.',
     ],
 
+    'language_default'      => 'Kliento kalba',
+
 ];

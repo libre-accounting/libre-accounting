@@ -127,6 +127,20 @@ class EndpointsTest extends FeatureTestCase
             ->assertJsonPath('data.enabled', true);
     }
 
+    public function testPatchWithoutLanguageShouldKeepContactLanguage()
+    {
+        $contact = Contact::factory()->customer()->enabled()->create(['language' => 'de-DE']);
+
+        $this->api()
+            ->patchJson('api/contacts/' . $contact->id . '?search=type:customer', [
+                'type' => 'customer',
+                'name' => $contact->name,
+                'currency_code' => $contact->currency_code,
+            ])
+            ->assertOk()
+            ->assertJsonPath('data.language', 'de-DE');
+    }
+
     public function testEnableShouldWorkForAccountWithTransactions()
     {
         Transaction::factory()->income()->create(['account_id' => setting('default.account')]);

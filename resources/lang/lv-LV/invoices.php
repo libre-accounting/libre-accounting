@@ -82,4 +82,6 @@ return [
         'description'       => 'Jūsu priekšskatījums, kā jūsu klients redzēs jūsu rēķina tīmekļa versiju.',
     ],
 
+    'language_default'      => 'Pircēja valoda',
+
 ];

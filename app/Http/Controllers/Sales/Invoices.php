@@ -304,9 +304,11 @@ class Invoices extends Controller
     {
         event(new \App\Events\Document\DocumentPrinting($invoice));
 
-        $view = view($invoice->template_path, compact('invoice'));
+        return $this->withDocumentLanguage($invoice, function () use ($invoice) {
+            $view = view($invoice->template_path, compact('invoice'))->render();
 
-        return mb_convert_encoding($view, 'HTML-ENTITIES', 'UTF-8');
+            return mb_convert_encoding($view, 'HTML-ENTITIES', 'UTF-8');
+        });
     }
 
     /**
@@ -320,19 +322,21 @@ class Invoices extends Controller
     {
         event(new \App\Events\Document\DocumentPrinting($invoice));
 
-        $currency_style = true;
+        return $this->withDocumentLanguage($invoice, function () use ($invoice) {
+            $currency_style = true;
 
-        $view = view($invoice->template_path, compact('invoice', 'currency_style'))->render();
+            $view = view($invoice->template_path, compact('invoice', 'currency_style'))->render();
 
-        $html = mb_convert_encoding($view, 'HTML-ENTITIES', 'UTF-8');
+            $html = mb_convert_encoding($view, 'HTML-ENTITIES', 'UTF-8');
 
-        $pdf = app('dompdf.wrapper');
-        $pdf->loadHTML($html);
+            $pdf = app('dompdf.wrapper');
+            $pdf->loadHTML($html);
 
-        //$pdf->setPaper('A4', 'portrait');
+            //$pdf->setPaper('A4', 'portrait');
 
-        $file_name = $this->getDocumentFileName($invoice);
+            $file_name = $this->getDocumentFileName($invoice);
 
-        return $pdf->download($file_name);
+            return $pdf->download($file_name);
+        });
     }
 }

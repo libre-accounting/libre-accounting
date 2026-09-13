@@ -27,4 +27,6 @@ return [
         'transactions'          => 'Er is nog geen transactie voor deze klant. Maak nu een nieuwe aan.',
     ],
 
+    'language_default'          => 'Taal van het bedrijf (:language)',
+
 ];

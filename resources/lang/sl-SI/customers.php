@@ -35,4 +35,6 @@ Za to stranko še ni računa. Ustvarite prvi račun.',
 Za to stranko še ni transakcije. Ustvarite prvo transakcijo.',
     ],
 
+    'language_default'          => 'Jezik podjetja (:language)',
+
 ];

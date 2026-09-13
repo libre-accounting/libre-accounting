@@ -4,6 +4,7 @@ namespace App\Models\Document;
 
 use App\Abstracts\Model;
 use App\Interfaces\Utility\DocumentNumber;
+use App\Models\Common\Contact;
 use App\Models\Common\Media as MediaModel;
 use App\Models\Setting\Tax;
 use App\Scopes\Document as Scope;
@@ -43,6 +44,7 @@ class Document extends Model implements MediableInterface
         'amount',
         'currency_code',
         'currency_rate',
+        'language',
         'category_id',
         'contact_id',
         'contact_name',
@@ -461,6 +463,30 @@ class Document extends Model implements MediableInterface
     public function getTemplatePathAttribute($value = null)
     {
         return $value ?: 'sales.invoices.print_' . setting('invoice.template');
+    }
+
+    /**
+     * The language this document is rendered in for the customer: its own
+     * language, else the customer's, else the company's default. Documents
+     * that don't go to a customer, like bills, keep the current language.
+     *
+     * @return string
+     */
+    public function getEffectiveLanguageAttribute(): string
+    {
+        if (config('type.document.' . $this->type . '.contact_type') !== Contact::CUSTOMER_TYPE) {
+            return app()->getLocale();
+        }
+
+        // allowed() with no code returns the whole list, so check for a value first
+        if (filled($this->language) && language()->allowed($this->language)) {
+            return $this->language;
+        }
+
+        // Eager load, so it never counts as a lazy load
+        $this->loadMissing('contact');
+
+        return $this->contact->effective_language;
     }
 
     public function getContactLocationAttribute()

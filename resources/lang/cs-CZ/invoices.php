@@ -86,4 +86,6 @@ return [
         'description'       => 'Prohlížíte, jak Váš zákazník uvidí webovou verzi Vaší faktury.',
     ],
 
+    'language_default'      => 'Jazyk zákazníka',
+
 ];

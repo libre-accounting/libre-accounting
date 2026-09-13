@@ -9,4 +9,6 @@ return [
         'email'             => 'E-mail je već zauzet.',
     ],
 
+    'language_default'      => 'Jezik tvrtke (:language)',
+
 ];

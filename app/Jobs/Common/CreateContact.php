@@ -48,7 +48,8 @@ class CreateContact extends Job implements HasOwner, HasSource, ShouldCreate
         })->pluck('id')->first();
 
         $this->request->merge([
-            'locale' => setting('default.locale', 'en-GB'),
+            // The portal login starts in the customer's invoice language, if set
+            'locale' => $this->request->get('language') ?: setting('default.locale', 'en-GB'),
             'roles' => $customer_role_id,
             'companies' => [$this->request->get('company_id')],
         ]);

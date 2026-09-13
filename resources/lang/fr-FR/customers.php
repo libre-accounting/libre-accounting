@@ -27,4 +27,6 @@ return [
         'transactions'          => 'Il n\'y a pas encore de transaction pour ce client. Créez une nouvelle transaction maintenant.',
     ],
 
+    'language_default'          => 'Langue de l\'entreprise (:language)',
+
 ];

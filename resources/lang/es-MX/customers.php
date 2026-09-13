@@ -9,4 +9,6 @@ return [
         'email'             => 'La dirección de correo electrónico ya está en uso.',
     ],
 
+    'language_default'      => 'Idioma de la empresa (:language)',
+
 ];

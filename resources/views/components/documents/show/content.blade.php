@@ -114,7 +114,9 @@
     <div class="w-full lg:w-7/12">
         @stack('document_start')
 
-        <x-documents.show.template type="{{ $type }}" :document="$document" />
+        @locale($document->effective_language)
+            <x-documents.show.template type="{{ $type }}" :document="$document" />
+        @endlocale
 
         @stack('document_end')
     </div>

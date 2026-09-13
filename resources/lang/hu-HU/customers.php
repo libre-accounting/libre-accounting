@@ -10,4 +10,6 @@ Bejelentkezhet?',
         'email'             => 'Ez az email cím már használatban van.',
     ],
 
+    'language_default'      => 'A cég nyelve (:language)',
+
 ];

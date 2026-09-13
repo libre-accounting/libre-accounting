@@ -129,11 +129,13 @@
             </div>
 
             <div class="w-full lg:w-7/12">
-                <x-documents.show.template
-                    type="invoice"
-                    :document="$invoice"
-                    document-template="{{ setting('invoice.template', 'default') }}"
-                />
+                @locale($invoice->effective_language)
+                    <x-documents.show.template
+                        type="invoice"
+                        :document="$invoice"
+                        document-template="{{ setting('invoice.template', 'default') }}"
+                    />
+                @endlocale
             </div>
         </div>
     </x-slot>

@@ -65,4 +65,6 @@ return [
         'button'        => 'Платите сада',
     ],
 
+    'language_default'  => 'Језик купца',
+
 ];

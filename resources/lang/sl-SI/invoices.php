@@ -82,4 +82,6 @@ return [
         'description'       => 'Predogledujete si, kako bo vaša stranka videla spletno različico vašega računa.',
     ],
 
+    'language_default'      => 'Jezik stranke',
+
 ];
