@@ -197,7 +197,10 @@ Shared rules:
 - Optional: `contact_email`, `contact_tax_number`, `contact_phone`,
   `contact_address`, `contact_city`, `contact_zip_code`, `contact_state`,
   `contact_country`, `order_number`, `title`, `subheading`, `notes`,
-  `footer`, `attachment[]`.
+  `footer`, `language`, `attachment[]`.
+  - `language` (invoices) is a language code from the server's list, such
+    as `de-DE`. The PDF, print view and public link use it. `null` means
+    the customer's language, then the company's.
   - Whole-document discount: `discount` + `discount_type`.
   - Extra totals: `totals[]` as `{name, amount, code?, operator: addition|subtraction}`.
 - An update rebuilds items, item taxes and totals from what you send.
@@ -210,7 +213,9 @@ Shared rules:
 - `email` is optional, but if sent it must be unique per type and its
   domain must have a working mail (MX) record.
 - Optional: `tax_number`, `phone`, `address`, `city`, `zip_code`, `state`,
-  `country` (ISO code), `website`, `reference`, `enabled`, `logo` (image).
+  `country` (ISO code), `website`, `reference`, `enabled`, `logo` (image),
+  `language` (customers: the language their invoices use, such as `de-DE`;
+  `null` means the company's language).
 - `create_user: "true"` creates a client-portal user and emails an
   invitation. Only send it when asked.
 - Delete is blocked while the contact has documents or transactions.
@@ -339,6 +344,7 @@ Servers released before these API fixes behave differently. If
 |---|---|
 | `GET documents/{id}/received` returns 500 | `la-update bills ID '{"status":"received"}'` |
 | `GET items/{id}` has no `track_stock` | the server predates stock tracking; the stock and component endpoints 404 |
+| `GET contacts/{id}` has no `language` | the server predates invoice languages and ignores `language` when sent |
 | PUT reports "number/email has already been taken" | use PATCH |
 | PATCH without `enabled` disables the record, or fails if it's in use | send `enabled: 1` (`la-update` does) |
 | Missing id returns 500 instead of 404 | treat "No query results" as not found |
