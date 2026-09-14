@@ -2,9 +2,11 @@
 
 namespace Tests\Feature\Sales;
 
+use App\Events\Document\PaymentReceived;
 use App\Exports\Sales\Invoices\Invoices as Export;
 use App\Jobs\Document\CreateDocument;
 use App\Models\Document\Document;
+use App\Notifications\Portal\PaymentReceived as PaymentReceivedNotification;
 use App\Notifications\Sale\Invoice as Notification;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Carbon;
@@ -185,6 +187,48 @@ class InvoicesTest extends FeatureTestCase
         $this->assertFlashLevel('success');
 
         NotificationFacade::assertSentTo($invoice->contact, Notification::class);
+    }
+
+    public function testItShouldEmailInvoiceWithPdfFromItsRoute()
+    {
+        NotificationFacade::fake();
+
+        $request = $this->getRequest();
+        $request['status'] = 'draft';
+
+        $invoice = $this->dispatch(new CreateDocument($request));
+
+        // The job used undefined variables, so this route only ever flashed an error
+        $this->loginAs()
+            ->get(route('invoices.email', $invoice->id))
+            ->assertStatus(302);
+
+        $this->assertFlashLevel('success');
+
+        NotificationFacade::assertSentTo($invoice->contact, Notification::class, function ($notification) {
+            return $notification->attach_pdf === true;
+        });
+    }
+
+    public function testItShouldAttachThePdfToTheCustomersPaymentReceipt()
+    {
+        NotificationFacade::fake();
+
+        $request = $this->getRequest();
+        $request['status'] = 'sent';
+
+        $invoice = $this->dispatch(new CreateDocument($request));
+
+        event(new PaymentReceived($invoice, [
+            'paid_at' => $invoice->due_at,
+            'type' => config('type.document.invoice.transaction_type'),
+        ]));
+
+        // The attach flag used to go to notify() instead of the notification
+        NotificationFacade::assertSentTo($invoice->contact, PaymentReceivedNotification::class, function ($notification) use ($invoice) {
+            return $notification->attach_pdf === true
+                && count($notification->toMail($invoice->contact)->attachments) === 1;
+        });
     }
 
     public function testItShouldHitRateLimitForSendInvoiceEmail()
