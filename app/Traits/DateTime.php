@@ -25,8 +25,10 @@ trait DateTime
             return $default;
         }
 
-        // Make user is logged in
-        if (!user()) {
+        // Settings belong to a company, so without one there is nothing to read. This used to
+        // require a logged-in user, so public invoice links, queued emails and console jobs
+        // ignored the company's format even though their company is current.
+        if (! company_id()) {
             return $default;
         }
 
